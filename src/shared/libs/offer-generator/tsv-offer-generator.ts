@@ -31,13 +31,15 @@ export class TSVOfferGenerator implements OfferGenerator {
   public generate(): string {
     const id = '1';
     const title = getRandomItem<string>(this.mockData.titles);
-    const type = getRandomItem([OfferType]);
+    const type = getRandomItem<string>(Object.values(OfferType));
     const price = generateRandomValue(MIN_PRICE, MAX_PRICE).toString();
     const city = getRandomItem(Cities);
-    const location = {
-      latitude: city.location.latitude + generateRandomValue(0, 1, 8),
-      longitude: city.location.longitude + generateRandomValue(0, 1, 8),
-    };
+    const latitude = (
+      city.location.latitude + generateRandomValue(0, 1, 8)
+    ).toString();
+    const longitude = (
+      city.location.longitude + generateRandomValue(0, 1, 8)
+    ).toString();
     const isFavorite = 'false';
     const isPremium = getRandomItem(['false', 'true']);
     const rating = generateRandomValue(
@@ -61,21 +63,22 @@ export class TSVOfferGenerator implements OfferGenerator {
     return [
       id,
       title,
-      type,
-      price,
-      city.name,
-      location,
-      isFavorite,
-      isPremium,
-      rating,
       description,
+      createdDate,
+      city.name,
+      previewImage,
+      images,
+      isPremium,
+      isFavorite,
+      rating,
+      type,
       bedrooms,
+      maxAdults,
+      price,
       goods,
       host.name,
-      images,
-      previewImage,
-      maxAdults,
-      createdDate,
+      latitude,
+      longitude,
     ].join('\t');
   }
 }
