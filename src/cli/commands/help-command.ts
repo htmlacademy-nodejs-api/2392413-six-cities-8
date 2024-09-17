@@ -7,7 +7,7 @@ export class HelpCommand implements Command {
   }
 
   public async execute(..._parameters: string[]): Promise<void> {
-    const helpText = this.getCommandsHelp(`
+    const helpText = this.getCommandsFormat(`
           --version:                   # выводит номер версии
           --help:                      # печатает этот текст
           --import <path>:             # импортирует данные из TSV
@@ -16,12 +16,12 @@ export class HelpCommand implements Command {
     console.info(`
         Программа для подготовки данных для REST API сервера.
         Пример:
-            ${chalk.blue('cli.js --<command> [--arguments]')}
+            ${chalk.green('cli.js --<command> [--arguments]')}
         Команды: ${helpText}
     `);
   }
 
-  private getCommandsHelp(text: string): string {
+  private getCommandsFormat(text: string): string {
     return text
       .split('\n')
       .map((line) => {
