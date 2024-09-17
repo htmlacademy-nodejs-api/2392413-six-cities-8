@@ -6,7 +6,7 @@ import {
   getRandomItem,
   getRandomItems,
 } from '../../helpers/index.js';
-import { MockServerData, OfferType, UserInfo } from '../../types/index.js';
+import { MockServerData, OfferType } from '../../types/index.js';
 import { OfferGenerator } from './offer-generator.interface.js';
 
 const MIN_PRICE = 100;
@@ -50,7 +50,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     const description = getRandomItem<string>(this.mockData.descriptions);
     const bedrooms = generateRandomValue(MIN_BEDROOMS, MAX_BEDROOMS).toString();
     const goods = getRandomItems<string>(this.mockData.goods).join(';');
-    const host = getRandomItem<UserInfo>(this.mockData.users);
+    const host = getRandomItem<string>(this.mockData.users);
     const images = getRandomItems<string>(this.mockData.previewImages).join(
       ';'
     );
@@ -76,7 +76,7 @@ export class TSVOfferGenerator implements OfferGenerator {
       maxAdults,
       price,
       goods,
-      host.name,
+      host,
       latitude,
       longitude,
     ].join('\t');
