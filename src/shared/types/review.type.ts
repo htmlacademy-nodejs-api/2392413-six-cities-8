@@ -1,4 +1,4 @@
-import { UserInfo } from './user-info.type.js';
+import { UserInfo } from './index.js';
 
 export type Review = {
   id: string;
