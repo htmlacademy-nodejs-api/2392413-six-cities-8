@@ -29,7 +29,6 @@ export class TSVOfferGenerator implements OfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
 
   public generate(): string {
-    const id = '1';
     const title = getRandomItem<string>(this.mockData.titles);
     const type = getRandomItem<string>(Object.values(OfferType));
     const price = generateRandomValue(MIN_PRICE, MAX_PRICE).toString();
@@ -61,7 +60,6 @@ export class TSVOfferGenerator implements OfferGenerator {
       .toISOString();
 
     return [
-      id,
       title,
       description,
       createdDate,

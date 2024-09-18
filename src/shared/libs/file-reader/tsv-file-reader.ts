@@ -21,7 +21,6 @@ export class TSVFileReader extends EventEmitter implements FileReader {
 
   private parseLineToOffer(line: string): Offer {
     const [
-      id,
       title,
       description,
       createdDate,
@@ -42,7 +41,6 @@ export class TSVFileReader extends EventEmitter implements FileReader {
     ] = line.split('\t');
 
     return {
-      id,
       title,
       type: type as OfferType,
       price: Number.parseInt(price, 10),
