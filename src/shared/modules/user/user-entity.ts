@@ -1,4 +1,4 @@
-import { getModelForClass, prop } from '@typegoose/typegoose';
+import { defaultClasses, getModelForClass, prop } from '@typegoose/typegoose';
 import { User } from '../../types/index.js';
 
 const MIN_NAME_LENGTH = 1;
@@ -7,7 +7,7 @@ const MAX_NAME_LENGTH = 15;
 const MIN_PASSWORD_LENGTH = 6;
 const MAX_PASSWORD_LENGTH = 12;
 
-export class UserEntity implements User {
+export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({
     required: true,
     minlength: MIN_NAME_LENGTH,
