@@ -1,2 +1,1 @@
-export { UserEntity } from './user-entity.js';
-export { UserDocument, UserModel } from './user-model.js';
+export { UserEntity, UserModel } from './user-entity.js';
