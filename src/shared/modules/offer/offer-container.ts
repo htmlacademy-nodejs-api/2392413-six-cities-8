@@ -1,6 +1,5 @@
-import { Container } from 'inversify';
-
 import { types } from '@typegoose/typegoose';
+import { Container } from 'inversify';
 import { Component } from '../../types/index.js';
 import { DefaultOfferService } from './default-offer-service.js';
 import { OfferEntity, OfferModel } from './offer-entity.js';
