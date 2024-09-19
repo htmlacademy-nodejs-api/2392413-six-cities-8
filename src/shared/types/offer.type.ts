@@ -1,7 +1,6 @@
 import { City, GoodType, Location, OfferType, UserInfo } from './index.js';
 
 export type Offer = {
-  id: string;
   title: string;
   type: OfferType;
   price: number;
