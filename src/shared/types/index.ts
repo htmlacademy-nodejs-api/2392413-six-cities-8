@@ -7,5 +7,4 @@ export { MockServerData } from './mock-server-data.type.js';
 export { OfferType } from './offer-type.enum.js';
 export { Offer } from './offer.type.js';
 export { Review } from './review.type.js';
-export { UserInfo } from './user-info.type.js';
 export { User } from './user.type.js';

@@ -8,7 +8,7 @@ import {
   Location,
   Offer,
   OfferType,
-  UserInfo,
+  User,
 } from '../../types/index.js';
 import { FileReader } from './file-reader.interface.js';
 
@@ -87,7 +87,7 @@ export class TSVFileReader extends EventEmitter implements FileReader {
     return Cities[cityIndex];
   }
 
-  private parseUser(username: string): UserInfo {
+  private parseUser(username: string): User {
     const userIndex = usersMock.findIndex((user) => user.name === username);
     if (userIndex === -1) {
       throw new Error(`User "${username}" not found in mock data`);
@@ -114,7 +114,9 @@ export class TSVFileReader extends EventEmitter implements FileReader {
         importedRowCount++;
 
         const parsedOffer = this.parseLineToOffer(completeRow);
-        this.emit('line', parsedOffer);
+        await new Promise((resolve) => {
+          this.emit('line', parsedOffer, resolve);
+        });
       }
     }
 
