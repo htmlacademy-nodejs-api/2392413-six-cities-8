@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/index.js';
-import { CreateUserDto } from './dto/create-user.dto.js';
+import { CreateUserDto } from './dto/create-user-dto.js';
 import { UserEntity } from './user-entity.js';
 import { UserEntityDocument, UserService } from './user-service.interface.js';
 
