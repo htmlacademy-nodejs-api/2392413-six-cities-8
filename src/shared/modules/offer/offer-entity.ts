@@ -2,12 +2,14 @@ import {
   defaultClasses,
   getModelForClass,
   modelOptions,
+  prop,
   Ref,
 } from '@typegoose/typegoose';
-import { City, GoodType, Location, OfferType } from '../../types/index.js';
-
-import { prop } from '@typegoose/typegoose';
-import { UserEntity } from '../user/index.js';
+import { City } from '../../types/city.type.js';
+import { GoodType } from '../../types/good-type.type.js';
+import { Location } from '../../types/location.type.js';
+import { OfferType } from '../../types/offer-type.enum.js';
+import { UserEntity } from '../user/user-entity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}

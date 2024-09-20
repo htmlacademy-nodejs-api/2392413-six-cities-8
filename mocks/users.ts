@@ -1,4 +1,4 @@
-import { User } from '../src/shared/types/index.js';
+import { User } from '../src/shared/types/user.type.js';
 
 export const usersMock: User[] = [
   {

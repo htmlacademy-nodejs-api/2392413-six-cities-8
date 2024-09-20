@@ -1,21 +1,16 @@
-import { getErrorMessage, getMongoURI } from '../../shared/helpers/index.js';
-import {
-  DatabaseClient,
-  MongoDatabaseClient,
-} from '../../shared/libs/database-client/index.js';
-import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
+import { getErrorMessage } from '../../shared/helpers/common.js';
+import { getMongoURI } from '../../shared/helpers/database.js';
+import { DatabaseClient } from '../../shared/libs/database-client/database-client.interface.js';
+import { MongoDatabaseClient } from '../../shared/libs/database-client/mongo-database-client.js';
+import { TSVFileReader } from '../../shared/libs/file-reader/tsv-file-reader.js';
 import { ConsoleLogger } from '../../shared/libs/logger/console-logger.js';
-import { Logger } from '../../shared/libs/logger/index.js';
-import {
-  DefaultOfferService,
-  OfferModel,
-  OfferService,
-} from '../../shared/modules/offer/index.js';
-import {
-  DefaultUserService,
-  UserModel,
-  UserService,
-} from '../../shared/modules/user/index.js';
+import { Logger } from '../../shared/libs/logger/logger.interface.js';
+import { DefaultOfferService } from '../../shared/modules/offer/default-offer-service.js';
+import { OfferModel } from '../../shared/modules/offer/offer-entity.js';
+import { OfferService } from '../../shared/modules/offer/offer-service.interface.js';
+import { DefaultUserService } from '../../shared/modules/user/default-user-service.js';
+import { UserModel } from '../../shared/modules/user/user-entity.js';
+import { UserService } from '../../shared/modules/user/user-service.interface.js';
 import { Offer } from '../../shared/types/offer.type.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { Command } from './command.interface.js';

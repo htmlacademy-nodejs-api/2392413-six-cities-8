@@ -4,8 +4,8 @@ import {
   modelOptions,
   prop,
 } from '@typegoose/typegoose';
-import { createSHA256 } from '../../helpers/index.js';
-import { User } from '../../types/index.js';
+import { createSHA256 } from '../../helpers/hash.js';
+import { User } from '../../types/user.type.js';
 
 const MIN_NAME_LENGTH = 1;
 const MAX_NAME_LENGTH = 15;

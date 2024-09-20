@@ -1,9 +1,7 @@
-import {
-  CityName,
-  GoodType,
-  Location,
-  OfferType,
-} from '../../../types/index.js';
+import { CityName } from '../../../types/city-name.enum.js';
+import { GoodType } from '../../../types/good-type.type.js';
+import { Location } from '../../../types/location.type.js';
+import { OfferType } from '../../../types/offer-type.enum.js';
 
 export class CreateOfferDto {
   public title: string;
