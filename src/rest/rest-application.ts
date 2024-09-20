@@ -1,8 +1,8 @@
+import { getMongoURI } from '#helpers/database.js';
 import { Config } from '#libs/config/config.interface.js';
 import { RestSchema } from '#libs/config/rest-schema.js';
 import { DatabaseClient } from '#libs/database-client/database-client.interface.js';
 import { Logger } from '#libs/logger/logger.interface.js';
-import { getMongoURI } from '#src/shared/helpers/database.js';
 import { Component } from '#types/component.enum.js';
 import { inject, injectable } from 'inversify';
 

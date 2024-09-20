@@ -1,6 +1,6 @@
+import { getErrorMessage } from '#helpers/common.js';
 import { TSVFileWriter } from '#libs/file-writer/tsv-file-writer.js';
 import { TSVOfferGenerator } from '#libs/offer-generator/tsv-offer-generator.js';
-import { getErrorMessage } from '#src/shared/helpers/common.js';
 import { MockServerData } from '#types/mock-server-data.type.js';
 import got from 'got';
 import { Command } from './command.interface.js';

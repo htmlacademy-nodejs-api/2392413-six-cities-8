@@ -1,4 +1,4 @@
-import { UserEntity } from '#src/shared/modules/user/user-entity.js';
+import { UserEntity } from '#modules/user/user-entity.js';
 import { City } from '#types/city.type.js';
 import { GoodType } from '#types/good-type.type.js';
 import { Location } from '#types/location.type.js';

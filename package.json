@@ -11,6 +11,8 @@
     "#src/*": "./src/*",
     "#types/*": "./src/shared/types/*",
     "#libs/*": "./src/shared/libs/*",
+    "#modules/*": "./src/shared/modules/*",
+    "#helpers/*": "./src/shared/helpers/*",
     "#mocks/*": "./mocks/*"
   },
   "main": "main.js",

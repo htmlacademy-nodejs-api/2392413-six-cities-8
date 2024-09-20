@@ -1,4 +1,4 @@
-import { createSHA256 } from '#src/shared/helpers/hash.js';
+import { createSHA256 } from '#helpers/hash.js';
 import { User } from '#types/user.type.js';
 import {
   defaultClasses,

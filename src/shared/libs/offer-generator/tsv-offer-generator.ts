@@ -1,9 +1,9 @@
-import { Cities } from '#src/shared/const.js';
 import {
   generateRandomValue,
   getRandomItem,
   getRandomItems,
-} from '#src/shared/helpers/common.js';
+} from '#helpers/common.js';
+import { Cities } from '#src/shared/const.js';
 import { MockServerData } from '#types/mock-server-data.type.js';
 import { OfferType } from '#types/offer-type.enum.js';
 import dayjs from 'dayjs';

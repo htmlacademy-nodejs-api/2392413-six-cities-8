@@ -1,4 +1,4 @@
-import { getErrorMessage } from '#src/shared/helpers/common.js';
+import { getErrorMessage } from '#helpers/common.js';
 import { Logger } from './logger.interface.js';
 
 export class ConsoleLogger implements Logger {
