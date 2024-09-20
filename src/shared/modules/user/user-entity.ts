@@ -10,9 +10,6 @@ import {
 const MIN_NAME_LENGTH = 1;
 const MAX_NAME_LENGTH = 15;
 
-const MIN_PASSWORD_LENGTH = 6;
-const MAX_PASSWORD_LENGTH = 12;
-
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface UserEntity extends defaultClasses.Base {}
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -40,8 +37,6 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({
     required: true,
     default: '',
-    minlength: MIN_PASSWORD_LENGTH,
-    maxlength: MAX_PASSWORD_LENGTH,
   })
   private password?: string;
 
