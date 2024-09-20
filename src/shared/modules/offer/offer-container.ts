@@ -1,6 +1,6 @@
+import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { Container } from 'inversify';
-import { Component } from '../../types/component.enum.js';
 import { DefaultOfferService } from './default-offer-service.js';
 import { OfferEntity, OfferModel } from './offer-entity.js';
 import { OfferService } from './offer-service.interface.js';

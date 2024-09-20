@@ -1,12 +1,12 @@
-import dayjs from 'dayjs';
-import { Cities } from '../../const.js';
+import { Cities } from '#src/shared/const.js';
 import {
   generateRandomValue,
   getRandomItem,
   getRandomItems,
-} from '../../helpers/common.js';
-import { MockServerData } from '../../types/mock-server-data.type.js';
-import { OfferType } from '../../types/offer-type.enum.js';
+} from '#src/shared/helpers/common.js';
+import { MockServerData } from '#types/mock-server-data.type.js';
+import { OfferType } from '#types/offer-type.enum.js';
+import dayjs from 'dayjs';
 import { OfferGenerator } from './offer-generator.interface.js';
 
 const MIN_PRICE = 100;

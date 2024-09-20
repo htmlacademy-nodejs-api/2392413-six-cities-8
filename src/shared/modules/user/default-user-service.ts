@@ -1,7 +1,7 @@
+import { Logger } from '#libs/logger/logger.interface.js';
+import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
-import { Logger } from '../../libs/logger/logger.interface.js';
-import { Component } from '../../types/component.enum.js';
 import { CreateUserDto } from './dto/create-user-dto.js';
 import { UserEntity } from './user-entity.js';
 import { UserEntityDocument, UserService } from './user-service.interface.js';

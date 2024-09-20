@@ -1,10 +1,10 @@
+import { Config } from '#libs/config/config.interface.js';
+import { RestSchema } from '#libs/config/rest-schema.js';
+import { DatabaseClient } from '#libs/database-client/database-client.interface.js';
+import { Logger } from '#libs/logger/logger.interface.js';
+import { getMongoURI } from '#src/shared/helpers/database.js';
+import { Component } from '#types/component.enum.js';
 import { inject, injectable } from 'inversify';
-import { getMongoURI } from '../shared/helpers/database.js';
-import { Config } from '../shared/libs/config/config.interface.js';
-import { RestSchema } from '../shared/libs/config/rest-schema.js';
-import { DatabaseClient } from '../shared/libs/database-client/database-client.interface.js';
-import { Logger } from '../shared/libs/logger/logger.interface.js';
-import { Component } from '../shared/types/component.enum.js';
 
 @injectable()
 export class RestApplication {

@@ -1,7 +1,7 @@
+import { Logger } from '#libs/logger/logger.interface.js';
+import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
-import { Logger } from '../../libs/logger/logger.interface.js';
-import { Component } from '../../types/component.enum.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';
 import {
