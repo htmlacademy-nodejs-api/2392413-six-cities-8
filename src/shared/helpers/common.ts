@@ -13,6 +13,17 @@ export function getRandomItems<T>(items: T[]): T[] {
   return items.slice(startPosition, endPosition);
 }
 
+export function getUniqueRandomItems<T>(items: T[], maxCount: number): T[] {
+  const uniqueueIndex = new Set<number>();
+  while (uniqueueIndex.size !== Math.min(maxCount, items.length)) {
+    uniqueueIndex.add(generateRandomValue(0, items.length - 1));
+  }
+
+  const uniqueElements: T[] = [];
+  uniqueueIndex.forEach((value) => uniqueElements.push(items[value]));
+  return uniqueElements;
+}
+
 export function getRandomItem<T>(items: T[]): T {
   return items[generateRandomValue(0, items.length - 1)];
 }
