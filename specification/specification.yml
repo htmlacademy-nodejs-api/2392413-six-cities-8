@@ -57,10 +57,10 @@ paths:
 
   /users/logout:
     get:
-    tags:
-      - users
-    summary: Завершить сеанс пользователя
-    description: Завершает сеанс пользователя
+      tags:
+        - users
+      summary: Завершить сеанс пользователя
+      description: Завершает сеанс пользователя
 
   /users/{userId}/avatar:
     post:
