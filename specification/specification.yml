@@ -309,54 +309,97 @@ components:
           type: string
           example: 'User is not authorized'
 
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          example: 42.23432
+        longitude:
+          type: number
+          example: 23.346329
+
+    City:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: 'Berlin'
+
+        location:
+          type: object
+          $ref: '#/components/schemas/Location'
+
     createOffer:
       type: object
 
       properties:
         title:
           type: string
+          example: 'The Pondhouse - A Magical Place'
 
         description:
           type: string
+          example: 'I am happy to welcome you to my apartment in the city center! Three words: location, cosy and chic!'
 
         createdDate:
-          type: Date
+          type: string
+          example: '2024-05-08T14:13:56.569Z'
 
         city:
-          type: CityName
+          type: object
+          $ref: '#/components/schemas/City'
 
         previewImage:
           type: string
+          example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
 
         images:
           type: string[]
+          example:
+            [
+              'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/2.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/3.jpg',
+            ]
 
         isPremium:
           type: boolean
+          example: true
 
         isFavorite:
           type: boolean
+          example: true
 
         rating:
           type: number
+          example: 3.2
 
         type:
           type: OfferType
+          example: 'hotel'
 
         bedrooms:
           type: number
+          example: 3
 
         maxAdults:
           type: number
+          example: 2
 
         price:
           type: number
+          example: 600
 
         goods:
-          type: GoodType[]
+          type: string[]
+          example: ['Breakfast', 'Air conditioning']
 
-        userId:
-          type: string
+        host:
+          type: object
+          $ref: '#/components/schemas/userInfo'
 
         location:
-          type: Location
+          type: object
+          $ref: '#/components/schemas/Location'
