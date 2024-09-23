@@ -1,0 +1,181 @@
+openapi: 3.1.0
+info:
+  title: API сервер для демо-проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+tags:
+  - name: offers
+    description: Действия с объявлениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        '201':
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        '409':
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает информацию по авторизованному пользователю
+
+  /users/logout:
+    get:
+    tags:
+      - users
+    summary: Завершить сеанс пользователя
+    description: Завершает сеанс пользователя
+
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Загрузить изображение аватара
+      description: Загружает изображение аватара пользователя. Изображение
+        аватара должно быть в формате `png` или `jpg`.
+
+  /offers/:
+    post:
+      tags:
+        - offers
+      summary: Создать новое предложение
+      description: Создание нового предложения
+
+    get:
+      tags:
+        - offers
+      summary: Получить список предложений
+      description: Получение списка предложений по аренде
+
+  /offers/{offerId}:
+    post:
+      tags:
+        - offers
+      summary: Редактировать предложение
+      description: Редактирование предложения
+
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение
+      description: Удаление предложения
+
+    get:
+      tags:
+        - offers
+      summary: Получить детальную информацию о предложении
+      description: Получение детальной информации о предложении по аренде
+
+  /{cityName}/premium:
+    get:
+      tags:
+        - offers
+      summary: Получить премиальные предложения города
+      description: Получение премиальных предложений по аренде города
+
+  /favorite:
+    get:
+      tags:
+        - offers
+      summary: Получить список избранных предложений
+      description: Получение списка избранных предложений по аренде
+    post:
+      tags:
+        - offers
+      summary: Добавить/удалить предложение в/из избранное
+      description: Добавление/удаление предложения в/из избранное
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      summary: Получить список комментариев предложения
+      description: Получение списка комментариев предложения по аренде
+
+    post:
+      tags:
+        - comments
+      summary: Добавить комментарий к предложению
+      description: Добавление комментария к предложению по аренде
+
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: Keks
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        password:
+          type: string
+          example: 123456
+
+        avatarUrl:
+          type: string
+          example: http://avatars.ru/avatar.png
+
+        isPro:
+          type: boolean
+          example: true
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarUrl:
+          type: string
+          example: http://avatars.ru/avatar.png
+
+        isPro:
+          type: boolean
+          example: true
