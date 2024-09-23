@@ -49,11 +49,41 @@ paths:
       summary: Авторизация пользователя
       description: Авторизует пользователя на основе логина и пароля
 
+      requestBody:
+        description: Информация для авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+        required: true
+
+      responses:
+        '200':
+          description: Пользователь авторизован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInfo'
+
     get:
       tags:
         - users
       summary: Проверка состояния пользователя
       description: Возвращает информацию по авторизованному пользователю
+
+      responses:
+        '200':
+          description: Статус авторизации пользователя. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInfo'
+        '401':
+          description: Статус авторизации пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorInfo'
 
   /users/logout:
     get:
@@ -179,3 +209,51 @@ components:
         isPro:
           type: boolean
           example: true
+
+    loginUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        password:
+          type: string
+          example: 123456
+
+    userInfo:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarUrl:
+          type: string
+          example: http://avatars.ru/avatar.png
+
+        isPro:
+          type: boolean
+          example: true
+
+        token:
+          type: string
+          example: T482kjhsdkKJHJsjhgfeyue73
+
+    errorInfo:
+      type: object
+
+      properties:
+        errorType:
+          type: string
+          example: 'NO_AUTH'
+
+        errorMessage:
+          type: string
+          example: 'User is not authorized'
