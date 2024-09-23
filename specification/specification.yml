@@ -116,6 +116,23 @@ paths:
       summary: Создать новое предложение
       description: Создание нового предложения
 
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        '201':
+          description: Предложение успешно добавлено.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOffer'
+
     get:
       tags:
         - offers
@@ -129,6 +146,15 @@ paths:
       summary: Редактировать предложение
       description: Редактирование предложения
 
+      parameters:
+        - in: path
+          name: offerId
+          example: adsduif874865fd
+          description: id предложения
+          schema:
+            type: string
+          required: true
+
     delete:
       tags:
         - offers
@@ -141,12 +167,21 @@ paths:
       summary: Получить детальную информацию о предложении
       description: Получение детальной информации о предложении по аренде
 
-  /{cityName}/premium:
+  /premium/{cityName}:
     get:
       tags:
         - offers
       summary: Получить премиальные предложения города
       description: Получение премиальных предложений по аренде города
+
+      parameters:
+        - in: path
+          name: cityName
+          example: Berlin
+          description: Наименование города
+          schema:
+            type: string
+          required: true
 
   /favorite:
     get:
@@ -166,6 +201,15 @@ paths:
         - comments
       summary: Получить список комментариев предложения
       description: Получение списка комментариев предложения по аренде
+
+      parameters:
+        - in: path
+          name: offerId
+          example: adsduif874865fd
+          description: id предложения
+          schema:
+            type: string
+          required: true
 
     post:
       tags:
@@ -266,3 +310,55 @@ components:
         errorMessage:
           type: string
           example: 'User is not authorized'
+
+    createOffer:
+      type: object
+
+      properties:
+        title:
+          type: string
+
+        description:
+          type: string
+
+        createdDate:
+          type: Date
+
+        city:
+          type: CityName
+
+        previewImage:
+          type: string
+
+        images:
+          type: string[]
+
+        isPremium:
+          type: boolean
+
+        isFavorite:
+          type: boolean
+
+        rating:
+          type: number
+
+        type:
+          type: OfferType
+
+        bedrooms:
+          type: number
+
+        maxAdults:
+          type: number
+
+        price:
+          type: number
+
+        goods:
+          type: GoodType[]
+
+        userId:
+          type: string
+
+        location:
+          type: Location
