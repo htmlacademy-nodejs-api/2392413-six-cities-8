@@ -86,7 +86,7 @@ paths:
                 $ref: '#/components/schemas/errorInfo'
 
   /users/logout:
-    get:
+    delete:
       tags:
         - users
       summary: Завершить сеанс пользователя
