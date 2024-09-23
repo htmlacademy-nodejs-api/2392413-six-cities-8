@@ -140,20 +140,20 @@ paths:
       description: Получение списка предложений по аренде
 
   /offers/{offerId}:
+    parameters:
+      - in: path
+        name: offerId
+        example: adsduif874865fd
+        description: id предложения
+        schema:
+          type: string
+        required: true
+
     post:
       tags:
         - offers
       summary: Редактировать предложение
       description: Редактирование предложения
-
-      parameters:
-        - in: path
-          name: offerId
-          example: adsduif874865fd
-          description: id предложения
-          schema:
-            type: string
-          required: true
 
     delete:
       tags:
@@ -168,20 +168,19 @@ paths:
       description: Получение детальной информации о предложении по аренде
 
   /premium/{cityName}:
+    parameters:
+      - in: path
+        name: cityName
+        example: Berlin
+        description: Наименование города
+        schema:
+          type: string
+        required: true
     get:
       tags:
         - offers
       summary: Получить премиальные предложения города
       description: Получение премиальных предложений по аренде города
-
-      parameters:
-        - in: path
-          name: cityName
-          example: Berlin
-          description: Наименование города
-          schema:
-            type: string
-          required: true
 
   /favorite:
     get:
@@ -196,20 +195,19 @@ paths:
       description: Добавление/удаление предложения в/из избранное
 
   /comments/{offerId}:
+    parameters:
+      - in: path
+        name: offerId
+        example: adsduif874865fd
+        description: id предложения
+        schema:
+          type: string
+        required: true
     get:
       tags:
         - comments
       summary: Получить список комментариев предложения
       description: Получение списка комментариев предложения по аренде
-
-      parameters:
-        - in: path
-          name: offerId
-          example: adsduif874865fd
-          description: id предложения
-          schema:
-            type: string
-          required: true
 
     post:
       tags:
