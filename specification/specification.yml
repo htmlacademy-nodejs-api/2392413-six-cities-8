@@ -109,14 +109,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/errorInfo'
 
-  /users/{userId}/avatar:
-    post:
-      tags:
-        - users
-      summary: Загрузить изображение аватара
-      description: Загружает изображение аватара пользователя. Изображение
-        аватара должно быть в формате `png` или `jpg`.
-
   /offers/:
     post:
       tags:
