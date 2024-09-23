@@ -95,6 +95,8 @@ paths:
       parameters:
         - in: header
           name: X-Token
+          example: T482kjhsdkKJHJsjhgfeyue73
+          description: Токен пользователя
           schema:
             type: string
           required: true
