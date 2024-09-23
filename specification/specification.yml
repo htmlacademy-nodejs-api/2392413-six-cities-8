@@ -121,8 +121,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: '#/components/schemas/createOffer'
+
         required: true
 
       responses:
