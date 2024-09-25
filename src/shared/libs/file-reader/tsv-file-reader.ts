@@ -1,15 +1,13 @@
+import { usersMock } from '#mocks/users.js';
+import { Cities } from '#src/shared/const.js';
+import { City } from '#types/city.type.js';
+import { GoodType } from '#types/good-type.type.js';
+import { Location } from '#types/location.type.js';
+import { OfferType } from '#types/offer-type.enum.js';
+import { Offer } from '#types/offer.type.js';
+import { User } from '#types/user.type.js';
 import EventEmitter from 'node:events';
 import { createReadStream } from 'node:fs';
-import { usersMock } from '../../../../mocks/users.js';
-import { Cities } from '../../const.js';
-import {
-  City,
-  GoodType,
-  Location,
-  Offer,
-  OfferType,
-  UserInfo,
-} from '../../types/index.js';
 import { FileReader } from './file-reader.interface.js';
 
 export class TSVFileReader extends EventEmitter implements FileReader {
@@ -87,7 +85,7 @@ export class TSVFileReader extends EventEmitter implements FileReader {
     return Cities[cityIndex];
   }
 
-  private parseUser(username: string): UserInfo {
+  private parseUser(username: string): User {
     const userIndex = usersMock.findIndex((user) => user.name === username);
     if (userIndex === -1) {
       throw new Error(`User "${username}" not found in mock data`);
@@ -114,7 +112,9 @@ export class TSVFileReader extends EventEmitter implements FileReader {
         importedRowCount++;
 
         const parsedOffer = this.parseLineToOffer(completeRow);
-        this.emit('line', parsedOffer);
+        await new Promise((resolve) => {
+          this.emit('line', parsedOffer, resolve);
+        });
       }
     }
 

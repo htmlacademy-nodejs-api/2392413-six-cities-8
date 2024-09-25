@@ -1,9 +1,8 @@
+import { getErrorMessage } from '#helpers/common.js';
+import { TSVFileWriter } from '#libs/file-writer/tsv-file-writer.js';
+import { TSVOfferGenerator } from '#libs/offer-generator/tsv-offer-generator.js';
+import { MockServerData } from '#types/mock-server-data.type.js';
 import got from 'got';
-
-import { getErrorMessage } from '../../shared/helpers/index.js';
-import { TSVFileWriter } from '../../shared/libs/file-writer/index.js';
-import { TSVOfferGenerator } from '../../shared/libs/offer-generator/index.js';
-import { MockServerData } from '../../shared/types/index.js';
 import { Command } from './command.interface.js';
 
 export class GenerateCommand implements Command {

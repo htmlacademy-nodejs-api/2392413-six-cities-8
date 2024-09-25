@@ -1,4 +1,8 @@
-import { City, GoodType, Location, OfferType, UserInfo } from './index.js';
+import { City } from './city.type.js';
+import { GoodType } from './good-type.type.js';
+import { Location } from './location.type.js';
+import { OfferType } from './offer-type.enum.js';
+import { User } from './user.type.js';
 
 export type Offer = {
   title: string;
@@ -12,7 +16,7 @@ export type Offer = {
   description: string;
   bedrooms: number;
   goods: GoodType[];
-  host: UserInfo;
+  host: User;
   images: string[];
   previewImage: string;
   maxAdults: number;

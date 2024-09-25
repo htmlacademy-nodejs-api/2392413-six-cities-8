@@ -1,12 +1,13 @@
-import dayjs from 'dayjs';
-
-import { Cities } from '../../const.js';
 import {
   generateRandomValue,
   getRandomItem,
   getRandomItems,
-} from '../../helpers/index.js';
-import { MockServerData, OfferType } from '../../types/index.js';
+  getUniqueRandomItems,
+} from '#helpers/common.js';
+import { Cities } from '#src/shared/const.js';
+import { MockServerData } from '#types/mock-server-data.type.js';
+import { OfferType } from '#types/offer-type.enum.js';
+import dayjs from 'dayjs';
 import { OfferGenerator } from './offer-generator.interface.js';
 
 const MIN_PRICE = 100;
@@ -24,6 +25,8 @@ const MAX_BEDROOMS = 8;
 
 const MIN_ADULTS = 1;
 const MAX_ADULTS = 10;
+
+const IMAGES_COUNT = 6;
 
 export class TSVOfferGenerator implements OfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
@@ -50,9 +53,10 @@ export class TSVOfferGenerator implements OfferGenerator {
     const bedrooms = generateRandomValue(MIN_BEDROOMS, MAX_BEDROOMS).toString();
     const goods = getRandomItems<string>(this.mockData.goods).join(';');
     const host = getRandomItem<string>(this.mockData.users);
-    const images = getRandomItems<string>(this.mockData.previewImages).join(
-      ';'
-    );
+    const images = getUniqueRandomItems<string>(
+      this.mockData.previewImages,
+      IMAGES_COUNT
+    ).join(';');
     const previewImage = getRandomItem<string>(this.mockData.previewImages);
     const maxAdults = generateRandomValue(MIN_ADULTS, MAX_ADULTS).toString();
     const createdDate = dayjs()
