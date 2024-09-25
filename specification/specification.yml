@@ -1,0 +1,405 @@
+openapi: 3.1.0
+info:
+  title: API сервер для демо-проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+tags:
+  - name: offers
+    description: Действия с объявлениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        '201':
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        '409':
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+
+      requestBody:
+        description: Информация для авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+        required: true
+
+      responses:
+        '200':
+          description: Пользователь авторизован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInfo'
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает информацию по авторизованному пользователю
+
+      responses:
+        '200':
+          description: Статус авторизации пользователя. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInfo'
+        '401':
+          description: Статус авторизации пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorInfo'
+
+  /users/logout:
+    delete:
+      tags:
+        - users
+      summary: Завершить сеанс пользователя
+      description: Завершает сеанс пользователя
+
+      parameters:
+        - in: header
+          name: X-Token
+          example: T482kjhsdkKJHJsjhgfeyue73
+          description: Токен пользователя
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '401':
+          description: Статус авторизации пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorInfo'
+
+  /offers/:
+    post:
+      tags:
+        - offers
+      summary: Создать новое предложение
+      description: Создание нового предложения
+
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+
+        required: true
+
+      responses:
+        '201':
+          description: Предложение успешно добавлено.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOffer'
+
+    get:
+      tags:
+        - offers
+      summary: Получить список предложений
+      description: Получение списка предложений по аренде
+
+  /offers/{offerId}:
+    parameters:
+      - in: path
+        name: offerId
+        example: adsduif874865fd
+        description: id предложения
+        schema:
+          type: string
+        required: true
+
+    post:
+      tags:
+        - offers
+      summary: Редактировать предложение
+      description: Редактирование предложения
+
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение
+      description: Удаление предложения
+
+    get:
+      tags:
+        - offers
+      summary: Получить детальную информацию о предложении
+      description: Получение детальной информации о предложении по аренде
+
+  /premium/{cityName}:
+    parameters:
+      - in: path
+        name: cityName
+        example: Berlin
+        description: Наименование города
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - offers
+      summary: Получить премиальные предложения города
+      description: Получение премиальных предложений по аренде города
+
+  /favorite:
+    get:
+      tags:
+        - offers
+      summary: Получить список избранных предложений
+      description: Получение списка избранных предложений по аренде
+    post:
+      tags:
+        - offers
+      summary: Добавить/удалить предложение в/из избранное
+      description: Добавление/удаление предложения в/из избранное
+
+  /comments/{offerId}:
+    parameters:
+      - in: path
+        name: offerId
+        example: adsduif874865fd
+        description: id предложения
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - comments
+      summary: Получить список комментариев предложения
+      description: Получение списка комментариев предложения по аренде
+
+    post:
+      tags:
+        - comments
+      summary: Добавить комментарий к предложению
+      description: Добавление комментария к предложению по аренде
+
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: Keks
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        password:
+          type: string
+          example: 123456
+
+        avatarUrl:
+          type: string
+          example: http://avatars.ru/avatar.png
+
+        isPro:
+          type: boolean
+          example: true
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarUrl:
+          type: string
+          example: http://avatars.ru/avatar.png
+
+        isPro:
+          type: boolean
+          example: true
+
+    loginUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        password:
+          type: string
+          example: 123456
+
+    userInfo:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarUrl:
+          type: string
+          example: http://avatars.ru/avatar.png
+
+        isPro:
+          type: boolean
+          example: true
+
+        token:
+          type: string
+          example: T482kjhsdkKJHJsjhgfeyue73
+
+    errorInfo:
+      type: object
+
+      properties:
+        errorType:
+          type: string
+          example: 'NO_AUTH'
+
+        errorMessage:
+          type: string
+          example: 'User is not authorized'
+
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          example: 42.23432
+        longitude:
+          type: number
+          example: 23.346329
+
+    City:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: 'Berlin'
+
+        location:
+          type: object
+          $ref: '#/components/schemas/Location'
+
+    createOffer:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: 'The Pondhouse - A Magical Place'
+
+        description:
+          type: string
+          example: 'I am happy to welcome you to my apartment in the city center! Three words: location, cosy and chic!'
+
+        createdDate:
+          type: string
+          example: '2024-05-08T14:13:56.569Z'
+
+        city:
+          type: object
+          $ref: '#/components/schemas/City'
+
+        previewImage:
+          type: string
+          example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
+
+        images:
+          type: string[]
+          example:
+            [
+              'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/2.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/3.jpg',
+            ]
+
+        isPremium:
+          type: boolean
+          example: true
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 3.2
+
+        type:
+          type: OfferType
+          example: 'hotel'
+
+        bedrooms:
+          type: number
+          example: 3
+
+        maxAdults:
+          type: number
+          example: 2
+
+        price:
+          type: number
+          example: 600
+
+        goods:
+          type: string[]
+          example: ['Breakfast', 'Air conditioning']
+
+        host:
+          type: object
+          $ref: '#/components/schemas/userInfo'
+
+        location:
+          type: object
+          $ref: '#/components/schemas/Location'
