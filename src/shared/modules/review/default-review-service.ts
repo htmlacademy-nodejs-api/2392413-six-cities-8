@@ -25,6 +25,6 @@ export class DefaultReviewService implements ReviewService {
   }
 
   findByOfferId(offerId: string): Promise<ReviewEntityDocument | null> {
-    return this.reviewModel.findById(offerId).exec();
+    return this.reviewModel.findById(offerId).populate(['userId']).exec();
   }
 }
