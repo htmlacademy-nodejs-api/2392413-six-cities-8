@@ -10,7 +10,7 @@ info:
 tags:
   - name: offers
     description: Действия с объявлениями.
-  - name: comments
+  - name: reviews
     description: Действия с комментариями.
   - name: users
     description: Действия с пользователем.
@@ -194,7 +194,7 @@ paths:
       summary: Добавить/удалить предложение в/из избранное
       description: Добавление/удаление предложения в/из избранное
 
-  /comments/{offerId}:
+  /reviews/{offerId}:
     parameters:
       - in: path
         name: offerId
@@ -205,13 +205,13 @@ paths:
         required: true
     get:
       tags:
-        - comments
+        - reviews
       summary: Получить список комментариев предложения
       description: Получение списка комментариев предложения по аренде
 
     post:
       tags:
-        - comments
+        - reviews
       summary: Добавить комментарий к предложению
       description: Добавление комментария к предложению по аренде
 
