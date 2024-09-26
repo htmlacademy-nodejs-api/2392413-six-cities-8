@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: API сервер для демо-проекта «Шесть городов».
   description: |-
@@ -138,6 +138,14 @@ paths:
         - offers
       summary: Получить список предложений
       description: Получение списка предложений по аренде
+
+      responses:
+        '201':
+          description: Список предложений получен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOffer'
 
   /offers/{offerId}:
     parameters:
@@ -356,7 +364,9 @@ components:
           example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
 
         images:
-          type: string[]
+          type: array
+          items:
+            type: string
           example:
             [
               'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
@@ -377,7 +387,7 @@ components:
           example: 3.2
 
         type:
-          type: OfferType
+          type: string
           example: 'hotel'
 
         bedrooms:
@@ -393,7 +403,9 @@ components:
           example: 600
 
         goods:
-          type: string[]
+          type: array
+          items:
+            type: string
           example: ['Breakfast', 'Air conditioning']
 
         host:
