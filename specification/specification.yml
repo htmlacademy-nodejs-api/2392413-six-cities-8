@@ -28,7 +28,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createUser'
+              $ref: '#/components/schemas/CreateUser'
         required: true
 
       responses:
@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/User'
 
         '409':
           description: Пользователь с таким email уже существует.
@@ -54,7 +54,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/loginUser'
+              $ref: '#/components/schemas/LoginUser'
         required: true
 
       responses:
@@ -63,7 +63,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/userInfo'
+                $ref: '#/components/schemas/UserInfo'
 
     get:
       tags:
@@ -77,13 +77,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/userInfo'
+                $ref: '#/components/schemas/UserInfo'
         '401':
           description: Статус авторизации пользователя.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorInfo'
+                $ref: '#/components/schemas/ErrorInfo'
 
   /users/logout:
     delete:
@@ -107,7 +107,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorInfo'
+                $ref: '#/components/schemas/ErrorInfo'
 
   /offers/:
     post:
@@ -121,7 +121,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createOfferDTO'
+              $ref: '#/components/schemas/CreateOfferDTO'
 
         required: true
 
@@ -277,11 +277,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReviewEntity'
+                $ref: '#/components/schemas/CreateReviewDto'
 
 components:
   schemas:
-    createUser:
+    CreateUser:
       type: object
 
       properties:
@@ -305,7 +305,7 @@ components:
           type: boolean
           example: true
 
-    user:
+    User:
       type: object
 
       properties:
@@ -325,7 +325,7 @@ components:
           type: boolean
           example: true
 
-    loginUser:
+    LoginUser:
       type: object
 
       properties:
@@ -337,7 +337,7 @@ components:
           type: string
           example: 123456
 
-    userInfo:
+    UserInfo:
       type: object
 
       properties:
@@ -361,7 +361,7 @@ components:
           type: string
           example: T482kjhsdkKJHJsjhgfeyue73
 
-    errorInfo:
+    ErrorInfo:
       type: object
 
       properties:
@@ -395,7 +395,7 @@ components:
           type: object
           $ref: '#/components/schemas/Location'
 
-    createOfferDTO:
+    CreateOfferDTO:
       type: object
 
       properties:
@@ -472,7 +472,7 @@ components:
           type: object
           $ref: '#/components/schemas/Location'
 
-    updateOfferDTO:
+    UpdateOfferDTO:
       type: object
 
       properties:
@@ -616,13 +616,13 @@ components:
 
         host:
           type: object
-          $ref: '#/components/schemas/userInfo'
+          $ref: '#/components/schemas/UserInfo'
 
         location:
           type: object
           $ref: '#/components/schemas/Location'
 
-    ReviewEntity:
+    CreateReviewDto:
       type: object
 
       properties:
@@ -632,6 +632,23 @@ components:
         userId:
           type: string
           example: cq3wbo78c8325cb26378
+        comment:
+          type: string
+          example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
+        rating:
+          type: number
+          example: 3
+
+    ReviewEntity:
+      type: object
+
+      properties:
+        date:
+          type: string
+          example: '2024-05-08T14:13:56.569Z'
+        user:
+          type: object
+          $ref: '#/components/schemas/UserInfo'
         comment:
           type: string
           example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
