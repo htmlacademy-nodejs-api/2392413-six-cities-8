@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: API сервер для демо-проекта «Шесть городов».
   description: |-
@@ -10,7 +10,7 @@ info:
 tags:
   - name: offers
     description: Действия с объявлениями.
-  - name: comments
+  - name: reviews
     description: Действия с комментариями.
   - name: users
     description: Действия с пользователем.
@@ -28,7 +28,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createUser'
+              $ref: '#/components/schemas/CreateUser'
         required: true
 
       responses:
@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/User'
 
         '409':
           description: Пользователь с таким email уже существует.
@@ -54,7 +54,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/loginUser'
+              $ref: '#/components/schemas/LoginUser'
         required: true
 
       responses:
@@ -63,7 +63,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/userInfo'
+                $ref: '#/components/schemas/UserInfo'
 
     get:
       tags:
@@ -73,17 +73,17 @@ paths:
 
       responses:
         '200':
-          description: Статус авторизации пользователя. Объект пользователя.
+          description: Статус авторизации пользователя
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/userInfo'
+                $ref: '#/components/schemas/UserInfo'
         '401':
-          description: Статус авторизации пользователя.
+          description: Пользователь не авторизован
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorInfo'
+                $ref: '#/components/schemas/ErrorInfo'
 
   /users/logout:
     delete:
@@ -107,7 +107,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorInfo'
+                $ref: '#/components/schemas/ErrorInfo'
 
   /offers/:
     post:
@@ -121,7 +121,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createOffer'
+              $ref: '#/components/schemas/CreateOfferDTO'
 
         required: true
 
@@ -131,13 +131,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/createOffer'
+                $ref: '#/components/schemas/OfferEntity'
 
     get:
       tags:
         - offers
       summary: Получить список предложений
       description: Получение списка предложений по аренде
+
+      responses:
+        '201':
+          description: Список предложений получен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
 
   /offers/{offerId}:
     parameters:
@@ -154,18 +162,39 @@ paths:
         - offers
       summary: Редактировать предложение
       description: Редактирование предложения
+      responses:
+        '201':
+          description: Предложение отредактировано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
 
     delete:
       tags:
         - offers
       summary: Удалить предложение
       description: Удаление предложения
+      responses:
+        '201':
+          description: Предложение удалено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
 
     get:
       tags:
         - offers
       summary: Получить детальную информацию о предложении
       description: Получение детальной информации о предложении по аренде
+      responses:
+        '201':
+          description: Получена детальная информация о предложении
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
 
   /premium/{cityName}:
     parameters:
@@ -181,6 +210,13 @@ paths:
         - offers
       summary: Получить премиальные предложения города
       description: Получение премиальных предложений по аренде города
+      responses:
+        '201':
+          description: Получены премиальные предложения города
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
 
   /favorite:
     get:
@@ -188,13 +224,27 @@ paths:
         - offers
       summary: Получить список избранных предложений
       description: Получение списка избранных предложений по аренде
+      responses:
+        '201':
+          description: Получены избранные предложения города
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
     post:
       tags:
         - offers
       summary: Добавить/удалить предложение в/из избранное
       description: Добавление/удаление предложения в/из избранное
+      responses:
+        '201':
+          description: Флаг избранного изменен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
 
-  /comments/{offerId}:
+  /reviews/{offerId}:
     parameters:
       - in: path
         name: offerId
@@ -205,19 +255,33 @@ paths:
         required: true
     get:
       tags:
-        - comments
+        - reviews
       summary: Получить список комментариев предложения
       description: Получение списка комментариев предложения по аренде
+      responses:
+        '201':
+          description: Флаг избранного изменен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewEntity'
 
     post:
       tags:
-        - comments
+        - reviews
       summary: Добавить комментарий к предложению
       description: Добавление комментария к предложению по аренде
+      responses:
+        '201':
+          description: Флаг избранного изменен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReviewDto'
 
 components:
   schemas:
-    createUser:
+    CreateUser:
       type: object
 
       properties:
@@ -241,7 +305,7 @@ components:
           type: boolean
           example: true
 
-    user:
+    User:
       type: object
 
       properties:
@@ -261,7 +325,7 @@ components:
           type: boolean
           example: true
 
-    loginUser:
+    LoginUser:
       type: object
 
       properties:
@@ -273,7 +337,7 @@ components:
           type: string
           example: 123456
 
-    userInfo:
+    UserInfo:
       type: object
 
       properties:
@@ -297,7 +361,7 @@ components:
           type: string
           example: T482kjhsdkKJHJsjhgfeyue73
 
-    errorInfo:
+    ErrorInfo:
       type: object
 
       properties:
@@ -331,7 +395,7 @@ components:
           type: object
           $ref: '#/components/schemas/Location'
 
-    createOffer:
+    CreateOfferDTO:
       type: object
 
       properties:
@@ -356,7 +420,9 @@ components:
           example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
 
         images:
-          type: string[]
+          type: array
+          items:
+            type: string
           example:
             [
               'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
@@ -377,7 +443,7 @@ components:
           example: 3.2
 
         type:
-          type: OfferType
+          type: string
           example: 'hotel'
 
         bedrooms:
@@ -393,13 +459,199 @@ components:
           example: 600
 
         goods:
-          type: string[]
+          type: array
+          items:
+            type: string
           example: ['Breakfast', 'Air conditioning']
 
-        host:
-          type: object
-          $ref: '#/components/schemas/userInfo'
+        userId:
+          type: string
+          example: cq3wbo78c8325cb26378
 
         location:
           type: object
           $ref: '#/components/schemas/Location'
+
+    UpdateOfferDTO:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: 'The Pondhouse - A Magical Place'
+
+        description:
+          type: string
+          example: 'I am happy to welcome you to my apartment in the city center! Three words: location, cosy and chic!'
+
+        createdDate:
+          type: string
+          example: '2024-05-08T14:13:56.569Z'
+
+        city:
+          type: object
+          $ref: '#/components/schemas/City'
+
+        previewImage:
+          type: string
+          example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
+
+        images:
+          type: array
+          items:
+            type: string
+          example:
+            [
+              'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/2.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/3.jpg',
+            ]
+
+        isPremium:
+          type: boolean
+          example: true
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 3.2
+
+        type:
+          type: string
+          example: 'hotel'
+
+        bedrooms:
+          type: number
+          example: 3
+
+        maxAdults:
+          type: number
+          example: 2
+
+        price:
+          type: number
+          example: 600
+
+        goods:
+          type: array
+          items:
+            type: string
+          example: ['Breakfast', 'Air conditioning']
+
+        location:
+          type: object
+          $ref: '#/components/schemas/Location'
+
+    OfferEntity:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: 'The Pondhouse - A Magical Place'
+
+        description:
+          type: string
+          example: 'I am happy to welcome you to my apartment in the city center! Three words: location, cosy and chic!'
+
+        createdDate:
+          type: string
+          example: '2024-05-08T14:13:56.569Z'
+
+        city:
+          type: object
+          $ref: '#/components/schemas/City'
+
+        previewImage:
+          type: string
+          example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
+
+        images:
+          type: array
+          items:
+            type: string
+          example:
+            [
+              'https://16.design.htmlacademy.pro/static/hotel/1.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/2.jpg',
+              'https://16.design.htmlacademy.pro/static/hotel/3.jpg',
+            ]
+
+        isPremium:
+          type: boolean
+          example: true
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 3.2
+
+        type:
+          type: string
+          example: 'hotel'
+
+        bedrooms:
+          type: number
+          example: 3
+
+        maxAdults:
+          type: number
+          example: 2
+
+        price:
+          type: number
+          example: 600
+
+        goods:
+          type: array
+          items:
+            type: string
+          example: ['Breakfast', 'Air conditioning']
+
+        host:
+          type: object
+          $ref: '#/components/schemas/User'
+
+        location:
+          type: object
+          $ref: '#/components/schemas/Location'
+
+    CreateReviewDto:
+      type: object
+
+      properties:
+        date:
+          type: string
+          example: '2024-05-08T14:13:56.569Z'
+        userId:
+          type: string
+          example: cq3wbo78c8325cb26378
+        comment:
+          type: string
+          example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
+        rating:
+          type: number
+          example: 3
+
+    ReviewEntity:
+      type: object
+
+      properties:
+        date:
+          type: string
+          example: '2024-05-08T14:13:56.569Z'
+        user:
+          type: object
+          $ref: '#/components/schemas/User'
+        comment:
+          type: string
+          example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
+        rating:
+          type: number
+          example: 3
