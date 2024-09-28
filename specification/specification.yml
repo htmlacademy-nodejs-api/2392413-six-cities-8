@@ -73,13 +73,13 @@ paths:
 
       responses:
         '200':
-          description: Статус авторизации пользователя. Объект пользователя.
+          description: Статус авторизации пользователя
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserInfo'
         '401':
-          description: Статус авторизации пользователя.
+          description: Пользователь не авторизован
           content:
             application/json:
               schema:
@@ -616,7 +616,7 @@ components:
 
         host:
           type: object
-          $ref: '#/components/schemas/UserInfo'
+          $ref: '#/components/schemas/User'
 
         location:
           type: object
@@ -648,7 +648,7 @@ components:
           example: '2024-05-08T14:13:56.569Z'
         user:
           type: object
-          $ref: '#/components/schemas/UserInfo'
+          $ref: '#/components/schemas/User'
         comment:
           type: string
           example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
