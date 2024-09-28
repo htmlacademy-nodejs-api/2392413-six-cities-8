@@ -56,7 +56,14 @@ export class DefaultOfferService implements OfferService {
     recordCount: number = DEFAULT_OFFERS_LIMIT
   ): Promise<OfferEntityDocument[]> {
     return this.offerModel
-      .find()
+      .find([
+        {
+          $addFields: {
+            id: { $toString: '$_id' },
+            reviewCount: { $size: '$reviews' },
+          },
+        },
+      ])
       .sort({ createdAt: SortType.Down })
       .limit(recordCount)
       .populate(['userId'])
