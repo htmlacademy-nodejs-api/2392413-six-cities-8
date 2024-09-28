@@ -3,12 +3,14 @@ import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
+import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';
 import {
   OfferEntityDocument,
   OfferService,
 } from './offer-service.interface.js';
 
+const DEFAULT_OFFERS_LIMIT = 60;
 @injectable()
 export class DefaultOfferService implements OfferService {
   constructor(
@@ -24,7 +26,37 @@ export class DefaultOfferService implements OfferService {
     return result;
   }
 
+  async updateById(
+    offerId: string,
+    dto: UpdateOfferDto
+  ): Promise<OfferEntityDocument | null> {
+    const result = await this.offerModel.findByIdAndUpdate(offerId, dto, {
+      new: true,
+    });
+    this.logger.info(`Offer updated: ${dto.title}`);
+
+    return result;
+  }
+
+  async deleteById(offerId: string): Promise<OfferEntityDocument | null> {
+    const result = await this.offerModel.findByIdAndDelete(offerId);
+    if (result) {
+      this.logger.info(`Offer deleted: ${result.title}`);
+    }
+
+    return result;
+  }
+
   findById(offerId: string): Promise<OfferEntityDocument | null> {
     return this.offerModel.findById(offerId).populate(['userId']).exec();
+  }
+
+  find(): Promise<OfferEntityDocument[]> {
+    return this.offerModel
+      .find()
+      .sort({})
+      .limit(DEFAULT_OFFERS_LIMIT)
+      .populate(['userId'])
+      .exec();
   }
 }
