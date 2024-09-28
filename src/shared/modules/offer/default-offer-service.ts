@@ -1,4 +1,5 @@
 import { Logger } from '#libs/logger/logger.interface.js';
+import { SortType } from '#src/shared/types/sort-type.enum.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
@@ -51,11 +52,13 @@ export class DefaultOfferService implements OfferService {
     return this.offerModel.findById(offerId).populate(['userId']).exec();
   }
 
-  find(): Promise<OfferEntityDocument[]> {
+  find(
+    recordCount: number = DEFAULT_OFFERS_LIMIT
+  ): Promise<OfferEntityDocument[]> {
     return this.offerModel
       .find()
-      .sort({})
-      .limit(DEFAULT_OFFERS_LIMIT)
+      .sort({ createdAt: SortType.Down })
+      .limit(recordCount)
       .populate(['userId'])
       .exec();
   }
