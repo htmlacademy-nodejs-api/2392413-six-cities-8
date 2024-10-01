@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { RestApplication } from './rest/rest-application.js';
 import { createRestApplicationContainer } from './rest/rest-container.js';
 import { createOfferContainer } from './shared/modules/offer/offer-container.js';
+import { createReviewContainer } from './shared/modules/review/review-container.js';
 import { createUserContainer } from './shared/modules/user/user-container.js';
 import { Component } from './shared/types/component.enum.js';
 
@@ -10,7 +11,8 @@ async function bootstrap() {
   const appContainer = Container.merge(
     createRestApplicationContainer(),
     createUserContainer(),
-    createOfferContainer()
+    createOfferContainer(),
+    createReviewContainer()
   );
 
   const application = appContainer.get<RestApplication>(
