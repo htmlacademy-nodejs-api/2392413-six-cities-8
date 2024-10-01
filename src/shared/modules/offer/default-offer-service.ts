@@ -3,6 +3,7 @@ import { SortType } from '#src/shared/types/sort-type.enum.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
+import { ReviewEntity } from '../review/review-entity.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';
@@ -17,7 +18,9 @@ export class DefaultOfferService implements OfferService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.OfferModel)
-    private readonly offerModel: types.ModelType<OfferEntity>
+    private readonly offerModel: types.ModelType<OfferEntity>,
+    @inject(Component.ReviewModel)
+    private readonly ReviewModel: types.ModelType<ReviewEntity>
   ) {}
 
   async create(dto: CreateOfferDto): Promise<OfferEntityDocument> {
@@ -98,6 +101,16 @@ export class DefaultOfferService implements OfferService {
         ],
         { new: true }
       )
+      .exec();
+  }
+
+  updateRating(offerId: string): Promise<OfferEntityDocument | null> {
+    const rating = this.ReviewModel.aggregate([
+      { $match: { offerId } },
+      { $group: { rating: { $avg: '$rating' } } },
+    ]);
+    return this.offerModel
+      .findByIdAndUpdate(offerId, { rating: rating[0].rating }, { new: true })
       .exec();
   }
 }
