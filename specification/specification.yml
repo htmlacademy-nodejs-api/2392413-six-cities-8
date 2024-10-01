@@ -231,6 +231,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
+
+  /favorite/{offerId}/{status}:
+    parameters:
+      - in: path
+        name: offerId
+        example: adsduif874865fd
+        description: id предложения
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: status
+        example: 1
+        description: 1 добавляет предложение в избранное, а 0 удаляет
+        schema:
+          type: number
+        required: true
     post:
       tags:
         - offers
