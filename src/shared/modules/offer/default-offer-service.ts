@@ -49,7 +49,17 @@ export class DefaultOfferService implements OfferService {
   }
 
   findById(offerId: string): Promise<OfferEntityDocument | null> {
-    return this.offerModel.findById(offerId).populate(['userId']).exec();
+    return this.offerModel
+      .findById(offerId, [
+        {
+          $addFields: {
+            id: { $toString: '$_id' },
+            reviewCount: { $size: '$reviews' },
+          },
+        },
+      ])
+      .populate(['userId'])
+      .exec();
   }
 
   find(
