@@ -79,4 +79,25 @@ export class DefaultOfferService implements OfferService {
       .populate(['userId'])
       .exec();
   }
+
+  updateFavorite(
+    offerId: string,
+    isFavorite: number
+  ): Promise<OfferEntityDocument | null> {
+    return this.offerModel
+      .findByIdAndUpdate(
+        offerId,
+        [
+          { isFavorite: isFavorite === 1 },
+          {
+            $addFields: {
+              id: { $toString: '$_id' },
+              reviewCount: { $size: '$reviews' },
+            },
+          },
+        ],
+        { new: true }
+      )
+      .exec();
+  }
 }

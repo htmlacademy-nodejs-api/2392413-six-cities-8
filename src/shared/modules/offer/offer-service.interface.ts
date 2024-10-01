@@ -14,4 +14,8 @@ export interface OfferService {
   deleteById(offerId: string): Promise<OfferEntityDocument | null>;
   findById(offerId: string): Promise<OfferEntityDocument | null>;
   find(): Promise<OfferEntityDocument[]>;
+  updateFavorite(
+    offerId: string,
+    isFavorite: number
+  ): Promise<OfferEntityDocument | null>;
 }
