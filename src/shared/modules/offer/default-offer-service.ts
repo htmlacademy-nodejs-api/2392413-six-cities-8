@@ -51,7 +51,7 @@ export class DefaultOfferService implements OfferService {
     return result;
   }
 
-  findById(offerId: string): Promise<OfferEntityDocument | null> {
+  async findById(offerId: string): Promise<OfferEntityDocument | null> {
     return this.offerModel
       .findById(offerId, [
         {
@@ -65,7 +65,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  find(
+  async find(
     recordCount: number = DEFAULT_OFFERS_LIMIT
   ): Promise<OfferEntityDocument[]> {
     return this.offerModel
@@ -83,7 +83,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  updateFavorite(
+  async updateFavorite(
     offerId: string,
     isFavorite: number
   ): Promise<OfferEntityDocument | null> {
@@ -104,13 +104,14 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  updateRating(offerId: string): Promise<OfferEntityDocument | null> {
-    const rating = this.ReviewModel.aggregate([
+  async updateRating(offerId: string): Promise<OfferEntityDocument | null> {
+    const [{ averageRating }] = await this.ReviewModel.aggregate([
       { $match: { offerId } },
-      { $group: { rating: { $avg: '$rating' } } },
+      { $group: { _id: null, averageRating: { $avg: '$rating' } } },
     ]);
+
     return this.offerModel
-      .findByIdAndUpdate(offerId, { rating: rating[0].rating }, { new: true })
+      .findByIdAndUpdate(offerId, { rating: averageRating }, { new: true })
       .exec();
   }
 }

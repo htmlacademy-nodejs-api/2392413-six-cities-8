@@ -18,4 +18,5 @@ export interface OfferService {
     offerId: string,
     isFavorite: number
   ): Promise<OfferEntityDocument | null>;
+  updateRating(offerId: string): Promise<OfferEntityDocument | null>;
 }
