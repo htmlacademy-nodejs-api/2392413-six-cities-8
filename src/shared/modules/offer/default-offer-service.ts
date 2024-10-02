@@ -105,6 +105,7 @@ export class DefaultOfferService implements OfferService {
   }
 
   async updateRating(offerId: string): Promise<OfferEntityDocument | null> {
+    ///// Очень сомневаюсь в правильности
     const [{ averageRating }] = await this.ReviewModel.aggregate([
       { $match: { offerId } },
       { $group: { _id: null, averageRating: { $avg: '$rating' } } },
