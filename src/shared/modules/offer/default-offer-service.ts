@@ -1,4 +1,5 @@
 import { Logger } from '#libs/logger/logger.interface.js';
+import { CityName } from '#src/shared/types/city-name.enum.js';
 import { SortType } from '#src/shared/types/sort-type.enum.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
@@ -13,6 +14,7 @@ import {
 } from './offer-service.interface.js';
 
 const DEFAULT_OFFERS_LIMIT = 60;
+const PREMIUM_OFFERS_LIMIT = 3;
 @injectable()
 export class DefaultOfferService implements OfferService {
   constructor(
@@ -61,6 +63,30 @@ export class DefaultOfferService implements OfferService {
           },
         },
       ])
+      .populate(['userId'])
+      .exec();
+  }
+
+  async findPremiumByCity(
+    cityName: CityName
+  ): Promise<OfferEntityDocument[] | null> {
+    return this.offerModel
+      .find(
+        {
+          city: cityName,
+          isPremium: true,
+        },
+        [
+          {
+            $addFields: {
+              id: { $toString: '$_id' },
+              reviewCount: { $size: '$reviews' },
+            },
+          },
+        ]
+      )
+      .sort({ createdAt: SortType.Down })
+      .limit(PREMIUM_OFFERS_LIMIT)
       .populate(['userId'])
       .exec();
   }
