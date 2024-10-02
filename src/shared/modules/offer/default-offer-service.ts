@@ -112,7 +112,20 @@ export class DefaultOfferService implements OfferService {
     ]);
 
     return this.offerModel
-      .findByIdAndUpdate(offerId, { rating: averageRating }, { new: true })
+      .findByIdAndUpdate(
+        offerId,
+        [
+          { rating: averageRating },
+          {
+            $addFields: {
+              id: { $toString: '$_id' },
+              reviewCount: { $size: '$reviews' },
+            },
+          },
+        ],
+        { new: true }
+      )
+      .populate(['userId'])
       .exec();
   }
 }
