@@ -22,7 +22,7 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.OfferModel)
     private readonly offerModel: types.ModelType<OfferEntity>,
     @inject(Component.ReviewModel)
-    private readonly ReviewModel: types.ModelType<ReviewEntity>
+    private readonly reviewModel: types.ModelType<ReviewEntity>
   ) {}
 
   async create(dto: CreateOfferDto): Promise<OfferEntityDocument> {
@@ -132,7 +132,7 @@ export class DefaultOfferService implements OfferService {
 
   async updateRating(offerId: string): Promise<OfferEntityDocument | null> {
     ///// Очень сомневаюсь в правильности
-    const [{ averageRating }] = await this.ReviewModel.aggregate([
+    const [{ averageRating }] = await this.reviewModel.aggregate([
       { $match: { offerId } },
       { $group: { _id: null, averageRating: { $avg: '$rating' } } },
     ]);
