@@ -7,6 +7,7 @@ import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { CreateUserDto } from './dto/create-user-dto.js';
+import { LoginUserDto } from './dto/login-user-dto.js';
 import { UserService } from './user-service.interface.js';
 
 @injectable()
@@ -52,13 +53,17 @@ export class UserController extends BaseController {
   }
 
   public authorize(req: Request, res: Response): void {
-    // Код обработчика
+    const dto: LoginUserDto = req.body;
+    const user = this.userService.login(dto, this.config.get('SALT'));
+    this.ok(res, user);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public getState(req: Request, res: Response): void {
     // Код обработчика
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public logout(req: Request, res: Response): void {
     // Код обработчика
   }
