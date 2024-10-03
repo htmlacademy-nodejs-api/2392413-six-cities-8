@@ -44,7 +44,7 @@ export class RestApplication {
     await this.initDb();
     this.logger.info('Init database completed');
 
-    this.logger.info('Try to init server…');
+    this.logger.info('Try to init server...');
     await this._initServer();
     this.logger.info(
       `🚀 Server started on http://localhost:${this.config.get('PORT')}`
