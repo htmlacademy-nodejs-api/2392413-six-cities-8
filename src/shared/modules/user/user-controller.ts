@@ -1,15 +1,20 @@
+import { Config } from '#src/shared/libs/config/config.interface.js';
+import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
+import { CreateUserDto } from './dto/create-user-dto.js';
+import { UserService } from './user-service.interface.js';
 
 @injectable()
 export class UserController extends BaseController {
   constructor(
-    @inject(Component.Logger)
-    protected readonly logger: Logger
+    @inject(Component.Logger) protected readonly logger: Logger,
+    @inject(Component.UserService) protected readonly userService: UserService,
+    @inject(Component.Config) private readonly config: Config<RestSchema>
   ) {
     super(logger);
     this.logger.info('Register routes for CategoryController...');
@@ -40,7 +45,10 @@ export class UserController extends BaseController {
   }
 
   public register(req: Request, res: Response): void {
-    // Код обработчика
+    const dto: CreateUserDto = req.body;
+    const salt = this.config.get('SALT');
+    const user = this.userService.create(dto, salt);
+    this.created(res, user);
   }
 
   public authorize(req: Request, res: Response): void {
