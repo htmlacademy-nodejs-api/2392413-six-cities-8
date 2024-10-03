@@ -65,6 +65,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserInfo'
 
+        '401':
+          description: Пользователь авторизован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInfo'
+
     get:
       tags:
         - users

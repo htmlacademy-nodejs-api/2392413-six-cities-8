@@ -61,12 +61,12 @@ export class UserController extends BaseController {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public getState(req: Request, res: Response): void {
+  public getState(_req: Request, _res: Response): void {
     // Код обработчика
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public logout(req: Request, res: Response): void {
+  public logout(_req: Request, _res: Response): void {
     // Код обработчика
   }
 }
