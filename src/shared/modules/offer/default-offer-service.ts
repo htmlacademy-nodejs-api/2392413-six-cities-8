@@ -1,10 +1,10 @@
 import { Logger } from '#libs/logger/logger.interface.js';
+import { ReviewEntity } from '#modules/review/review-entity.js';
 import { CityName } from '#src/shared/types/city-name.enum.js';
 import { SortType } from '#src/shared/types/sort-type.enum.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
-import { ReviewEntity } from '../review/review-entity.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';
