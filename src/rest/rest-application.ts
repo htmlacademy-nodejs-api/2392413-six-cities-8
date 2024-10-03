@@ -3,6 +3,7 @@ import { Config } from '#libs/config/config.interface.js';
 import { RestSchema } from '#libs/config/rest-schema.js';
 import { DatabaseClient } from '#libs/database-client/database-client.interface.js';
 import { Logger } from '#libs/logger/logger.interface.js';
+import { Controller } from '#src/shared/libs/rest/controller/controller.interface.js';
 import { Component } from '#types/component.enum.js';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
@@ -14,7 +15,9 @@ export class RestApplication {
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.Config) private readonly config: Config<RestSchema>,
     @inject(Component.DatabaseClient)
-    private readonly databaseClient: DatabaseClient
+    private readonly databaseClient: DatabaseClient,
+    @inject(Component.UserController)
+    private readonly userController: Controller
   ) {
     this.server = express();
   }
@@ -36,6 +39,10 @@ export class RestApplication {
     this.server.listen(port);
   }
 
+  private async _initControllers() {
+    this.server.use('/users', this.userController.router);
+  }
+
   public async init() {
     this.logger.info('Application initialization');
     this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
@@ -43,6 +50,10 @@ export class RestApplication {
     this.logger.info('Init database...');
     await this.initDb();
     this.logger.info('Init database completed');
+
+    this.logger.info('Init controllers');
+    await this._initControllers();
+    this.logger.info('Controller initialization completed');
 
     this.logger.info('Try to init server...');
     await this._initServer();

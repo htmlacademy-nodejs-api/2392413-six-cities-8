@@ -15,25 +15,25 @@ export class UserController extends BaseController {
     this.logger.info('Register routes for CategoryController...');
 
     this.addRoute({
-      path: '/users/register',
+      path: '/register',
       method: HttpMethod.Post,
       handler: this.register,
     });
 
     this.addRoute({
-      path: '/users/login',
+      path: '/login',
       method: HttpMethod.Post,
       handler: this.authorize,
     });
 
     this.addRoute({
-      path: '/users/login',
+      path: '/login',
       method: HttpMethod.Get,
       handler: this.getState,
     });
 
     this.addRoute({
-      path: '/users/logout',
+      path: '/logout',
       method: HttpMethod.Delete,
       handler: this.logout,
     });
