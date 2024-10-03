@@ -12,12 +12,15 @@ import { UserService } from './user-service.interface.js';
 
 @injectable()
 export class UserController extends BaseController {
+  salt: string;
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.UserService) protected readonly userService: UserService,
     @inject(Component.Config) private readonly config: Config<RestSchema>
   ) {
     super(logger);
+    this.salt = this.config.get('SALT');
+
     this.logger.info('Register routes for CategoryController...');
 
     this.addRoute({
@@ -47,14 +50,13 @@ export class UserController extends BaseController {
 
   public register(req: Request, res: Response): void {
     const dto: CreateUserDto = req.body;
-    const salt = this.config.get('SALT');
-    const user = this.userService.create(dto, salt);
+    const user = this.userService.create(dto, this.salt);
     this.created(res, user);
   }
 
   public authorize(req: Request, res: Response): void {
     const dto: LoginUserDto = req.body;
-    const user = this.userService.login(dto, this.config.get('SALT'));
+    const user = this.userService.login(dto, this.salt);
     this.ok(res, user);
   }
 
