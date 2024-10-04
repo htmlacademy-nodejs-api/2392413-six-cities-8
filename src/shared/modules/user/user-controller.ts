@@ -11,7 +11,7 @@ import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateUserRequest } from './create-user-request.type.js';
 import { CreateUserDto } from './dto/create-user-dto.js';
-import { LoginUserDto } from './dto/login-user-dto.js';
+import { LoginUserRequest } from './login-user-request.type.js';
 import { UserRdo } from './rdo/user-rdo.js';
 import { UserService } from './user-service.interface.js';
 
@@ -69,21 +69,21 @@ export class UserController extends BaseController {
   }
 
   public async authorize(req: Request, res: Response): Promise<void> {
-    const dto: LoginUserDto = req.body;
-    const existedUser = await this.userService.findByEmail(dto.email);
+    const { body }: LoginUserRequest = req;
+    const existedUser = await this.userService.findByEmail(body.email);
 
     if (
       !existedUser ||
-      (existedUser && !existedUser.isValidPassword(dto.password, this.salt))
+      (existedUser && !existedUser.isValidPassword(body.password, this.salt))
     ) {
-      const errorMessage = new Error('Invalid username or password');
-      this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {
-        error: errorMessage.message,
-      });
-      return this.logger.error(errorMessage.message, errorMessage);
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Invalid username or password',
+        'UserController'
+      );
     }
 
-    const user = await this.userService.login(dto);
+    const user = await this.userService.login(body);
     this.ok(res, user);
   }
 
