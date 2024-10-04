@@ -1,3 +1,4 @@
+import { fillDTO } from '#src/shared/helpers/common.js';
 import { Config } from '#src/shared/libs/config/config.interface.js';
 import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
@@ -8,6 +9,7 @@ import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { CreateUserDto } from './dto/create-user-dto.js';
 import { LoginUserDto } from './dto/login-user-dto.js';
+import { UserRdo } from './rdo/user-rdo.js';
 import { UserService } from './user-service.interface.js';
 
 @injectable()
@@ -49,13 +51,11 @@ export class UserController extends BaseController {
   }
 
   public async register(req: Request, res: Response): Promise<void> {
-    console.log(req.body);
-
     const dto: CreateUserDto = req.body;
     const user = await this.userService.create(dto, this.salt);
-    console.log(user);
-
-    this.created(res, user);
+    const responseData = fillDTO(UserRdo, user);
+    console.log(responseData);
+    this.created(res, responseData);
   }
 
   public async authorize(req: Request, res: Response): Promise<void> {
