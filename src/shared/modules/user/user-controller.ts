@@ -49,6 +49,8 @@ export class UserController extends BaseController {
   }
 
   public register(req: Request, res: Response): void {
+    console.log(req.body);
+
     const dto: CreateUserDto = req.body;
     const user = this.userService.create(dto, this.salt);
     this.created(res, user);
