@@ -8,6 +8,7 @@ import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
+import { CreateUserRequest } from './create-user-request.type.js';
 import { CreateUserDto } from './dto/create-user-dto.js';
 import { LoginUserDto } from './dto/login-user-dto.js';
 import { UserRdo } from './rdo/user-rdo.js';
@@ -51,7 +52,8 @@ export class UserController extends BaseController {
     });
   }
 
-  public async register(req: Request, res: Response): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async register(req: CreateUserRequest, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
 
     const existedUser = await this.userService.findByEmail(dto.email);
