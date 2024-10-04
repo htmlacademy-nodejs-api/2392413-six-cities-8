@@ -62,10 +62,10 @@ export class UserController extends BaseController {
       this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {
         error: errorMessage.message,
       });
+      return this.logger.error(errorMessage.message, errorMessage);
     }
     const user = await this.userService.create(dto, this.salt);
-    const responseData = fillDTO(UserRdo, user);
-    this.created(res, responseData);
+    this.created(res, fillDTO(UserRdo, user));
   }
 
   public async authorize(req: Request, res: Response): Promise<void> {
