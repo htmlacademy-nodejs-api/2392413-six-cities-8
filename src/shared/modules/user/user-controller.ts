@@ -6,6 +6,7 @@ import { BaseController } from '#src/shared/libs/rest/controller/base-controller
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateUserDto } from './dto/create-user-dto.js';
 import { LoginUserDto } from './dto/login-user-dto.js';
@@ -52,9 +53,18 @@ export class UserController extends BaseController {
 
   public async register(req: Request, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
+
+    const existedUser = await this.userService.findByEmail(dto.email);
+    if (existedUser) {
+      const errorMessage = new Error(
+        `User with email "${dto.email}" already exists`
+      );
+      this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {
+        error: errorMessage.message,
+      });
+    }
     const user = await this.userService.create(dto, this.salt);
     const responseData = fillDTO(UserRdo, user);
-    console.log(responseData);
     this.created(res, responseData);
   }
 
