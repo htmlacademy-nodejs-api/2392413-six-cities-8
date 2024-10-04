@@ -26,7 +26,7 @@ export class UserController extends BaseController {
     super(logger);
     this.salt = this.config.get('SALT');
 
-    this.logger.info('Register routes for CategoryController...');
+    this.logger.info('Register routes for UserController...');
 
     this.addRoute({
       path: '/register',
