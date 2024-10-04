@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "name": "Vova",
-  "email": "vova3@ya.ru",
+  "email": "vova4@ya.ru",
   "avatarUrl": "",
   "password": "kjsksjdfks",
   "isPro": false

@@ -3,6 +3,7 @@ import { Config } from '#src/shared/libs/config/config.interface.js';
 import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
+import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
@@ -52,19 +53,16 @@ export class UserController extends BaseController {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async register(req: CreateUserRequest, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
 
     const existedUser = await this.userService.findByEmail(dto.email);
     if (existedUser) {
-      const errorMessage = new Error(
-        `User with email "${dto.email}" already exists`
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        `User with email "${dto.email}" already exists.`,
+        'UserController'
       );
-      this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {
-        error: errorMessage.message,
-      });
-      return this.logger.error(errorMessage.message, errorMessage);
     }
     const user = await this.userService.create(dto, this.salt);
     this.created(res, fillDTO(UserRdo, user));
