@@ -48,17 +48,19 @@ export class UserController extends BaseController {
     });
   }
 
-  public register(req: Request, res: Response): void {
+  public async register(req: Request, res: Response): Promise<void> {
     console.log(req.body);
 
     const dto: CreateUserDto = req.body;
-    const user = this.userService.create(dto, this.salt);
+    const user = await this.userService.create(dto, this.salt);
+    console.log(user);
+
     this.created(res, user);
   }
 
-  public authorize(req: Request, res: Response): void {
+  public async authorize(req: Request, res: Response): Promise<void> {
     const dto: LoginUserDto = req.body;
-    const user = this.userService.login(dto, this.salt);
+    const user = await this.userService.login(dto, this.salt);
     this.ok(res, user);
   }
 
