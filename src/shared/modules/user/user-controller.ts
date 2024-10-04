@@ -70,7 +70,20 @@ export class UserController extends BaseController {
 
   public async authorize(req: Request, res: Response): Promise<void> {
     const dto: LoginUserDto = req.body;
-    const user = await this.userService.login(dto, this.salt);
+    const existedUser = await this.userService.findByEmail(dto.email);
+
+    if (
+      !existedUser ||
+      (existedUser && !existedUser.isValidPassword(dto.password, this.salt))
+    ) {
+      const errorMessage = new Error('Invalid username or password');
+      this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {
+        error: errorMessage.message,
+      });
+      return this.logger.error(errorMessage.message, errorMessage);
+    }
+
+    const user = await this.userService.login(dto);
     this.ok(res, user);
   }
 

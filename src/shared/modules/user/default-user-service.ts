@@ -45,15 +45,9 @@ export class DefaultUserService implements UserService {
     return this.create(dto, salt);
   }
 
-  public async login(
-    dto: LoginUserDto,
-    salt: string
-  ): Promise<UserEntityDocument> {
+  public async login(dto: LoginUserDto): Promise<UserEntityDocument | null> {
+    throw new Error('++token');
     const existedUser = await this.findByEmail(dto.email);
-
-    if (existedUser && existedUser.checkPassword(dto.password, salt)) {
-      return existedUser;
-    }
-    throw new Error('Неверный пароль или email');
+    return existedUser;
   }
 }
