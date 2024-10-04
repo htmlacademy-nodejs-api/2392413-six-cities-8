@@ -4,6 +4,7 @@ import { RestSchema } from '#libs/config/rest-schema.js';
 import { DatabaseClient } from '#libs/database-client/database-client.interface.js';
 import { Logger } from '#libs/logger/logger.interface.js';
 import { Controller } from '#src/shared/libs/rest/controller/controller.interface.js';
+import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
 import { Component } from '#types/component.enum.js';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
@@ -17,7 +18,9 @@ export class RestApplication {
     @inject(Component.DatabaseClient)
     private readonly databaseClient: DatabaseClient,
     @inject(Component.UserController)
-    private readonly userController: Controller
+    private readonly userController: Controller,
+    @inject(Component.ExceptionFilter)
+    private readonly appExceptionFilter: ExceptionFilter
   ) {
     this.server = express();
   }
@@ -47,6 +50,12 @@ export class RestApplication {
     this.server.use('/users', this.userController.router);
   }
 
+  private async _initExceptionFilter() {
+    this.server.use(
+      this.appExceptionFilter.catch.bind(this.appExceptionFilter)
+    );
+  }
+
   public async init() {
     this.logger.info('Application initialization');
     this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
@@ -62,6 +71,10 @@ export class RestApplication {
     this.logger.info('Init controllers');
     await this._initControllers();
     this.logger.info('Controller initialization completed');
+
+    this.logger.info('Init exception filter');
+    await this._initExceptionFilter();
+    this.logger.info('Exception filter initialization completed');
 
     this.logger.info('Try to init server...');
     await this._initServer();
