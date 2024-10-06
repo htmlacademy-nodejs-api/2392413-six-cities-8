@@ -58,6 +58,12 @@ export class OfferController extends BaseController {
       method: HttpMethod.Get,
       handler: this.getPremiumByCity,
     });
+
+    this.addRoute({
+      path: '/favorite',
+      method: HttpMethod.Get,
+      handler: this.getFavoriteOffers,
+    });
   }
 
   public async create(req: CreateOfferRequest, res: Response): Promise<void> {
