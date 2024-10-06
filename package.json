@@ -17,7 +17,8 @@
   },
   "main": "main.js",
   "scripts": {
-    "start:dev": "npm run ts ./src/main.rest.ts | pino-pretty --colorize --translateTime SYS:standard",
+    "start": "npm run build && node ./dist/main.rest.js",
+    "start:dev": "nodemon",
     "build": "npm run clean && npm run compile",
     "lint": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
@@ -38,7 +39,8 @@
     "tslib": "2.6.2",
     "pino-pretty": "11.0.0",
     "@types/convict": "6.1.6",
-    "@types/convict-format-with-validator": "6.0.5"
+    "@types/convict-format-with-validator": "6.0.5",
+    "nodemon": "3.1.0"
   },
   "type": "module",
   "engines": {

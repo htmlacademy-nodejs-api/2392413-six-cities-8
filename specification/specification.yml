@@ -151,7 +151,7 @@ paths:
     parameters:
       - in: path
         name: offerId
-        example: adsduif874865fd
+        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
         description: id предложения
         schema:
           type: string
@@ -231,6 +231,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
+
+  /favorite/{offerId}/{status}:
+    parameters:
+      - in: path
+        name: offerId
+        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
+        description: id предложения
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: status
+        example: 1
+        description: 1 добавляет предложение в избранное, а 0 удаляет
+        schema:
+          type: number
+        required: true
     post:
       tags:
         - offers
@@ -248,7 +265,7 @@ paths:
     parameters:
       - in: path
         name: offerId
-        example: adsduif874865fd
+        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
         description: id предложения
         schema:
           type: string
