@@ -109,6 +109,21 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
+  async findFavorites(): Promise<OfferEntityDocument[]> {
+    return this.offerModel
+      .find([
+        { isFavorite: true },
+        {
+          $addFields: {
+            id: { $toString: '$_id' },
+            reviewCount: { $size: '$reviews' },
+          },
+        },
+      ])
+      .populate(['userId'])
+      .exec();
+  }
+
   async updateFavorite(
     offerId: string,
     isFavorite: number

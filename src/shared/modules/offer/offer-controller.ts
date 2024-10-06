@@ -101,4 +101,9 @@ export class OfferController extends BaseController {
     const offer = await this.offerService.findPremiumByCity(cityName);
     this.ok(res, fillDTO(OfferRdo, offer));
   }
+
+  public async getFavoriteOffers(_req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavorites();
+    this.ok(res, offers);
+  }
 }
