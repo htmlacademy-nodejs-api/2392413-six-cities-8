@@ -126,13 +126,13 @@ export class DefaultOfferService implements OfferService {
 
   async updateFavorite(
     offerId: string,
-    isFavorite: number
+    status: number
   ): Promise<OfferEntityDocument | null> {
     return this.offerModel
       .findByIdAndUpdate(
         offerId,
         [
-          { isFavorite: isFavorite === 1 },
+          { isFavorite: status === 1 },
           {
             $addFields: {
               id: { $toString: '$_id' },

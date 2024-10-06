@@ -10,6 +10,7 @@ import { OfferService } from './offer-service.interface.js';
 import { OfferRdo } from './rdo/offer-rdo.js';
 import { CreateOfferRequest } from './types/create-offer-request.type.js';
 import { ParamCityName } from './types/param-cityname.type.js';
+import { ParamUpdateFavorite } from './types/param-update-favorite.type.js';
 import { UpdateOfferRequest } from './update-offer-request.type.js';
 
 @injectable()
@@ -64,6 +65,12 @@ export class OfferController extends BaseController {
       method: HttpMethod.Get,
       handler: this.getFavoriteOffers,
     });
+
+    this.addRoute({
+      path: '/favorite/{offerId}/{status}',
+      method: HttpMethod.Post,
+      handler: this.updateFavorite,
+    });
   }
 
   public async create(req: CreateOfferRequest, res: Response): Promise<void> {
@@ -110,6 +117,15 @@ export class OfferController extends BaseController {
 
   public async getFavoriteOffers(_req: Request, res: Response): Promise<void> {
     const offers = await this.offerService.findFavorites();
+    this.ok(res, offers);
+  }
+
+  public async updateFavorite(
+    req: Request<ParamUpdateFavorite>,
+    res: Response
+  ): Promise<void> {
+    const { offerId, status } = req.params;
+    const offers = await this.offerService.updateFavorite(offerId, +status);
     this.ok(res, offers);
   }
 }
