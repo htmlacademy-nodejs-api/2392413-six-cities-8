@@ -8,6 +8,7 @@ import { inject, injectable } from 'inversify';
 import { OfferService } from './offer-service.interface.js';
 import { OfferRdo } from './rdo/offer-rdo.js';
 import { CreateOfferRequest } from './types/create-offer-request.type.js';
+import { ParamCityName } from './types/param-cityname.type.js';
 import { UpdateOfferRequest } from './update-offer-request.type.js';
 
 @injectable()
@@ -81,6 +82,15 @@ export class OfferController extends BaseController {
   ): Promise<void> {
     const { params } = req;
     const offer = await this.offerService.findById(params.offerId);
+    this.ok(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async getPremiumByCity(
+    req: Request<ParamCityName>,
+    res: Response
+  ): Promise<void> {
+    const { params } = req;
+    const offer = await this.offerService.findPremiumByCity(params.cityName);
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 }
