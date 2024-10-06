@@ -3,11 +3,12 @@ import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
-import { CreateOfferRequest } from './create-offer-request.type.js';
 import { OfferService } from './offer-service.interface.js';
 import { OfferRdo } from './rdo/offer-rdo.js';
+import { CreateOfferRequest } from './types/create-offer-request.type.js';
+import { UpdateOfferRequest } from './update-offer-request.type.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -25,11 +26,34 @@ export class OfferController extends BaseController {
       method: HttpMethod.Post,
       handler: this.create,
     });
+
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.getOffers,
+    });
+
+    this.addRoute({
+      path: '/{offerId}',
+      method: HttpMethod.Put,
+      handler: this.update,
+    });
   }
 
   public async create(req: CreateOfferRequest, res: Response): Promise<void> {
     const { body } = req;
     const offer = await this.offerService.create(body);
     this.created(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async getOffers(_req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.find();
+    this.ok(res, offers);
+  }
+
+  public async update(req: UpdateOfferRequest, res: Response): Promise<void> {
+    const { params, body } = req;
+    const offer = await this.offerService.updateById(params.offerId, body);
+    this.ok(res, fillDTO(OfferRdo, offer));
   }
 }

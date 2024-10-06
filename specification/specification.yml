@@ -164,7 +164,7 @@ paths:
           type: string
         required: true
 
-    post:
+    put:
       tags:
         - offers
       summary: Редактировать предложение
@@ -383,7 +383,7 @@ components:
 
         isPro:
           type: boolean
-          example: true
+          example: trueР
 
         token:
           type: string
