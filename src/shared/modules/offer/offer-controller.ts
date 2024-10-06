@@ -117,7 +117,7 @@ export class OfferController extends BaseController {
 
   public async getFavoriteOffers(_req: Request, res: Response): Promise<void> {
     const offers = await this.offerService.findFavorites();
-    this.ok(res, offers);
+    this.ok(res, fillDTO(OfferRdo, offers));
   }
 
   public async updateFavorite(
@@ -126,6 +126,6 @@ export class OfferController extends BaseController {
   ): Promise<void> {
     const { offerId, status } = req.params;
     const offers = await this.offerService.updateFavorite(offerId, +status);
-    this.ok(res, offers);
+    this.ok(res, fillDTO(OfferRdo, offers));
   }
 }
