@@ -2,6 +2,7 @@ import { fillDTO } from '#src/shared/helpers/common.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
+import { CityName } from '#src/shared/types/city-name.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
@@ -51,6 +52,12 @@ export class OfferController extends BaseController {
       method: HttpMethod.Get,
       handler: this.getOfferDetail,
     });
+
+    this.addRoute({
+      path: '/{cityName}',
+      method: HttpMethod.Get,
+      handler: this.getPremiumByCity,
+    });
   }
 
   public async create(req: CreateOfferRequest, res: Response): Promise<void> {
@@ -90,7 +97,8 @@ export class OfferController extends BaseController {
     res: Response
   ): Promise<void> {
     const { params } = req;
-    const offer = await this.offerService.findPremiumByCity(params.cityName);
+    const cityName = params.cityName as CityName;
+    const offer = await this.offerService.findPremiumByCity(cityName);
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 }
