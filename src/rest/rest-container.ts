@@ -5,6 +5,8 @@ import { DatabaseClient } from '#libs/database-client/database-client.interface.
 import { MongoDatabaseClient } from '#libs/database-client/mongo-database-client.js';
 import { Logger } from '#libs/logger/logger.interface.js';
 import { PinoLogger } from '#libs/logger/pino-logger.js';
+import { AppExceptionFilter } from '#src/shared/libs/rest/exception-filter/app-exception-filter.js';
+import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
 import { Component } from '#types/component.enum.js';
 import { Container } from 'inversify';
 import { RestApplication } from './rest-application.js';
@@ -27,6 +29,10 @@ export function createRestApplicationContainer() {
   restApplicationContainer
     .bind<DatabaseClient>(Component.DatabaseClient)
     .to(MongoDatabaseClient)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<ExceptionFilter>(Component.ExceptionFilter)
+    .to(AppExceptionFilter)
     .inSingletonScope();
 
   return restApplicationContainer;

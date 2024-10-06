@@ -65,6 +65,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserInfo'
 
+        '401':
+          description: Пользователь авторизован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInfo'
+
     get:
       tags:
         - users
@@ -157,7 +164,7 @@ paths:
           type: string
         required: true
 
-    post:
+    put:
       tags:
         - offers
       summary: Редактировать предложение
@@ -330,6 +337,10 @@ components:
           type: string
           example: 6329c3d6a04ab1061c6425ea
 
+        name:
+          type: string
+          example: Vladimir
+
         email:
           type: string
           example: keks@htmlacademy.ru
@@ -372,7 +383,7 @@ components:
 
         isPro:
           type: boolean
-          example: true
+          example: trueР
 
         token:
           type: string

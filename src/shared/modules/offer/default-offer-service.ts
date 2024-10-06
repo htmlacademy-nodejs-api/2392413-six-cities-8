@@ -1,10 +1,10 @@
 import { Logger } from '#libs/logger/logger.interface.js';
+import { ReviewEntity } from '#modules/review/review-entity.js';
 import { CityName } from '#src/shared/types/city-name.enum.js';
 import { SortType } from '#src/shared/types/sort-type.enum.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
-import { ReviewEntity } from '../review/review-entity.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';
@@ -22,7 +22,7 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.OfferModel)
     private readonly offerModel: types.ModelType<OfferEntity>,
     @inject(Component.ReviewModel)
-    private readonly ReviewModel: types.ModelType<ReviewEntity>
+    private readonly reviewModel: types.ModelType<ReviewEntity>
   ) {}
 
   async create(dto: CreateOfferDto): Promise<OfferEntityDocument> {
@@ -109,15 +109,30 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
+  async findFavorites(): Promise<OfferEntityDocument[]> {
+    return this.offerModel
+      .find([
+        { isFavorite: true },
+        {
+          $addFields: {
+            id: { $toString: '$_id' },
+            reviewCount: { $size: '$reviews' },
+          },
+        },
+      ])
+      .populate(['userId'])
+      .exec();
+  }
+
   async updateFavorite(
     offerId: string,
-    isFavorite: number
+    status: number
   ): Promise<OfferEntityDocument | null> {
     return this.offerModel
       .findByIdAndUpdate(
         offerId,
         [
-          { isFavorite: isFavorite === 1 },
+          { isFavorite: status === 1 },
           {
             $addFields: {
               id: { $toString: '$_id' },
@@ -132,7 +147,7 @@ export class DefaultOfferService implements OfferService {
 
   async updateRating(offerId: string): Promise<OfferEntityDocument | null> {
     ///// Очень сомневаюсь в правильности
-    const [{ averageRating }] = await this.ReviewModel.aggregate([
+    const [{ averageRating }] = await this.reviewModel.aggregate([
       { $match: { offerId } },
       { $group: { _id: null, averageRating: { $avg: '$rating' } } },
     ]);
