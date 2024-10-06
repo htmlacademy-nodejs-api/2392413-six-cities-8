@@ -44,6 +44,12 @@ export class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.update,
     });
+
+    this.addRoute({
+      path: '/{offerId}',
+      method: HttpMethod.Get,
+      handler: this.getOfferDetail,
+    });
   }
 
   public async create(req: CreateOfferRequest, res: Response): Promise<void> {
@@ -66,6 +72,15 @@ export class OfferController extends BaseController {
   public async delete(req: UpdateOfferRequest, res: Response) {
     const { params } = req;
     const offer = await this.offerService.deleteById(params.offerId);
+    this.ok(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async getOfferDetail(
+    req: UpdateOfferRequest,
+    res: Response
+  ): Promise<void> {
+    const { params } = req;
+    const offer = await this.offerService.findById(params.offerId);
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 }
