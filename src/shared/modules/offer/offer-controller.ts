@@ -54,7 +54,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/{cityName}',
+      path: '/premium/{cityName}',
       method: HttpMethod.Get,
       handler: this.getPremiumByCity,
     });
