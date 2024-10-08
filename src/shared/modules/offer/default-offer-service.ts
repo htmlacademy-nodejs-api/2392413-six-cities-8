@@ -179,7 +179,8 @@ export class DefaultOfferService implements OfferService {
   }
 
   async checkOfferExists(offerId: string): Promise<void> {
-    const isOfferExists = this.offerModel.exists({ _id: offerId }).exec();
+    const isOfferExists = await this.offerModel.exists({ _id: offerId }).exec();
+
     if (!isOfferExists) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,

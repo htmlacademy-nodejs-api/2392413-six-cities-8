@@ -37,19 +37,19 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/{offerId}',
+      path: '/:offerId',
       method: HttpMethod.Put,
       handler: this.update,
     });
 
     this.addRoute({
-      path: '/{offerId}',
+      path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.update,
     });
 
     this.addRoute({
-      path: '/{offerId}',
+      path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.getOfferDetail,
     });
