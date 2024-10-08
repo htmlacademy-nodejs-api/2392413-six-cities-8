@@ -6,5 +6,5 @@ export type ReviewEntityDocument = DocumentType<ReviewEntity>;
 
 export interface ReviewService {
   create(offerId: string, dto: CreateReviewDto): Promise<ReviewEntityDocument>;
-  findByOfferId(offerId: string): Promise<ReviewEntityDocument | null>;
+  findByOfferId(offerId: string): Promise<ReviewEntityDocument[] | null>;
 }
