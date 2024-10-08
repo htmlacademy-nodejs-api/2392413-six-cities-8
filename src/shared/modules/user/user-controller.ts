@@ -31,7 +31,7 @@ export class UserController extends BaseController {
     this.addRoute({
       path: '/register',
       method: HttpMethod.Post,
-      handler: this.register,
+      handler: this.create,
     });
 
     this.addRoute({
@@ -53,7 +53,7 @@ export class UserController extends BaseController {
     });
   }
 
-  public async register(req: CreateUserRequest, res: Response): Promise<void> {
+  public async create(req: CreateUserRequest, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
     const user = await this.userService.create(dto, this.salt);
     this.created(res, fillDTO(UserRdo, user));
