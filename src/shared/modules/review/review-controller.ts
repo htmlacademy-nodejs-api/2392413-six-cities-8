@@ -27,13 +27,13 @@ export class ReviewController extends BaseController {
     this.logger.info('Register routes for ReviewController...');
 
     this.addRoute({
-      path: '/',
+      path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.getReviews,
     });
 
     this.addRoute({
-      path: '/',
+      path: '/:offerId',
       method: HttpMethod.Post,
       handler: this.create,
     });
