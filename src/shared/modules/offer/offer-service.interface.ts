@@ -21,4 +21,5 @@ export interface OfferService {
   ): Promise<OfferEntityDocument | null>;
   updateRating(offerId: string): Promise<OfferEntityDocument | null>;
   findFavorites(): Promise<OfferEntityDocument[]>;
+  checkOfferExists(offerId: string): Promise<void>;
 }

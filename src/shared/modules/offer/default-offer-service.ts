@@ -1,9 +1,11 @@
 import { Logger } from '#libs/logger/logger.interface.js';
 import { ReviewEntity } from '#modules/review/review-entity.js';
+import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
 import { CityName } from '#src/shared/types/city-name.enum.js';
 import { SortType } from '#src/shared/types/sort-type.enum.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
+import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
@@ -36,6 +38,7 @@ export class DefaultOfferService implements OfferService {
     offerId: string,
     dto: UpdateOfferDto
   ): Promise<OfferEntityDocument | null> {
+    await this.checkOfferExists(offerId);
     const result = await this.offerModel.findByIdAndUpdate(offerId, dto, {
       new: true,
     });
@@ -45,6 +48,7 @@ export class DefaultOfferService implements OfferService {
   }
 
   async deleteById(offerId: string): Promise<OfferEntityDocument | null> {
+    await this.checkOfferExists(offerId);
     const result = await this.offerModel.findByIdAndDelete(offerId);
     if (result) {
       this.logger.info(`Offer deleted: ${result.title}`);
@@ -128,6 +132,8 @@ export class DefaultOfferService implements OfferService {
     offerId: string,
     status: number
   ): Promise<OfferEntityDocument | null> {
+    await this.checkOfferExists(offerId);
+
     return this.offerModel
       .findByIdAndUpdate(
         offerId,
@@ -146,6 +152,7 @@ export class DefaultOfferService implements OfferService {
   }
 
   async updateRating(offerId: string): Promise<OfferEntityDocument | null> {
+    await this.checkOfferExists(offerId);
     ///// Очень сомневаюсь в правильности
     const [{ averageRating }] = await this.reviewModel.aggregate([
       { $match: { offerId } },
@@ -168,5 +175,16 @@ export class DefaultOfferService implements OfferService {
       )
       .populate(['userId'])
       .exec();
+  }
+
+  async checkOfferExists(offerId: string): Promise<void> {
+    const isOfferExists = this.offerModel.exists({ _id: offerId }).exec();
+    if (!isOfferExists) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id "${offerId}" not found.`,
+        'OfferService'
+      );
+    }
   }
 }
