@@ -2,3 +2,4 @@ Todo:
   ☐ В *service отлавливать ошибки через try catch
   ☐ SALT из контроллера передается в сервис параметром. Для чего? Почему соль нельзя в сервисе считать из конфига? Нарушение паттерна?
   ☐ В DTO добавить валидацию
+  ☐ кол-во коментов динамически https://stackoverflow.com/questions/48389112/mongodb-best-practice-to-count-related-documents
