@@ -25,3 +25,7 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:4000/offers/3271863871 HTTP/1.1
+
+
+###
