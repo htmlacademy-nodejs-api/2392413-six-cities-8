@@ -1,6 +1,6 @@
+import { ReviewEntity } from '#modules/review/review-entity.js';
+import { UserEntity } from '#modules/user/user-entity.js';
 import { Ref } from '@typegoose/typegoose';
-import { UserEntity } from '../../user/user-entity.js';
-import { ReviewEntity } from '../review-entity.js';
 
 type reviewExcludeType = 'id' | '_id' | 'createdAt' | 'updatedAt';
 export class ReviewRdo implements Omit<ReviewEntity, reviewExcludeType> {

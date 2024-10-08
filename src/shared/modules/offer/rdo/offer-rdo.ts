@@ -1,10 +1,10 @@
+import { OfferEntity } from '#modules/offer/offer-entity.js';
+import { UserEntity } from '#modules/user/user-entity.js';
 import { City } from '#src/shared/types/city.type.js';
 import { GoodType } from '#src/shared/types/good-type.type.js';
 import { Location } from '#src/shared/types/location.type.js';
 import { OfferType } from '#src/shared/types/offer-type.enum.js';
 import { Ref } from '@typegoose/typegoose';
-import { UserEntity } from '../../user/user-entity.js';
-import { OfferEntity } from '../offer-entity.js';
 
 type offerExcludeType = 'id' | '_id' | 'createdAt' | 'updatedAt';
 export class OfferRdo implements Omit<OfferEntity, offerExcludeType> {
