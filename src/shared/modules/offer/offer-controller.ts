@@ -87,8 +87,11 @@ export class OfferController extends BaseController {
 
   public async update(req: UpdateOfferRequest, res: Response): Promise<void> {
     const { params, body } = req;
-    const offer = await this.offerService.updateById(params.offerId, body);
-    this.ok(res, fillDTO(OfferRdo, offer));
+    const result = await this.offerService.updateById(params.offerId, body);
+    if (result) {
+      const offer = await this.offerService.findById(params.offerId);
+      this.ok(res, fillDTO(OfferRdo, offer));
+    }
   }
 
   public async delete(req: UpdateOfferRequest, res: Response) {
