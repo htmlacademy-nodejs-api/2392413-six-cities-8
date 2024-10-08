@@ -55,15 +55,6 @@ export class UserController extends BaseController {
 
   public async register(req: CreateUserRequest, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
-
-    const existedUser = await this.userService.findByEmail(dto.email);
-    if (existedUser) {
-      throw new HttpError(
-        StatusCodes.CONFLICT,
-        `User with email "${dto.email}" already exists.`,
-        'UserController'
-      );
-    }
     const user = await this.userService.create(dto, this.salt);
     this.created(res, fillDTO(UserRdo, user));
   }
