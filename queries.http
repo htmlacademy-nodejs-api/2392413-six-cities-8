@@ -85,3 +85,7 @@ Content-Type: application/json
 }
 
 ###
+DELETE http://localhost:4000/offers/6704fc4a2ea09e306cc86233 HTTP/1.1
+
+
+###

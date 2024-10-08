@@ -45,7 +45,7 @@ export class OfferController extends BaseController {
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
-      handler: this.update,
+      handler: this.delete,
     });
 
     this.addRoute({
