@@ -25,6 +25,34 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:4000/offers/6704f9003df41d32ec047a0e HTTP/1.1
+GET http://localhost:4000/offers HTTP/1.1
+
 
 ###
+GET http://localhost:4000/offers/6704fc4a2ea09e306cc86233 HTTP/1.1
+
+###
+POST http://localhost:4000/offers/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "test",
+  "description": "test",
+  "createdDate": "2024-08-10T08:11:23.283Z",
+  "city": "Paris",
+  "previewImage": "http://test.ru/test.png",
+  "images": ["http://test.ru/test.png"],
+  "isPremium": "true",
+  "isFavorite": "false",
+  "rating": "3",
+  "type": "house",
+  "bedrooms": 2,
+  "maxAdults": 2,
+  "price": 100,
+  "goods": [],
+  "userId": "6704f9003df41d32ec047a0e",
+  "location": {
+    "latitude": 48.868610000000004,
+    "longitude": 2.342499
+  }
+}

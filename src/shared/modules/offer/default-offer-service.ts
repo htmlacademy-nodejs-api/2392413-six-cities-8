@@ -30,7 +30,6 @@ export class DefaultOfferService implements OfferService {
   async create(dto: CreateOfferDto): Promise<OfferEntityDocument> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
-
     return result;
   }
 
@@ -59,37 +58,17 @@ export class DefaultOfferService implements OfferService {
 
   async findById(offerId: string): Promise<OfferEntityDocument | null> {
     await this.checkOfferExists(offerId);
-    return this.offerModel
-      .findById(offerId, [
-        {
-          $addFields: {
-            id: { $toString: '$_id' },
-            reviewCount: { $size: '$reviews' },
-          },
-        },
-      ])
-      .populate(['userId'])
-      .exec();
+    return await this.offerModel.findById(offerId).populate(['userId']).exec();
   }
 
   async findPremiumByCity(
     cityName: CityName
   ): Promise<OfferEntityDocument[] | null> {
     return this.offerModel
-      .find(
-        {
-          city: cityName,
-          isPremium: true,
-        },
-        [
-          {
-            $addFields: {
-              id: { $toString: '$_id' },
-              reviewCount: { $size: '$reviews' },
-            },
-          },
-        ]
-      )
+      .find({
+        city: cityName,
+        isPremium: true,
+      })
       .sort({ createdAt: SortType.Down })
       .limit(PREMIUM_OFFERS_LIMIT)
       .populate(['userId'])
@@ -100,14 +79,7 @@ export class DefaultOfferService implements OfferService {
     recordCount: number = DEFAULT_OFFERS_LIMIT
   ): Promise<OfferEntityDocument[]> {
     return this.offerModel
-      .find([
-        {
-          $addFields: {
-            id: { $toString: '$_id' },
-            reviewCount: { $size: '$reviews' },
-          },
-        },
-      ])
+      .find()
       .sort({ createdAt: SortType.Down })
       .limit(recordCount)
       .populate(['userId'])
@@ -116,15 +88,7 @@ export class DefaultOfferService implements OfferService {
 
   async findFavorites(): Promise<OfferEntityDocument[]> {
     return this.offerModel
-      .find([
-        { isFavorite: true },
-        {
-          $addFields: {
-            id: { $toString: '$_id' },
-            reviewCount: { $size: '$reviews' },
-          },
-        },
-      ])
+      .find([{ isFavorite: true }])
       .populate(['userId'])
       .exec();
   }
@@ -136,19 +100,7 @@ export class DefaultOfferService implements OfferService {
     await this.checkOfferExists(offerId);
 
     return this.offerModel
-      .findByIdAndUpdate(
-        offerId,
-        [
-          { isFavorite: status === 1 },
-          {
-            $addFields: {
-              id: { $toString: '$_id' },
-              reviewCount: { $size: '$reviews' },
-            },
-          },
-        ],
-        { new: true }
-      )
+      .findByIdAndUpdate(offerId, [{ isFavorite: status === 1 }], { new: true })
       .exec();
   }
 
@@ -161,19 +113,7 @@ export class DefaultOfferService implements OfferService {
     ]);
 
     return this.offerModel
-      .findByIdAndUpdate(
-        offerId,
-        [
-          { rating: averageRating },
-          {
-            $addFields: {
-              id: { $toString: '$_id' },
-              reviewCount: { $size: '$reviews' },
-            },
-          },
-        ],
-        { new: true }
-      )
+      .findByIdAndUpdate(offerId, [{ rating: averageRating }], { new: true })
       .populate(['userId'])
       .exec();
   }
