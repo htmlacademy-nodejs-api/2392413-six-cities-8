@@ -55,7 +55,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/premium/{cityName}',
+      path: '/premium/:cityName',
       method: HttpMethod.Get,
       handler: this.getPremiumByCity,
     });
@@ -67,7 +67,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/favorite/{offerId}/{status}',
+      path: '/favorite/:offerId/:status',
       method: HttpMethod.Post,
       handler: this.updateFavorite,
     });
