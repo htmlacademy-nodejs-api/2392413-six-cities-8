@@ -6,8 +6,9 @@ import { Location } from '#src/shared/types/location.type.js';
 import { OfferType } from '#src/shared/types/offer-type.enum.js';
 import { Ref } from '@typegoose/typegoose';
 
-type offerExcludeType = 'id' | '_id' | 'createdAt' | 'updatedAt';
+type offerExcludeType = '_id' | 'createdAt' | 'updatedAt';
 export class OfferRdo implements Omit<OfferEntity, offerExcludeType> {
+  public id: string;
   public title: string;
   public description: string;
   public createdDate: Date;
