@@ -4,7 +4,9 @@ import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
+import { UploadFileMiddleware } from '#src/shared/libs/rest/middleware/upload-file.middleware.js';
 import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
+import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
@@ -34,7 +36,20 @@ export class UserController extends BaseController {
       path: '/register',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateUserDto)],
+      middlewares: [
+        new ValidateDtoMiddleware(CreateUserDto),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/:userId/avatar',
+      method: HttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new ValidateObjectIdMiddleware('userId'),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
+      ],
     });
 
     this.addRoute({
@@ -61,6 +76,12 @@ export class UserController extends BaseController {
     const dto: CreateUserDto = req.body;
     const user = await this.userService.create(dto, this.salt);
     this.created(res, fillDTO(UserRdo, user));
+  }
+
+  public async uploadAvatar(req: Request, res: Response) {
+    this.created(res, {
+      filepath: req.file?.path,
+    });
   }
 
   public async authorize(req: Request, res: Response): Promise<void> {

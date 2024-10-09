@@ -57,7 +57,6 @@ export class ReviewController extends BaseController {
   ): Promise<void> {
     const { body } = req;
     const { params } = req;
-    await this.offerService.checkOfferExists(params.offerId);
     const review = await this.reviewService.create(params.offerId, body);
     this.created(res, fillDTO(ReviewRdo, review));
   }
@@ -67,7 +66,6 @@ export class ReviewController extends BaseController {
     res: Response
   ): Promise<void> {
     const { params } = req;
-    await this.offerService.checkOfferExists(params.offerId);
     const review = await this.reviewService.findByOfferId(params.offerId);
     this.ok(res, fillDTO(ReviewRdo, review));
   }

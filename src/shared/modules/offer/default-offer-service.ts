@@ -25,6 +25,10 @@ export class DefaultOfferService implements OfferService {
     private readonly reviewModel: types.ModelType<ReviewEntity>
   ) {}
 
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.offerModel.exists({ _id: documentId })) !== null;
+  }
+
   async create(dto: CreateOfferDto): Promise<OfferEntityDocument> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
