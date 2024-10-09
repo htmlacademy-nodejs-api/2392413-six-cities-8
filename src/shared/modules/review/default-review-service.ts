@@ -17,14 +17,17 @@ export class DefaultReviewService implements ReviewService {
     private readonly reviewModel: types.ModelType<ReviewEntity>
   ) {}
 
-  async create(dto: CreateReviewDto): Promise<ReviewEntityDocument> {
-    const result = await this.reviewModel.create(dto);
+  async create(
+    offerId: string,
+    dto: CreateReviewDto
+  ): Promise<ReviewEntityDocument> {
+    const result = await this.reviewModel.create({ ...dto, offerId });
     this.logger.info('New review created');
 
     return result;
   }
 
-  findByOfferId(offerId: string): Promise<ReviewEntityDocument | null> {
-    return this.reviewModel.findById(offerId).populate(['userId']).exec();
+  findByOfferId(offerId: string): Promise<ReviewEntityDocument[] | null> {
+    return this.reviewModel.find({ offerId }).populate(['userId']).exec();
   }
 }
