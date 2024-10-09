@@ -1,6 +1,7 @@
 import { fillDTO } from '#src/shared/helpers/common.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
+import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { CityName } from '#src/shared/types/city-name.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
@@ -40,18 +41,21 @@ export class OfferController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Put,
       handler: this.update,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
 
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
 
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.getOfferDetail,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
 
     this.addRoute({
@@ -70,6 +74,7 @@ export class OfferController extends BaseController {
       path: '/favorite/:offerId/:status',
       method: HttpMethod.Post,
       handler: this.updateFavorite,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
   }
 
