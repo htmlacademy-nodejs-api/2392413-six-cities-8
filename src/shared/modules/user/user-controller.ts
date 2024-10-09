@@ -4,6 +4,7 @@ import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
+import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
@@ -11,6 +12,7 @@ import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateUserRequest } from './create-user-request.type.js';
 import { CreateUserDto } from './dto/create-user-dto.js';
+import { LoginUserDto } from './dto/login-user-dto.js';
 import { LoginUserRequest } from './login-user-request.type.js';
 import { UserRdo } from './rdo/user-rdo.js';
 import { UserService } from './user-service.interface.js';
@@ -32,12 +34,14 @@ export class UserController extends BaseController {
       path: '/register',
       method: HttpMethod.Post,
       handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateUserDto)],
     });
 
     this.addRoute({
       path: '/login',
       method: HttpMethod.Post,
       handler: this.authorize,
+      middlewares: [new ValidateDtoMiddleware(LoginUserDto)],
     });
 
     this.addRoute({

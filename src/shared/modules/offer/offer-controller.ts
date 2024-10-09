@@ -1,12 +1,15 @@
 import { fillDTO } from '#src/shared/helpers/common.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
+import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { CityName } from '#src/shared/types/city-name.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
+import { CreateOfferDto } from './dto/create-offer-dto.js';
+import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferService } from './offer-service.interface.js';
 import { OfferRdo } from './rdo/offer-rdo.js';
 import { CreateOfferRequest } from './types/create-offer-request.type.js';
@@ -27,21 +30,25 @@ export class OfferController extends BaseController {
 
     this.addRoute({
       path: '/',
-      method: HttpMethod.Post,
-      handler: this.create,
+      method: HttpMethod.Get,
+      handler: this.getOffers,
     });
 
     this.addRoute({
       path: '/',
-      method: HttpMethod.Get,
-      handler: this.getOffers,
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)],
     });
 
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Put,
       handler: this.update,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDtoMiddleware(UpdateOfferDto),
+      ],
     });
 
     this.addRoute({

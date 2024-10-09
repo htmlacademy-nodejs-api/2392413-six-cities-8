@@ -3,6 +3,7 @@ import { ParamOfferId } from '#modules/offer/types/param-offerId.type.js';
 import { fillDTO } from '#src/shared/helpers/common.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
+import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { RequestBody } from '#src/shared/libs/rest/types/request-body.type.js';
@@ -38,7 +39,10 @@ export class ReviewController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDtoMiddleware(CreateReviewDto),
+      ],
     });
   }
 
