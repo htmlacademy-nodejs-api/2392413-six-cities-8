@@ -1,11 +1,12 @@
 import { CityName } from '#src/shared/types/city-name.enum.js';
+import { DocumentExists } from '#src/shared/types/document-exists.interface.js';
 import { DocumentType } from '@typegoose/typegoose';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';
 
 export type OfferEntityDocument = DocumentType<OfferEntity>;
-export interface OfferService {
+export interface OfferService extends DocumentExists {
   create(dto: CreateOfferDto): Promise<OfferEntityDocument>;
   updateById(
     offerId: string,
