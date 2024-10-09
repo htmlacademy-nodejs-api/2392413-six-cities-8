@@ -1,3 +1,4 @@
+import { UserEntity } from '#modules/user/user-entity.js';
 import {
   defaultClasses,
   getModelForClass,
@@ -5,7 +6,6 @@ import {
   prop,
   Ref,
 } from '@typegoose/typegoose';
-import { UserEntity } from '../user/user-entity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface ReviewEntity extends defaultClasses.Base {}

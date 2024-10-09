@@ -3,6 +3,7 @@ import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import { CreateUserDto } from './dto/create-user-dto.js';
+import { LoginUserDto } from './dto/login-user-dto.js';
 import { UserEntity } from './user-entity.js';
 import { UserEntityDocument, UserService } from './user-service.interface.js';
 
@@ -42,5 +43,11 @@ export class DefaultUserService implements UserService {
     }
 
     return this.create(dto, salt);
+  }
+
+  public async login(dto: LoginUserDto): Promise<UserEntityDocument | null> {
+    throw new Error('++token');
+    const existedUser = await this.findByEmail(dto.email);
+    return existedUser;
   }
 }

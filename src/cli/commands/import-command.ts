@@ -8,6 +8,7 @@ import { Logger } from '#libs/logger/logger.interface.js';
 import { DefaultOfferService } from '#modules/offer/default-offer-service.js';
 import { OfferModel } from '#modules/offer/offer-entity.js';
 import { OfferService } from '#modules/offer/offer-service.interface.js';
+import { ReviewModel } from '#modules/review/review-entity.js';
 import { DefaultUserService } from '#modules/user/default-user-service.js';
 import { UserModel } from '#modules/user/user-entity.js';
 import { UserService } from '#modules/user/user-service.interface.js';
@@ -27,7 +28,11 @@ export class ImportCommand implements Command {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new ConsoleLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
+    this.offerService = new DefaultOfferService(
+      this.logger,
+      OfferModel,
+      ReviewModel
+    );
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
