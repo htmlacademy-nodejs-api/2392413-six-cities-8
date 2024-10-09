@@ -6,7 +6,12 @@ import { Expose, Type } from 'class-transformer';
 import { UserRdo } from '../../user/rdo/user-rdo.js';
 import { OfferEntity } from '../offer-entity.js';
 
-type offerExcludeType = '_id' | 'userId' | 'createdAt' | 'updatedAt';
+type offerExcludeType =
+  | '_id'
+  | 'userId'
+  | 'createdDate'
+  | 'createdAt'
+  | 'updatedAt';
 export class OfferRdo implements Omit<OfferEntity, offerExcludeType> {
   @Expose()
   public id: string;
@@ -18,7 +23,7 @@ export class OfferRdo implements Omit<OfferEntity, offerExcludeType> {
   public description: string;
 
   @Expose()
-  public createdDate: Date;
+  public createdDate: string;
 
   @Expose()
   public city: City;
