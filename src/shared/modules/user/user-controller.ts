@@ -4,6 +4,9 @@ import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
+import { UploadFileMiddleware } from '#src/shared/libs/rest/middleware/upload-file.middleware.js';
+import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
+import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
@@ -11,6 +14,7 @@ import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateUserRequest } from './create-user-request.type.js';
 import { CreateUserDto } from './dto/create-user-dto.js';
+import { LoginUserDto } from './dto/login-user-dto.js';
 import { LoginUserRequest } from './login-user-request.type.js';
 import { UserRdo } from './rdo/user-rdo.js';
 import { UserService } from './user-service.interface.js';
@@ -31,13 +35,28 @@ export class UserController extends BaseController {
     this.addRoute({
       path: '/register',
       method: HttpMethod.Post,
-      handler: this.register,
+      handler: this.create,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateUserDto),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/:userId/avatar',
+      method: HttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new ValidateObjectIdMiddleware('userId'),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
+      ],
     });
 
     this.addRoute({
       path: '/login',
       method: HttpMethod.Post,
       handler: this.authorize,
+      middlewares: [new ValidateDtoMiddleware(LoginUserDto)],
     });
 
     this.addRoute({
@@ -53,19 +72,16 @@ export class UserController extends BaseController {
     });
   }
 
-  public async register(req: CreateUserRequest, res: Response): Promise<void> {
+  public async create(req: CreateUserRequest, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
-
-    const existedUser = await this.userService.findByEmail(dto.email);
-    if (existedUser) {
-      throw new HttpError(
-        StatusCodes.CONFLICT,
-        `User with email "${dto.email}" already exists.`,
-        'UserController'
-      );
-    }
     const user = await this.userService.create(dto, this.salt);
     this.created(res, fillDTO(UserRdo, user));
+  }
+
+  public async uploadAvatar(req: Request, res: Response) {
+    this.created(res, {
+      filepath: req.file?.path,
+    });
   }
 
   public async authorize(req: Request, res: Response): Promise<void> {
