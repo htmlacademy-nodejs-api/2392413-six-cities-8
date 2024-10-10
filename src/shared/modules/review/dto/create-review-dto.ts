@@ -11,6 +11,9 @@ import {
 import { CreateReviewValidationMessage } from './create-review-messages.js';
 
 export class CreateReviewDto {
+  @IsMongoId({ message: CreateReviewValidationMessage.offerId.invalidId })
+  public offerId: string;
+
   @IsDateString(
     {},
     { message: CreateReviewValidationMessage.date.invalidFormat }

@@ -1,3 +1,4 @@
+import { OfferEntity } from '#modules/offer/offer-entity.js';
 import { UserEntity } from '#modules/user/user-entity.js';
 import {
   defaultClasses,
@@ -18,6 +19,9 @@ export interface ReviewEntity extends defaultClasses.Base {}
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class ReviewEntity extends defaultClasses.TimeStamps {
+  @prop({ required: true, ref: OfferEntity })
+  public offerId: Ref<OfferEntity>;
+
   @prop({ required: true })
   public date: Date;
 

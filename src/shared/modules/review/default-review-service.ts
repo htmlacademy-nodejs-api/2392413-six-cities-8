@@ -27,7 +27,12 @@ export class DefaultReviewService implements ReviewService {
     return result;
   }
 
-  findByOfferId(offerId: string): Promise<ReviewEntityDocument[] | null> {
-    return this.reviewModel.find({ offerId }).populate(['userId']).exec();
+  async findByOfferId(offerId: string): Promise<ReviewEntityDocument[] | null> {
+    const result = await this.reviewModel
+      .find({ offerId })
+      .populate(['userId'])
+      .exec();
+
+    return result;
   }
 }

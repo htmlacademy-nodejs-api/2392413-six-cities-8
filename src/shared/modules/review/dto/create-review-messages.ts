@@ -10,6 +10,9 @@ export const CreateReviewValidationMessage = {
   userId: {
     invalidId: 'userId field must be a valid id',
   },
+  offerId: {
+    invalidId: 'offerId field must be a valid id',
+  },
   rating: {
     invalidFormat: 'Rating must be an number',
     minValue: 'Minimum rating is 1',

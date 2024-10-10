@@ -6,6 +6,7 @@ POST http://localhost:4000/reviews/670530d901266b562fbdc0ef HTTP/1.1
 Content-Type: application/json
 
 {
+  "offerId": "67069067990eba53b6c2b130",
   "date": "2024-08-10T08:11:23.283Z",
   "userId": "6704f9003df41d32ec047a0e",
   "comment": "test sdhfskdhfks",
