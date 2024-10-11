@@ -57,7 +57,10 @@ export class DefaultOfferService implements OfferService {
   }
 
   async findById(offerId: string): Promise<OfferEntityDocument | null> {
-    const reviewsCount = await this.reviewModel.countDocuments({ offerId });
+    const [reviews] = await this.reviewModel.aggregate([
+      { $match: { offerId } },
+      { $count: 'reviewsCount' },
+    ]);
 
     const result = await this.offerModel
       .findById(offerId)
@@ -65,7 +68,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
 
     if (result) {
-      Object.assign(result, { reviewsCount });
+      Object.assign(result, { reviewsCount: reviews.reviewsCount });
     }
 
     return result;

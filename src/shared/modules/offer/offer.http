@@ -3,7 +3,7 @@ GET http://localhost:4000/offers HTTP/1.1
 
 
 ###
-GET http://localhost:4000/offers/6704fcf766a898ea0a74d35d HTTP/1.1
+GET http://localhost:4000/offers/670530d901266b562fbdc0ef HTTP/1.1
 
 ###
 POST http://localhost:4000/offers/ HTTP/1.1
