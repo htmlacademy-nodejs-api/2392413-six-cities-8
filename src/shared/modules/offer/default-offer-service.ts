@@ -57,7 +57,18 @@ export class DefaultOfferService implements OfferService {
   }
 
   async findById(offerId: string): Promise<OfferEntityDocument | null> {
-    return await this.offerModel.findById(offerId).populate(['userId']).exec();
+    const reviewsCount = await this.reviewModel.countDocuments({ offerId });
+
+    const result = await this.offerModel
+      .findById(offerId)
+      .populate(['userId'])
+      .exec();
+
+    if (result) {
+      Object.assign(result, { reviewsCount });
+    }
+
+    return result;
   }
 
   async findPremiumByCity(
