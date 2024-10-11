@@ -78,10 +78,28 @@ export class DefaultOfferService implements OfferService {
     recordCount: number = DEFAULT_OFFERS_LIMIT
   ): Promise<OfferEntityDocument[]> {
     return this.offerModel
-      .find()
+      .aggregate([
+        {
+          $lookup: {
+            from: 'reviews',
+            localField: '_id',
+            foreignField: 'offerId',
+            as: 'reviewsCount',
+          },
+        },
+        { $addFields: { reviewsCount: { $size: '$reviewsCount' } } },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'userId',
+          },
+        },
+        { $unwind: '$userId' },
+      ])
       .sort({ createdAt: SortType.Down })
       .limit(recordCount)
-      .populate(['userId'])
       .exec();
   }
 

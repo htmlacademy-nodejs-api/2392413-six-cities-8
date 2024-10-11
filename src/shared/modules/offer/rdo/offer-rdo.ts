@@ -64,4 +64,7 @@ export class OfferRdo implements Omit<OfferEntity, OfferExcludeType> {
 
   @Expose()
   public location: Location;
+
+  @Expose()
+  public reviewsCount: number;
 }
