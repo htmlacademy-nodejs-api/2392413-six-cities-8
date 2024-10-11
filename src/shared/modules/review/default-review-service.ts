@@ -2,6 +2,8 @@ import { Logger } from '#libs/logger/logger.interface.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
+import mongoose from 'mongoose';
+import { OfferService } from '../offer/offer-service.interface.js';
 import { CreateReviewDto } from './dto/create-review-dto.js';
 import { ReviewEntity } from './review-entity.js';
 import {
@@ -14,7 +16,9 @@ export class DefaultReviewService implements ReviewService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.ReviewModel)
-    private readonly reviewModel: types.ModelType<ReviewEntity>
+    private readonly reviewModel: types.ModelType<ReviewEntity>,
+    @inject(Component.OfferService)
+    private readonly offerService: OfferService
   ) {}
 
   async create(
@@ -22,8 +26,13 @@ export class DefaultReviewService implements ReviewService {
     dto: CreateReviewDto
   ): Promise<ReviewEntityDocument> {
     const result = await this.reviewModel.create({ ...dto, offerId });
-    this.logger.info('New review created');
+    const [review] = await this.reviewModel.aggregate([
+      { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
+      { $group: { _id: null, averageRating: { $avg: '$rating' } } },
+    ]);
 
+    this.offerService.updateRating(offerId, review.averageRating);
+    this.logger.info('New review created');
     return result;
   }
 
