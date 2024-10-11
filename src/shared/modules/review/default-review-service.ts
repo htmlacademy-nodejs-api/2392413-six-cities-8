@@ -1,9 +1,9 @@
 import { Logger } from '#libs/logger/logger.interface.js';
+import { OfferService } from '#modules/offer/offer-service.interface.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
-import { OfferService } from '../offer/offer-service.interface.js';
 import { CreateReviewDto } from './dto/create-review-dto.js';
 import { ReviewEntity } from './review-entity.js';
 import {
