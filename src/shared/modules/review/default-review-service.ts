@@ -33,7 +33,7 @@ export class DefaultReviewService implements ReviewService {
 
     this.offerService.updateRating(offerId, review.averageRating);
     this.logger.info('New review created');
-    return result;
+    return result.populate('userId');
   }
 
   async findByOfferId(offerId: string): Promise<ReviewEntityDocument[] | null> {
