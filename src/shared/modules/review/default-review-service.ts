@@ -21,17 +21,22 @@ export class DefaultReviewService implements ReviewService {
     private readonly offerService: OfferService
   ) {}
 
+  async calculateAverageRating(offerId: string): Promise<number> {
+    const [review] = await this.reviewModel.aggregate<Record<string, number>>([
+      { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
+      { $group: { _id: null, averageRating: { $avg: '$rating' } } },
+    ]);
+    return +review.averageRating.toFixed(1);
+  }
+
   async create(
     offerId: string,
     dto: CreateReviewDto
   ): Promise<ReviewEntityDocument> {
     const result = await this.reviewModel.create({ ...dto, offerId });
-    const [review] = await this.reviewModel.aggregate([
-      { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
-      { $group: { _id: null, averageRating: { $avg: '$rating' } } },
-    ]);
+    const averageRating = await this.calculateAverageRating(offerId);
 
-    this.offerService.updateRating(offerId, review.averageRating);
+    this.offerService.updateRating(offerId, averageRating);
     this.logger.info('New review created');
     return result.populate('userId');
   }
