@@ -1,6 +1,8 @@
 import { Logger } from '#libs/logger/logger.interface.js';
+import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
+import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateUserDto } from './dto/create-user-dto.js';
 import { LoginUserDto } from './dto/login-user-dto.js';
@@ -19,6 +21,15 @@ export class DefaultUserService implements UserService {
     dto: CreateUserDto,
     salt: string
   ): Promise<UserEntityDocument> {
+    const existedUser = await this.findByEmail(dto.email);
+    if (existedUser) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        `User with email "${dto.email}" already exists.`,
+        'DefaultUserService'
+      );
+    }
+
     const user = new UserEntity(dto);
     user.setPassword(dto.password, salt);
 
@@ -45,9 +56,9 @@ export class DefaultUserService implements UserService {
     return this.create(dto, salt);
   }
 
-  public async login(dto: LoginUserDto): Promise<UserEntityDocument | null> {
+  public async login(_dto: LoginUserDto): Promise<UserEntityDocument | null> {
     throw new Error('++token');
-    const existedUser = await this.findByEmail(dto.email);
-    return existedUser;
+    //const existedUser = await this.findByEmail(dto.email);
+    //return existedUser;
   }
 }

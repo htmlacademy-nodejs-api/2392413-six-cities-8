@@ -2,26 +2,3 @@
 GET http://localhost:3123/api HTTP/1.1
 
 ###
-
-POST http://localhost:4000/users/register HTTP/1.1
-Content-Type: application/json
-
-{
-  "name": "Vova",
-  "email": "vova4@ya.ru",
-  "avatarUrl": "",
-  "password": "kjsksjdfks",
-  "isPro": false
-}
-
-
-###
-POST http://localhost:4000/users/login HTTP/1.1
-Content-Type: application/json
-
-{
-  "email": "vova4@ya.ru",
-  "password": "kjsksjdfks1"
-}
-
-###
