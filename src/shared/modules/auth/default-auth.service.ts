@@ -12,7 +12,7 @@ import { AuthService } from './auth-service.interface.js';
 import { JWT_ALGORITHM, JWT_EXPIRED } from './auth.constant.js';
 import { UserNotFoundException } from './errors/user-not-found.exception.js';
 import { UserPasswordIncorrectException } from './errors/user-password-incorrect.exception.js';
-import { TokenPayload } from './types/TokenPayload.js';
+import { TokenPayload } from './types/token-payload.js';
 
 @injectable()
 export class DefaultAuthService implements AuthService {
