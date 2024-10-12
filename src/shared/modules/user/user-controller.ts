@@ -90,7 +90,7 @@ export class UserController extends BaseController {
 
     if (
       !existedUser ||
-      (existedUser && !existedUser.isValidPassword(body.password, this.salt))
+      (existedUser && !existedUser.verifyPassword(body.password, this.salt))
     ) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
