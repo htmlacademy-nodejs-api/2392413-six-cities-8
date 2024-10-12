@@ -8,7 +8,6 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  IsMongoId,
   IsNumber,
   IsObject,
   IsString,
@@ -92,7 +91,6 @@ export class CreateOfferDto {
   @IsArray({ message: CreateOfferValidationMessage.goods.invalidFormat })
   public goods: GoodType[];
 
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId: string;
 
   @IsObject({ message: CreateOfferValidationMessage.location.invalidFormat })

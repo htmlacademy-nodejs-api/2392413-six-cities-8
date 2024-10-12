@@ -4,6 +4,7 @@ import { Config } from '#src/shared/libs/config/config.interface.js';
 import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
+import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
 import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
 import { UploadFileMiddleware } from '#src/shared/libs/rest/middleware/upload-file.middleware.js';
 import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
@@ -11,6 +12,7 @@ import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/val
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateUserRequest } from './create-user-request.type.js';
 import { CreateUserDto } from './dto/create-user-dto.js';
@@ -65,7 +67,7 @@ export class UserController extends BaseController {
     this.addRoute({
       path: '/login',
       method: HttpMethod.Get,
-      handler: this.getState,
+      handler: this.getAuthorizeState,
     });
 
     this.addRoute({
@@ -102,9 +104,21 @@ export class UserController extends BaseController {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public getState(_req: Request, _res: Response): void {
-    // Код обработчика
+  public async getAuthorizeState(req: Request, res: Response): Promise<void> {
+    const {
+      tokenPayload: { email },
+    } = req;
+    const foundedUser = await this.userService.findByEmail(email);
+
+    if (!foundedUser) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UserController'
+      );
+    }
+
+    this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
