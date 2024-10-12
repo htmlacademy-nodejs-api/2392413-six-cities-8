@@ -5,6 +5,7 @@ import { DatabaseClient } from '#libs/database-client/database-client.interface.
 import { Logger } from '#libs/logger/logger.interface.js';
 import { Controller } from '#src/shared/libs/rest/controller/controller.interface.js';
 import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
+import { ParseTokenMiddleware } from '#src/shared/libs/rest/middleware/parse-token.middleware.js';
 import { Component } from '#types/component.enum.js';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
@@ -49,10 +50,16 @@ export class RestApplication {
   }
 
   private async _initMiddleware() {
+    const authenticateMiddleware = new ParseTokenMiddleware(
+      this.config.get('JWT_SECRET')
+    );
     this.server.use(express.json());
     this.server.use(
       '/upload',
       express.static(this.config.get('UPLOAD_DIRECTORY'))
+    );
+    this.server.use(
+      authenticateMiddleware.execute.bind(authenticateMiddleware)
     );
   }
 

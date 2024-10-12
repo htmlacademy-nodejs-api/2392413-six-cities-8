@@ -2,6 +2,7 @@ import { fillDTO } from '#src/shared/helpers/common.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { DocumentExistsMiddleware } from '#src/shared/libs/rest/middleware/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
 import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
@@ -39,7 +40,10 @@ export class OfferController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)],
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto),
+      ],
     });
 
     this.addRoute({
@@ -47,6 +51,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Put,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
@@ -58,6 +63,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -83,6 +89,7 @@ export class OfferController extends BaseController {
       path: '/favorite',
       method: HttpMethod.Get,
       handler: this.getFavoriteOffers,
+      middlewares: [new PrivateRouteMiddleware()],
     });
 
     this.addRoute({
@@ -90,6 +97,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Post,
       handler: this.updateFavorite,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
