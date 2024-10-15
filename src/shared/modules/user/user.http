@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:4000/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJpZCI6IjY0NzBiYzM4M2UzMGRiNjc5ZGZhYzJkMiIsImlhdCI6MTY4NTk3NTQ4MiwiZXhwIjoxNjg2MTQ4MjgyfQ.Gq2-B1egouAnMxmXlR2ElVT6wCa97PS6lxzVI8LnGvo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InZvdmFAeWEucnUiLCJuYW1lIjoiVm92YSIsImlkIjoiNjcwZDE2NDQ3ZWI1YTNmYTU3MDRmY2E1IiwiaWF0IjoxNzI4OTExMTE1LCJleHAiOjE3MjkwODM5MTV9.skSEJw8nMWo4PRgJOdmMqa4opNr9q8TVgd-on9dOG5c
 
 
 ### Отправить изображение

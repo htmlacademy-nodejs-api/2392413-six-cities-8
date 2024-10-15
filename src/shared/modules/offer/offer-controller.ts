@@ -31,13 +31,13 @@ export class OfferController extends BaseController {
     this.logger.info('Register routes for OfferController...');
 
     this.addRoute({
-      path: '/',
+      path: '/offers',
       method: HttpMethod.Get,
       handler: this.getOffers,
     });
 
     this.addRoute({
-      path: '/',
+      path: '/offers',
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -47,7 +47,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/offers/:offerId',
       method: HttpMethod.Put,
       handler: this.update,
       middlewares: [
@@ -59,7 +59,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/offers/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
@@ -70,7 +70,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/offers/:offerId',
       method: HttpMethod.Get,
       handler: this.getOfferDetail,
       middlewares: [
@@ -80,7 +80,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/premium/:cityName',
+      path: '/offers/premium/:cityName',
       method: HttpMethod.Get,
       handler: this.getPremiumByCity,
     });
@@ -162,8 +162,13 @@ export class OfferController extends BaseController {
     req: Request<ParamUpdateFavorite>,
     res: Response
   ): Promise<void> {
+    const { tokenPayload } = req;
     const { offerId, status } = req.params;
-    const offers = await this.offerService.updateFavorite(offerId, +status);
+    const offers = await this.offerService.updateFavorite(
+      tokenPayload.id,
+      offerId,
+      +status
+    );
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 }

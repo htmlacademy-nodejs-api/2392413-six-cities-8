@@ -17,8 +17,9 @@ export interface OfferService extends DocumentExists {
   find(): Promise<OfferEntityDocument[]>;
   findPremiumByCity(cityName: CityName): Promise<OfferEntityDocument[] | null>;
   updateFavorite(
+    userId: string,
     offerId: string,
-    isFavorite: number
+    status: number
   ): Promise<OfferEntityDocument | null>;
   updateRating(
     offerId: string,

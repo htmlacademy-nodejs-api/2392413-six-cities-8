@@ -7,9 +7,6 @@ import {
   prop,
 } from '@typegoose/typegoose';
 
-const MIN_NAME_LENGTH = 1;
-const MAX_NAME_LENGTH = 15;
-
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface UserEntity extends defaultClasses.Base {}
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -21,11 +18,7 @@ export interface UserEntity extends defaultClasses.Base {}
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class UserEntity extends defaultClasses.TimeStamps implements User {
-  @prop({
-    required: true,
-    minlength: MIN_NAME_LENGTH,
-    maxlength: MAX_NAME_LENGTH,
-  })
+  @prop({ required: true })
   public name: string;
 
   @prop({ unique: true, required: true })
@@ -42,6 +35,9 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   @prop({ required: true })
   public isPro: boolean;
+
+  @prop({ required: false, default: [] })
+  public favoriteOffers: string[];
 
   constructor(userData: User) {
     super();

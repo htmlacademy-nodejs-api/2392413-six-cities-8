@@ -3,6 +3,8 @@ import { GoodType } from '#types/good-type.type.js';
 import { Location } from '#types/location.type.js';
 import { OfferType } from '#types/offer-type.enum.js';
 import {
+  ArrayMaxSize,
+  ArrayMinSize,
   IsArray,
   IsBoolean,
   IsDateString,
@@ -12,7 +14,6 @@ import {
   IsObject,
   IsString,
   IsUrl,
-  Length,
   Max,
   MaxLength,
   Min,
@@ -53,14 +54,12 @@ export class CreateOfferDto {
   public previewImage: string;
 
   @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
-  @Length(6, 6, { message: CreateOfferValidationMessage.images.length })
+  @ArrayMinSize(6, { message: CreateOfferValidationMessage.images.length })
+  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.images.length })
   public images: string[];
 
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium: boolean;
-
-  @IsBoolean({ message: CreateOfferValidationMessage.isFavorite.invalidFormat })
-  public isFavorite: boolean;
 
   @IsNumber(
     { maxDecimalPlaces: 1 },
