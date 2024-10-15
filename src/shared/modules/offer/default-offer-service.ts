@@ -130,7 +130,6 @@ export class DefaultOfferService implements OfferService {
   async findFavorites(favoritesId: string[]): Promise<OfferEntityDocument[]> {
     if (!favoritesId.length) {
       return [];
-      ``;
     }
     const offers = await this.offerModel
       .find({ _id: { $in: favoritesId } })
