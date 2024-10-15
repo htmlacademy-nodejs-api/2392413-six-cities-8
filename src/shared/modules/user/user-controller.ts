@@ -121,8 +121,11 @@ export class UserController extends BaseController {
     this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public logout(_req: Request, _res: Response): void {
-    // Код обработчика
+  public async logout(req: Request, res: Response): Promise<void> {
+    const {
+      tokenPayload: { email },
+    } = req;
+    await this.userService.findByEmail(email);
+    this.noContent(res, {});
   }
 }
