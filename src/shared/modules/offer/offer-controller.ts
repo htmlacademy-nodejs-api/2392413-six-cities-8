@@ -1,3 +1,4 @@
+import { UserService } from '#modules/user/user-service.interface.js';
 import { fillDTO } from '#src/shared/helpers/common.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
@@ -24,7 +25,9 @@ export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.OfferService)
-    protected readonly offerService: OfferService
+    protected readonly offerService: OfferService,
+    @inject(Component.UserService)
+    protected readonly userService: UserService
   ) {
     super(logger);
 
@@ -153,8 +156,14 @@ export class OfferController extends BaseController {
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
-  public async getFavoriteOffers(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findFavorites();
+  public async getFavoriteOffers(req: Request, res: Response): Promise<void> {
+    const {
+      tokenPayload: { email },
+    } = req;
+    const user = (await this.userService.findByEmail(email)) || {
+      favoriteOffers: [],
+    };
+    const offers = await this.offerService.findFavorites(user.favoriteOffers);
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 

@@ -127,11 +127,21 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  async findFavorites(): Promise<OfferEntityDocument[]> {
-    return this.offerModel
-      .find([{ isFavorite: true }])
+  async findFavorites(favoritesId: string[]): Promise<OfferEntityDocument[]> {
+    if (!favoritesId.length) {
+      return [];
+      ``;
+    }
+    const offers = await this.offerModel
+      .find({ _id: { $in: favoritesId } })
       .populate(['userId'])
       .exec();
+
+    offers.map((offer) => {
+      offer.isFavorite = true;
+    });
+
+    return offers;
   }
 
   async updateFavorite(
