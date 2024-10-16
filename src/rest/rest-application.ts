@@ -117,7 +117,7 @@ export class RestApplication {
     this.logger.info('Try to init server...');
     await this._initServer();
     this.logger.info(
-      `🚀 Server started on ${getFullServerPath(
+      `Server started on ${getFullServerPath(
         this.config.get('HOST'),
         this.config.get('PORT')
       )}`
