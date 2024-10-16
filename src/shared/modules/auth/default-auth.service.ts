@@ -1,3 +1,4 @@
+import { LoginUserDto } from '#modules/user/dto/login-user-dto.js';
 import { UserEntity } from '#modules/user/user-entity.js';
 import { UserService } from '#modules/user/user-service.interface.js';
 import { Config } from '#src/shared/libs/config/config.interface.js';
@@ -7,7 +8,6 @@ import { Component } from '#src/shared/types/component.enum.js';
 import { inject, injectable } from 'inversify';
 import { SignJWT } from 'jose';
 import * as crypto from 'node:crypto';
-import { LoginUserDto } from '../user/dto/login-user-dto.js';
 import { AuthService } from './auth-service.interface.js';
 import { JWT_ALGORITHM, JWT_EXPIRED } from './auth.constant.js';
 import { UserNotFoundException } from './errors/user-not-found.exception.js';
