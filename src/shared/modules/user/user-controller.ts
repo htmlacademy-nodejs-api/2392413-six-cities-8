@@ -103,8 +103,6 @@ export class UserController extends BaseController {
     this.ok(res, Object.assign(responseData, { token }));
   }
 
-  //  9.14;
-
   public async getAuthorizeState(req: Request, res: Response): Promise<void> {
     const {
       tokenPayload: { email },
