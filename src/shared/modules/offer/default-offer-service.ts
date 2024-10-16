@@ -174,7 +174,7 @@ export class DefaultOfferService implements OfferService {
       } else {
         throw new HttpError(
           StatusCodes.BAD_REQUEST,
-          `Status must be 1 or 0`,
+          'Status must be 1 or 0',
           'DefaultOfferService'
         );
       }
