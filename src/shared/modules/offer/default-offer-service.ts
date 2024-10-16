@@ -72,25 +72,11 @@ export class DefaultOfferService implements OfferService {
       .populate(['userId'])
       .exec();
 
-    if (result) {
-      Object.assign(result, { reviewsCount: reviews?.reviewsCount ?? 0 });
+    if (result !== null) {
+      result.reviewsCount = +reviews?.reviewsCount;
     }
 
     return result;
-  }
-
-  async findPremiumByCity(
-    cityName: CityName
-  ): Promise<OfferEntityDocument[] | null> {
-    return this.offerModel
-      .find({
-        city: cityName,
-        isPremium: true,
-      })
-      .sort({ createdAt: SortType.Down })
-      .limit(PREMIUM_OFFERS_LIMIT)
-      .populate(['userId'])
-      .exec();
   }
 
   async find(
@@ -124,6 +110,20 @@ export class DefaultOfferService implements OfferService {
       ])
       .sort({ createdAt: SortType.Down })
       .limit(recordCount)
+      .exec();
+  }
+
+  async findPremiumByCity(
+    cityName: CityName
+  ): Promise<OfferEntityDocument[] | null> {
+    return this.offerModel
+      .find({
+        city: cityName,
+        isPremium: true,
+      })
+      .sort({ createdAt: SortType.Down })
+      .limit(PREMIUM_OFFERS_LIMIT)
+      .populate(['userId'])
       .exec();
   }
 

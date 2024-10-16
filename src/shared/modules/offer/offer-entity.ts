@@ -73,6 +73,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({ required: true })
   public location: Location;
+
+  @prop({ required: false, default: 0 })
+  public reviewsCount: number;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

@@ -117,11 +117,6 @@ export class OfferController extends BaseController {
     this.created(res, fillDTO(OfferRdo, offer));
   }
 
-  public async getOffers(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.find();
-    this.ok(res, fillDTO(OfferRdo, offers));
-  }
-
   public async update(req: UpdateOfferRequest, res: Response): Promise<void> {
     const { params, body } = req;
     const result = await this.offerService.updateById(params.offerId, body);
@@ -135,6 +130,22 @@ export class OfferController extends BaseController {
     const { params } = req;
     const offer = await this.offerService.deleteById(params.offerId);
     this.ok(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async getOffers(req: Request, res: Response): Promise<void> {
+    const { tokenPayload } = req;
+    const offers = await this.offerService.find();
+
+    if (tokenPayload) {
+      const user = await this.userService.findByEmail(tokenPayload.email);
+      if (user) {
+        offers.map((offer) => {
+          offer.isFavorite = user.favoriteOffers.includes(offer.id);
+        });
+      }
+    }
+
+    this.ok(res, fillDTO(OfferRdo, offers));
   }
 
   public async getOfferDetail(

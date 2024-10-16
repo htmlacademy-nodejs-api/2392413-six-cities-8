@@ -1,9 +1,9 @@
 ###
 GET http://localhost:4000/offers HTTP/1.1
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InZvdmFAeWEucnUiLCJuYW1lIjoiVm92YSIsImlkIjoiNjcwZDE2NDQ3ZWI1YTNmYTU3MDRmY2E1IiwiaWF0IjoxNzI4OTExMTE1LCJleHAiOjE3MjkwODM5MTV9.skSEJw8nMWo4PRgJOdmMqa4opNr9q8TVgd-on9dOG5c
 
 ###
-GET http://localhost:4000/offers/670d33093c603a38e9ef119c HTTP/1.1
+GET http://localhost:4000/offers/670f427661c4eec5db8dbcf6 HTTP/1.1
 
 ###
 POST http://localhost:4000/offers/ HTTP/1.1
