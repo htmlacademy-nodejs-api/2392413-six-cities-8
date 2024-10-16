@@ -20,6 +20,9 @@ export interface OfferService extends DocumentExists {
     offerId: string,
     isFavorite: number
   ): Promise<OfferEntityDocument | null>;
-  updateRating(offerId: string): Promise<OfferEntityDocument | null>;
+  updateRating(
+    offerId: string,
+    rating: number
+  ): Promise<OfferEntityDocument | null>;
   findFavorites(): Promise<OfferEntityDocument[]>;
 }

@@ -57,7 +57,21 @@ export class DefaultOfferService implements OfferService {
   }
 
   async findById(offerId: string): Promise<OfferEntityDocument | null> {
-    return await this.offerModel.findById(offerId).populate(['userId']).exec();
+    const [reviews] = await this.reviewModel.aggregate([
+      { $match: { offerId } },
+      { $count: 'reviewsCount' },
+    ]);
+
+    const result = await this.offerModel
+      .findById(offerId)
+      .populate(['userId'])
+      .exec();
+
+    if (result) {
+      Object.assign(result, { reviewsCount: reviews.reviewsCount });
+    }
+
+    return result;
   }
 
   async findPremiumByCity(
@@ -119,16 +133,10 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  async updateRating(offerId: string): Promise<OfferEntityDocument | null> {
-    ///// Очень сомневаюсь в правильности
-    const [{ averageRating }] = await this.reviewModel.aggregate([
-      { $match: { offerId } },
-      { $group: { _id: null, averageRating: { $avg: '$rating' } } },
-    ]);
-
-    return this.offerModel
-      .findByIdAndUpdate(offerId, [{ rating: averageRating }], { new: true })
-      .populate(['userId'])
-      .exec();
+  async updateRating(
+    offerId: string,
+    rating: number
+  ): Promise<OfferEntityDocument | null> {
+    return this.offerModel.findByIdAndUpdate(offerId, { rating }).exec();
   }
 }
