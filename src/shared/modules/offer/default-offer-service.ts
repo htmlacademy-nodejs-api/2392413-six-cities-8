@@ -47,7 +47,8 @@ export class DefaultOfferService implements OfferService {
     const result = await this.offerModel.findByIdAndUpdate(offerId, dto, {
       new: true,
     });
-    this.logger.info(`Offer updated: ${dto.title}`);
+
+    this.logger.info(`Offer updated: ${offerId}`);
 
     return result;
   }
