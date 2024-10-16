@@ -145,6 +145,10 @@ export class OfferController extends BaseController {
       }
     }
 
+    offers.map((offer) => {
+      offer.id = offer._id.toHexString();
+    });
+
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
