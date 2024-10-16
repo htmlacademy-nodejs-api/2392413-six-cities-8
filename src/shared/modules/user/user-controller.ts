@@ -94,14 +94,8 @@ export class UserController extends BaseController {
     const { body }: LoginUserRequest = req;
     const user = await this.authService.verify(body);
     const token = await this.authService.authenticate(user);
-
-    this.ok(
-      res,
-      fillDTO(LoggedUserRdo, {
-        email: user.email,
-        token,
-      })
-    );
+    const responseData = fillDTO(LoggedUserRdo, user);
+    this.ok(res, Object.assign(responseData, { token }));
   }
 
   public async getAuthorizeState(req: Request, res: Response): Promise<void> {
