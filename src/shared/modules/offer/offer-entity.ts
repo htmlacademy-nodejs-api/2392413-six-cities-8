@@ -9,6 +9,7 @@ import {
   modelOptions,
   prop,
   Ref,
+  Severity,
 } from '@typegoose/typegoose';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -20,6 +21,7 @@ export interface OfferEntity extends defaultClasses.Base {}
     collection: 'offers',
     timestamps: true,
   },
+  options: { allowMixed: Severity.ALLOW },
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
@@ -44,7 +46,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public isPremium: boolean;
 
-  @prop({ required: true })
+  @prop({ required: true, default: false })
   public isFavorite: boolean;
 
   @prop({ required: true })
@@ -73,6 +75,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({ required: true })
   public location: Location;
+
+  @prop({ required: false, default: 0 })
+  public reviewsCount: number;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

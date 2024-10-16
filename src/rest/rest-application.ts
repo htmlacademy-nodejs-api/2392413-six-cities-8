@@ -5,6 +5,7 @@ import { DatabaseClient } from '#libs/database-client/database-client.interface.
 import { Logger } from '#libs/logger/logger.interface.js';
 import { Controller } from '#src/shared/libs/rest/controller/controller.interface.js';
 import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
+import { ParseTokenMiddleware } from '#src/shared/libs/rest/middleware/parse-token.middleware.js';
 import { Component } from '#types/component.enum.js';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
@@ -24,7 +25,9 @@ export class RestApplication {
     @inject(Component.ReviewController)
     private readonly reviewController: Controller,
     @inject(Component.ExceptionFilter)
-    private readonly appExceptionFilter: ExceptionFilter
+    private readonly appExceptionFilter: ExceptionFilter,
+    @inject(Component.AuthExceptionFilter)
+    private readonly authExceptionFilter: ExceptionFilter
   ) {
     this.server = express();
   }
@@ -47,22 +50,31 @@ export class RestApplication {
   }
 
   private async _initMiddleware() {
+    const authenticateMiddleware = new ParseTokenMiddleware(
+      this.config.get('JWT_SECRET')
+    );
     this.server.use(express.json());
     this.server.use(
       '/upload',
       express.static(this.config.get('UPLOAD_DIRECTORY'))
     );
+    this.server.use(
+      authenticateMiddleware.execute.bind(authenticateMiddleware)
+    );
   }
 
   private async _initControllers() {
     this.server.use('/users', this.userController.router);
-    this.server.use('/offers', this.offerController.router);
+    this.server.use('/', this.offerController.router);
     this.server.use('/reviews', this.reviewController.router);
   }
 
   private async _initExceptionFilter() {
     this.server.use(
       this.appExceptionFilter.catch.bind(this.appExceptionFilter)
+    );
+    this.server.use(
+      this.authExceptionFilter.catch.bind(this.authExceptionFilter)
     );
   }
 
@@ -89,7 +101,7 @@ export class RestApplication {
     this.logger.info('Try to init server...');
     await this._initServer();
     this.logger.info(
-      `🚀 Server started on http://localhost:${this.config.get('PORT')}`
+      `Server started on http://localhost:${this.config.get('PORT')}`
     );
   }
 }

@@ -1,9 +1,12 @@
 import { Logger } from '#libs/logger/logger.interface.js';
 import { ReviewEntity } from '#modules/review/review-entity.js';
+import { UserEntity } from '#modules/user/user-entity.js';
+import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
 import { CityName } from '#src/shared/types/city-name.enum.js';
 import { SortType } from '#src/shared/types/sort-type.enum.js';
 import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
+import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
@@ -22,7 +25,9 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.OfferModel)
     private readonly offerModel: types.ModelType<OfferEntity>,
     @inject(Component.ReviewModel)
-    private readonly reviewModel: types.ModelType<ReviewEntity>
+    private readonly reviewModel: types.ModelType<ReviewEntity>,
+    @inject(Component.UserModel)
+    private readonly userModel: types.ModelType<UserEntity>
   ) {}
 
   public async exists(documentId: string): Promise<boolean> {
@@ -67,11 +72,45 @@ export class DefaultOfferService implements OfferService {
       .populate(['userId'])
       .exec();
 
-    if (result) {
-      Object.assign(result, { reviewsCount: reviews.reviewsCount });
+    if (result !== null) {
+      result.reviewsCount = +reviews?.reviewsCount;
     }
 
     return result;
+  }
+
+  async find(
+    recordCount: number = DEFAULT_OFFERS_LIMIT
+  ): Promise<OfferEntityDocument[]> {
+    return this.offerModel
+      .aggregate([
+        {
+          $lookup: {
+            from: 'reviews',
+            localField: '_id',
+            foreignField: 'offerId',
+            as: 'reviewsCount',
+          },
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'userId',
+          },
+        },
+        {
+          $addFields: {
+            reviewsCount: { $size: '$reviewsCount' },
+            isFavorite: false,
+          },
+        },
+        { $unwind: '$userId' },
+      ])
+      .sort({ createdAt: SortType.Down })
+      .limit(recordCount)
+      .exec();
   }
 
   async findPremiumByCity(
@@ -88,49 +127,64 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  async find(
-    recordCount: number = DEFAULT_OFFERS_LIMIT
-  ): Promise<OfferEntityDocument[]> {
-    return this.offerModel
-      .aggregate([
-        {
-          $lookup: {
-            from: 'reviews',
-            localField: '_id',
-            foreignField: 'offerId',
-            as: 'reviewsCount',
-          },
-        },
-        { $addFields: { reviewsCount: { $size: '$reviewsCount' } } },
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'userId',
-            foreignField: '_id',
-            as: 'userId',
-          },
-        },
-        { $unwind: '$userId' },
-      ])
-      .sort({ createdAt: SortType.Down })
-      .limit(recordCount)
-      .exec();
-  }
-
-  async findFavorites(): Promise<OfferEntityDocument[]> {
-    return this.offerModel
-      .find([{ isFavorite: true }])
+  async findFavorites(favoritesId: string[]): Promise<OfferEntityDocument[]> {
+    if (!favoritesId.length) {
+      return [];
+    }
+    const offers = await this.offerModel
+      .find({ _id: { $in: favoritesId } })
       .populate(['userId'])
       .exec();
+
+    offers.map((offer) => {
+      offer.isFavorite = true;
+    });
+
+    return offers;
   }
 
   async updateFavorite(
+    userId: string,
     offerId: string,
     status: number
   ): Promise<OfferEntityDocument | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, [{ isFavorite: status === 1 }], { new: true })
-      .exec();
+    const user = await this.userModel.findById(userId);
+    if (user) {
+      if (status === 1) {
+        if (user.favoriteOffers.includes(offerId)) {
+          throw new HttpError(
+            StatusCodes.CONFLICT,
+            `User with id "${userId}" already has an offer with id "${offerId}" in favorites`,
+            'DefaultOfferService'
+          );
+        }
+        user.favoriteOffers.push(offerId);
+      } else if (status === 0) {
+        if (!user.favoriteOffers.includes(offerId)) {
+          throw new HttpError(
+            StatusCodes.CONFLICT,
+            `User with id "${userId}" has not an offer with id "${offerId}" in favorites`,
+            'DefaultOfferService'
+          );
+        }
+
+        user.favoriteOffers = user.favoriteOffers.filter(
+          (id) => id !== offerId
+        );
+      } else {
+        throw new HttpError(
+          StatusCodes.BAD_REQUEST,
+          `Status must be 1 or 0`,
+          'DefaultOfferService'
+        );
+      }
+
+      await this.userModel
+        .findByIdAndUpdate(userId, { favoriteOffers: user.favoriteOffers })
+        .exec();
+    }
+
+    return await this.findById(offerId);
   }
 
   async updateRating(

@@ -4,6 +4,7 @@ import { fillDTO } from '#src/shared/helpers/common.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { DocumentExistsMiddleware } from '#src/shared/libs/rest/middleware/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
 import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
@@ -44,6 +45,7 @@ export class ReviewController extends BaseController {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(CreateReviewDto),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
@@ -55,9 +57,12 @@ export class ReviewController extends BaseController {
     req: Request<ParamOfferId, RequestBody, CreateReviewDto>,
     res: Response
   ): Promise<void> {
-    const { body } = req;
+    const { body, tokenPayload } = req;
     const { params } = req;
-    const review = await this.reviewService.create(params.offerId, body);
+    const review = await this.reviewService.create(params.offerId, {
+      ...body,
+      userId: tokenPayload.id,
+    });
     this.created(res, fillDTO(ReviewRdo, review));
   }
 
