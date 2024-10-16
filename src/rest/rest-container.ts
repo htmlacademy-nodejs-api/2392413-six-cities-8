@@ -7,6 +7,8 @@ import { Logger } from '#libs/logger/logger.interface.js';
 import { PinoLogger } from '#libs/logger/pino-logger.js';
 import { AppExceptionFilter } from '#src/shared/libs/rest/exception-filter/app-exception-filter.js';
 import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
+import { HttpErrorExceptionFilter } from '#src/shared/libs/rest/exception-filter/http-error.exception-filter.js';
+import { ValidationExceptionFilter } from '#src/shared/libs/rest/exception-filter/validation.exception-filter.js';
 import { Component } from '#types/component.enum.js';
 import { Container } from 'inversify';
 import { RestApplication } from './rest-application.js';
@@ -33,6 +35,14 @@ export function createRestApplicationContainer() {
   restApplicationContainer
     .bind<ExceptionFilter>(Component.ExceptionFilter)
     .to(AppExceptionFilter)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<ExceptionFilter>(Component.HttpExceptionFilter)
+    .to(HttpErrorExceptionFilter)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<ExceptionFilter>(Component.ValidationExceptionFilter)
+    .to(ValidationExceptionFilter)
     .inSingletonScope();
 
   return restApplicationContainer;
