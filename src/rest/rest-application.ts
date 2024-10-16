@@ -8,6 +8,7 @@ import { Controller } from '#src/shared/libs/rest/controller/controller.interfac
 import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
 import { ParseTokenMiddleware } from '#src/shared/libs/rest/middleware/parse-token.middleware.js';
 import { Component } from '#types/component.enum.js';
+import cors from 'cors';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
 import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from './rest.constant.js';
@@ -71,6 +72,7 @@ export class RestApplication {
     this.server.use(
       authenticateMiddleware.execute.bind(authenticateMiddleware)
     );
+    this.server.use(cors());
   }
 
   private async _initControllers() {
