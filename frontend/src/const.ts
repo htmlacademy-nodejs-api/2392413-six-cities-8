@@ -1,4 +1,4 @@
-import { Offer, Location, CityName, SortName } from './types/types';
+import { CityName, Location, Offer, SortName } from './types/types';
 
 export const CITIES = [
   'Paris',
@@ -67,7 +67,7 @@ export enum Sorting {
 
 export enum UserType {
   Pro = 'pro',
-  Regular = 'regular'
+  Regular = 'regular',
 }
 
 export enum StoreSlice {
@@ -77,8 +77,12 @@ export enum StoreSlice {
 }
 
 export enum HttpCode {
-  NotFound = 404,
-  NoAuth = 401,
+  OK = 200,
+  CREATED = 201,
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  NOT_FOUND = 404,
+  CONFLICT = 409,
 }
 
 export enum SubmitStatus {
