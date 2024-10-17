@@ -49,4 +49,8 @@ export class DefaultReviewService implements ReviewService {
 
     return result;
   }
+
+  public async deleteByOfferId(offerId: string): Promise<void> {
+    await this.reviewModel.deleteMany({ offerId }).exec();
+  }
 }

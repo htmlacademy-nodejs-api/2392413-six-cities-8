@@ -14,6 +14,7 @@ import { CityName } from '#src/shared/types/city-name.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
+import { ReviewService } from '../review/review-service.interface.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferService } from './offer-service.interface.js';
@@ -34,7 +35,10 @@ export class OfferController extends BaseController {
     protected readonly offerService: OfferService,
     @inject(Component.UserService)
     protected readonly userService: UserService,
-    @inject(Component.Config) private readonly configService: Config<RestSchema>
+    @inject(Component.Config)
+    private readonly configService: Config<RestSchema>,
+    @inject(Component.ReviewService)
+    protected readonly reviewService: ReviewService
   ) {
     super(logger);
 
@@ -58,7 +62,7 @@ export class OfferController extends BaseController {
 
     this.addRoute({
       path: '/offers/:offerId',
-      method: HttpMethod.Put,
+      method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
         new PrivateRouteMiddleware(),
@@ -161,7 +165,8 @@ export class OfferController extends BaseController {
   public async delete(req: UpdateOfferRequest, res: Response) {
     const { params } = req;
     const offer = await this.offerService.deleteById(params.offerId);
-    this.ok(res, fillDTO(OfferRdo, offer));
+    await this.reviewService.deleteByOfferId(params.offerId);
+    this.noContent(res, fillDTO(OfferRdo, offer));
   }
 
   public async getOffers(req: Request, res: Response): Promise<void> {
