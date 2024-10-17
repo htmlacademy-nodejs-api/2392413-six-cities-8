@@ -9,13 +9,19 @@ GET http://localhost:4000/offers/670f427661c4eec5db8dbcf6 HTTP/1.1
 ###
 POST http://localhost:4000/offers/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InZvdmFAeWEucnUiLCJuYW1lIjoiVm92YSIsImlkIjoiNjcwZDE2NDQ3ZWI1YTNmYTU3MDRmY2E1IiwiaWF0IjoxNzI4OTExMTE1LCJleHAiOjE3MjkwODM5MTV9.skSEJw8nMWo4PRgJOdmMqa4opNr9q8TVgd-on9dOG5c
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InZvdmFAeWEucnUiLCJuYW1lIjoiVm92YSIsImlkIjoiNjcwZDE2NDQ3ZWI1YTNmYTU3MDRmY2E1IiwiaWF0IjoxNzI5MDk1Mzc2LCJleHAiOjE3MjkyNjgxNzZ9.dnss4FRLC7tjrl0UVaHxmI1q4VzZDsUkUuuW4jk1iyc
 
 {
   "title": "test kdf lsdjfks",
   "description": "testlk jl;dgjlkfjglksfjdl;gjafl;kgjl;fjg;lsjdfgl;sjdf;s",
   "createdDate": "2024-08-10T08:11:23.283Z",
-  "city": "Paris",
+  "city": {
+    "name": "Amsterdam",
+    "location": {
+      "latitude": 52.35514938496378,
+      "longitude": 4.673877537499948
+    }
+  },
   "previewImage": "http://test.ru/test.png",
   "images": [
     "http://test.ru/test1.png",

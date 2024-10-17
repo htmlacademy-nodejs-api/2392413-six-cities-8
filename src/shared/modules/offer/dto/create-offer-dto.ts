@@ -1,7 +1,7 @@
-import { CityName } from '#src/shared/types/city-name.enum.js';
 import { GoodType } from '#types/good-type.type.js';
 import { Location } from '#types/location.type.js';
 import { OfferType } from '#types/offer-type.enum.js';
+import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -18,7 +18,9 @@ import {
   MaxLength,
   Min,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { CityDto } from './city-dto.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
 export class CreateOfferDto {
@@ -41,8 +43,9 @@ export class CreateOfferDto {
   )
   public createdDate: Date;
 
-  @IsEnum(CityName, { message: CreateOfferValidationMessage.city.invalid })
-  public city: CityName;
+  @ValidateNested()
+  @Type(() => CityDto)
+  public city: CityDto;
 
   @IsString({
     message: CreateOfferValidationMessage.previewImage.invalidFormat,

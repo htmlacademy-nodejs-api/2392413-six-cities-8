@@ -105,7 +105,7 @@ export class DefaultOfferService implements OfferService {
           $addFields: {
             reviewsCount: { $size: '$reviewsCount' },
             isFavorite: false,
-            id: '$_id',
+            id: { $toString: '$_id' },
           },
         },
         { $unwind: '$userId' },

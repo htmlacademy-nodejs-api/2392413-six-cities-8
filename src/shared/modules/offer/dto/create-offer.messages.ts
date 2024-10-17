@@ -12,7 +12,7 @@ export const CreateOfferValidationMessage = {
     invalidFormat: 'createdDate must be a valid ISO date',
   },
   city: {
-    invalid: 'Invalid city name',
+    invalid: 'Invalid city object',
   },
   type: {
     invalid: 'type must be apartment, house, room or hotel',

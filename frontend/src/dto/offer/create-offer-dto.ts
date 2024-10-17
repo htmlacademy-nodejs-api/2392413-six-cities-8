@@ -1,10 +1,10 @@
-import { CityName, Type } from '../../types/types';
+import { City, Location, Type } from '../../types/types';
 
 export default class CreateOfferDto {
   public title!: string;
   public description!: string;
   public createdDate!: Date;
-  public city!: CityName;
+  public city!: City;
   public previewImage!: string;
   public images!: string[];
   public isPremium!: boolean;
