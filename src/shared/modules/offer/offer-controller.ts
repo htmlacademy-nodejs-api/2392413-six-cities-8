@@ -103,8 +103,19 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/favorites/:offerId/:status',
+      path: '/favorites/:offerId',
       method: HttpMethod.Post,
+      handler: this.updateFavorite,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: HttpMethod.Delete,
       handler: this.updateFavorite,
       middlewares: [
         new PrivateRouteMiddleware(),
@@ -203,12 +214,12 @@ export class OfferController extends BaseController {
     req: Request<ParamUpdateFavorite>,
     res: Response
   ): Promise<void> {
-    const { tokenPayload } = req;
-    const { offerId, status } = req.params;
+    const { tokenPayload, method } = req;
+    const { offerId } = req.params;
     const offers = await this.offerService.updateFavorite(
       tokenPayload.id,
       offerId,
-      +status
+      method
     );
     this.ok(res, fillDTO(OfferRdo, offers));
   }

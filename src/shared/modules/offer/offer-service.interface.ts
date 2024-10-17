@@ -19,7 +19,7 @@ export interface OfferService extends DocumentExists {
   updateFavorite(
     userId: string,
     offerId: string,
-    status: number
+    action: string
   ): Promise<OfferEntityDocument | null>;
   updateRating(
     offerId: string,

@@ -250,7 +250,7 @@ export const postFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.post<OfferRdo>(`${ApiRoute.Favorite}/${id}/1`);
+    const { data } = await api.post<OfferRdo>(`${ApiRoute.Favorite}/${id}`);
 
     return adaptOfferDetailToClient(data);
   } catch (error) {
@@ -272,7 +272,7 @@ export const deleteFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.delete<OfferRdo>(`${ApiRoute.Favorite}/${id}/0`);
+    const { data } = await api.delete<OfferRdo>(`${ApiRoute.Favorite}/${id}`);
 
     return adaptOfferDetailToClient(data);
   } catch (error) {

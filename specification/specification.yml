@@ -239,7 +239,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
 
-  /favorites/{offerId}/{status}:
+  /favorites/{offerId}:
     parameters:
       - in: path
         name: offerId
@@ -248,18 +248,23 @@ paths:
         schema:
           type: string
         required: true
-      - in: path
-        name: status
-        example: 1
-        description: 1 добавляет предложение в избранное, а 0 удаляет
-        schema:
-          type: number
-        required: true
     post:
       tags:
         - offers
-      summary: Добавить/удалить предложение в/из избранное
-      description: Добавление/удаление предложения в/из избранное
+      summary: Добавить предложение в избранное
+      description: Добавление предложения в избранное
+      responses:
+        '201':
+          description: Флаг избранного изменен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение из избранного
+      description: Удаление предложения из избранного
       responses:
         '201':
           description: Флаг избранного изменен
