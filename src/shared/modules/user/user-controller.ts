@@ -19,8 +19,8 @@ import { CreateUserDto } from './dto/create-user-dto.js';
 import { LoginUserDto } from './dto/login-user-dto.js';
 import { LoginUserRequest } from './login-user-request.type.js';
 import { LoggedUserRdo } from './rdo/logged-user-rdo.js';
+import { RegisteredUserRdo } from './rdo/registered-user-rdo.js';
 import { UploadUserAvatarRdo } from './rdo/upload-user-avatar.rdo.js';
-import { UserRdo } from './rdo/user-rdo.js';
 import { UserService } from './user-service.interface.js';
 
 @injectable()
@@ -82,7 +82,7 @@ export class UserController extends BaseController {
   public async create(req: CreateUserRequest, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
     const user = await this.userService.create(dto, this.salt);
-    this.created(res, fillDTO(UserRdo, user));
+    this.created(res, fillDTO(RegisteredUserRdo, user));
   }
 
   public async uploadAvatar({ params, file }: Request, res: Response) {

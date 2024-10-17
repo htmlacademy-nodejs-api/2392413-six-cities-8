@@ -10,6 +10,7 @@ import { ApiRoute, AppRoute, HttpCode } from '../const';
 import { OfferListRdo } from '../dto/offer/offer-list-rdo';
 import { OfferRdo } from '../dto/offer/offer-rdo';
 import { ReviewRdo } from '../dto/review/review-rdo';
+import { RegisteredUserRdo } from '../dto/user/registered-user-rdo';
 import { UserRdo } from '../dto/user/user-rdo';
 import type {
   Comment,
@@ -207,7 +208,7 @@ export const registerUser = createAsyncThunk<
   Action.REGISTER_USER,
   async ({ email, password, name, avatar, type }, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.post<{ id: string }>(ApiRoute.Register, {
+    const { data } = await api.post<RegisteredUserRdo>(ApiRoute.Register, {
       email,
       password,
       name,
@@ -216,7 +217,7 @@ export const registerUser = createAsyncThunk<
     if (avatar) {
       const payload = new FormData();
       payload.append('avatar', avatar);
-      await api.post(`/${data.id}${ApiRoute.Avatar}`, payload, {
+      await api.post(`users/${data.id}${ApiRoute.Avatar}`, payload, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     }
