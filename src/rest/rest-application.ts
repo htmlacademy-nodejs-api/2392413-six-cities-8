@@ -3,12 +3,15 @@ import { Config } from '#libs/config/config.interface.js';
 import { RestSchema } from '#libs/config/rest-schema.js';
 import { DatabaseClient } from '#libs/database-client/database-client.interface.js';
 import { Logger } from '#libs/logger/logger.interface.js';
+import { getFullServerPath } from '#src/shared/helpers/common.js';
 import { Controller } from '#src/shared/libs/rest/controller/controller.interface.js';
 import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
 import { ParseTokenMiddleware } from '#src/shared/libs/rest/middleware/parse-token.middleware.js';
 import { Component } from '#types/component.enum.js';
+import cors from 'cors';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
+import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from './rest.constant.js';
 
 @injectable()
 export class RestApplication {
@@ -27,7 +30,11 @@ export class RestApplication {
     @inject(Component.ExceptionFilter)
     private readonly appExceptionFilter: ExceptionFilter,
     @inject(Component.AuthExceptionFilter)
-    private readonly authExceptionFilter: ExceptionFilter
+    private readonly authExceptionFilter: ExceptionFilter,
+    @inject(Component.HttpExceptionFilter)
+    private readonly httpExceptionFilter: ExceptionFilter,
+    @inject(Component.ValidationExceptionFilter)
+    private readonly validationExceptionFilter: ExceptionFilter
   ) {
     this.server = express();
   }
@@ -55,12 +62,17 @@ export class RestApplication {
     );
     this.server.use(express.json());
     this.server.use(
-      '/upload',
+      STATIC_UPLOAD_ROUTE,
       express.static(this.config.get('UPLOAD_DIRECTORY'))
+    );
+    this.server.use(
+      STATIC_FILES_ROUTE,
+      express.static(this.config.get('STATIC_DIRECTORY_PATH'))
     );
     this.server.use(
       authenticateMiddleware.execute.bind(authenticateMiddleware)
     );
+    this.server.use(cors());
   }
 
   private async _initControllers() {
@@ -72,6 +84,12 @@ export class RestApplication {
   private async _initExceptionFilter() {
     this.server.use(
       this.appExceptionFilter.catch.bind(this.appExceptionFilter)
+    );
+    this.server.use(
+      this.validationExceptionFilter.catch.bind(this.validationExceptionFilter)
+    );
+    this.server.use(
+      this.httpExceptionFilter.catch.bind(this.httpExceptionFilter)
     );
     this.server.use(
       this.authExceptionFilter.catch.bind(this.authExceptionFilter)
@@ -101,7 +119,10 @@ export class RestApplication {
     this.logger.info('Try to init server...');
     await this._initServer();
     this.logger.info(
-      `Server started on http://localhost:${this.config.get('PORT')}`
+      `Server started on ${getFullServerPath(
+        this.config.get('HOST'),
+        this.config.get('PORT')
+      )}`
     );
   }
 }
