@@ -13,7 +13,7 @@ import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { CreateReviewDto } from './dto/create-review-dto.js';
-import { ReviewRdo } from './rdo/create-review-rdo.js';
+import { ReviewRdo } from './rdo/review-rdo.js';
 import { ReviewService } from './review-service.interface.js';
 
 @injectable()

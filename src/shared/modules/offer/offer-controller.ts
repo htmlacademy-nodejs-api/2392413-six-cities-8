@@ -17,6 +17,7 @@ import { inject, injectable } from 'inversify';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferService } from './offer-service.interface.js';
+import { OfferListRdo } from './rdo/offer-list-rdo.js';
 import { OfferRdo } from './rdo/offer-rdo.js';
 import { UploadImageRdo } from './rdo/upload-image.rdo.js';
 import { CreateOfferRequest } from './types/create-offer-request.type.js';
@@ -165,7 +166,7 @@ export class OfferController extends BaseController {
       }
     }
 
-    this.ok(res, fillDTO(OfferRdo, offers));
+    this.ok(res, fillDTO(OfferListRdo, offers));
   }
 
   public async getOfferDetail(

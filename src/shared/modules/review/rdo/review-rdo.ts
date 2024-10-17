@@ -3,15 +3,18 @@ import { UserRdo } from '#modules/user/rdo/user-rdo.js';
 import { Expose, Type } from 'class-transformer';
 
 type reviewExcludeType =
-  | 'id'
   | '_id'
   | 'offerId'
   | 'userId'
   | 'createdAt'
-  | 'updatedAt';
+  | 'updatedAt'
+  | 'date';
 export class ReviewRdo implements Omit<ReviewEntity, reviewExcludeType> {
   @Expose()
-  public date: Date;
+  public id: string;
+
+  @Expose()
+  public date: string;
 
   @Expose({ name: 'userId' })
   @Type(() => UserRdo)
