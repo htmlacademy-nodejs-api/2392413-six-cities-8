@@ -7,6 +7,7 @@ import {
   adaptOfferDetailToClient,
   adaptOffersToClient,
 } from '../adapters/adapters-to-client';
+import { adaptSignupToServer } from '../adapters/adapters-to-server';
 import { ApiRoute, AppRoute, HttpCode } from '../const';
 import { OfferListRdo } from '../dto/offer/offer-list-rdo';
 import { OfferRdo } from '../dto/offer/offer-rdo';
@@ -209,12 +210,13 @@ export const registerUser = createAsyncThunk<
   Action.REGISTER_USER,
   async ({ email, password, name, avatar, type }, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.post<RegisteredUserRdo>(ApiRoute.Register, {
+    const body = adaptSignupToServer({
       email,
       password,
       name,
       type,
     });
+    const { data } = await api.post<RegisteredUserRdo>(ApiRoute.Register, body);
     if (avatar) {
       const payload = new FormData();
       payload.append('avatar', avatar);
