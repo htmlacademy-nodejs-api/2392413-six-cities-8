@@ -3,6 +3,7 @@ import type { AxiosError, AxiosInstance } from 'axios';
 import type { History } from 'history';
 import {
   adaptCommentsToClient,
+  adaptCommentToClient,
   adaptOfferDetailToClient,
   adaptOffersToClient,
 } from '../adapters/adapters-to-client';
@@ -231,12 +232,12 @@ export const postComment = createAsyncThunk<
   { extra: Extra }
 >(Action.POST_COMMENT, async ({ id, comment, rating }, { extra }) => {
   const { api } = extra;
-  const { data } = await api.post<Comment>(
+  const { data } = await api.post<ReviewRdo>(
     `${ApiRoute.Offers}/${id}${ApiRoute.Comments}`,
     { comment, rating }
   );
 
-  return data;
+  return adaptCommentToClient(data);
 });
 
 export const postFavorite = createAsyncThunk<
@@ -247,9 +248,9 @@ export const postFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.post<Offer>(`${ApiRoute.Favorite}/${id}`);
+    const { data } = await api.post<OfferRdo>(`${ApiRoute.Favorite}/${id}/1`);
 
-    return data;
+    return adaptOfferDetailToClient(data);
   } catch (error) {
     const axiosError = error as AxiosError;
 
@@ -269,9 +270,9 @@ export const deleteFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.delete<Offer>(`${ApiRoute.Favorite}/${id}`);
+    const { data } = await api.delete<OfferRdo>(`${ApiRoute.Favorite}/${id}/0`);
 
-    return data;
+    return adaptOfferDetailToClient(data);
   } catch (error) {
     const axiosError = error as AxiosError;
 
