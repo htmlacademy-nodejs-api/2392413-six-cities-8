@@ -1,9 +1,12 @@
 import { UserService } from '#modules/user/user-service.interface.js';
 import { fillDTO } from '#src/shared/helpers/common.js';
+import { Config } from '#src/shared/libs/config/config.interface.js';
+import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { DocumentExistsMiddleware } from '#src/shared/libs/rest/middleware/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
+import { UploadFileMiddleware } from '#src/shared/libs/rest/middleware/upload-file.middleware.js';
 import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
 import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
@@ -15,8 +18,10 @@ import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferService } from './offer-service.interface.js';
 import { OfferRdo } from './rdo/offer-rdo.js';
+import { UploadImageRdo } from './rdo/upload-image.rdo.js';
 import { CreateOfferRequest } from './types/create-offer-request.type.js';
 import { ParamCityName } from './types/param-cityname.type.js';
+import { ParamOfferId } from './types/param-offerId.type.js';
 import { ParamUpdateFavorite } from './types/param-update-favorite.type.js';
 import { UpdateOfferRequest } from './update-offer-request.type.js';
 
@@ -27,7 +32,8 @@ export class OfferController extends BaseController {
     @inject(Component.OfferService)
     protected readonly offerService: OfferService,
     @inject(Component.UserService)
-    protected readonly userService: UserService
+    protected readonly userService: UserService,
+    @inject(Component.Config) private readonly configService: Config<RestSchema>
   ) {
     super(logger);
 
@@ -105,6 +111,20 @@ export class OfferController extends BaseController {
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
     });
+
+    this.addRoute({
+      path: '/offers/:offerId/image',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(
+          this.configService.get('UPLOAD_DIRECTORY'),
+          'image'
+        ),
+      ],
+    });
   }
 
   public async create(req: CreateOfferRequest, res: Response): Promise<void> {
@@ -144,10 +164,6 @@ export class OfferController extends BaseController {
         });
       }
     }
-
-    offers.map((offer) => {
-      offer.id = offer._id.toHexString();
-    });
 
     this.ok(res, fillDTO(OfferRdo, offers));
   }
@@ -194,5 +210,15 @@ export class OfferController extends BaseController {
       +status
     );
     this.ok(res, fillDTO(OfferRdo, offers));
+  }
+
+  public async uploadImage(
+    { params, file }: Request<ParamOfferId>,
+    res: Response
+  ) {
+    const { offerId } = params;
+    const updateDto = { previewImage: file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 }

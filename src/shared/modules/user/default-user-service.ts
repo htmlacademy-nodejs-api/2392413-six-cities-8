@@ -5,8 +5,10 @@ import { types } from '@typegoose/typegoose';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { CreateUserDto } from './dto/create-user-dto.js';
+import { UpdateUserDto } from './dto/update-user-dto.js';
 import { UserEntity } from './user-entity.js';
 import { UserEntityDocument, UserService } from './user-service.interface.js';
+import { DEFAULT_AVATAR_FILE_NAME } from './user.constant.js';
 
 @injectable()
 export class DefaultUserService implements UserService {
@@ -29,7 +31,10 @@ export class DefaultUserService implements UserService {
       );
     }
 
-    const user = new UserEntity(dto);
+    const user = new UserEntity({
+      ...dto,
+      avatarUrl: DEFAULT_AVATAR_FILE_NAME,
+    });
     user.setPassword(dto.password, salt);
 
     const result = await this.userModel.create(user);
@@ -53,5 +58,12 @@ export class DefaultUserService implements UserService {
     }
 
     return this.create(dto, salt);
+  }
+
+  public async updateById(
+    userId: string,
+    dto: UpdateUserDto
+  ): Promise<UserEntityDocument | null> {
+    return this.userModel.findByIdAndUpdate(userId, dto, { new: true }).exec();
   }
 }
