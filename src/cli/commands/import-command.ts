@@ -31,7 +31,8 @@ export class ImportCommand implements Command {
     this.offerService = new DefaultOfferService(
       this.logger,
       OfferModel,
-      ReviewModel
+      ReviewModel,
+      UserModel
     );
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
@@ -63,7 +64,6 @@ export class ImportCommand implements Command {
       previewImage: offer.previewImage,
       images: offer.images,
       isPremium: offer.isPremium,
-      isFavorite: offer.isFavorite,
       rating: offer.rating,
       type: offer.type,
       bedrooms: offer.bedrooms,

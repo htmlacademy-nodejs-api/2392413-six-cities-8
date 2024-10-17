@@ -20,7 +20,6 @@ export class CreateReviewDto {
   )
   public date: Date;
 
-  @IsMongoId({ message: CreateReviewValidationMessage.userId.invalidId })
   public userId: string;
 
   @MinLength(10, { message: CreateReviewValidationMessage.comment.minLength })

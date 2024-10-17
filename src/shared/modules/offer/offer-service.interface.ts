@@ -17,12 +17,13 @@ export interface OfferService extends DocumentExists {
   find(): Promise<OfferEntityDocument[]>;
   findPremiumByCity(cityName: CityName): Promise<OfferEntityDocument[] | null>;
   updateFavorite(
+    userId: string,
     offerId: string,
-    isFavorite: number
+    status: number
   ): Promise<OfferEntityDocument | null>;
   updateRating(
     offerId: string,
     rating: number
   ): Promise<OfferEntityDocument | null>;
-  findFavorites(): Promise<OfferEntityDocument[]>;
+  findFavorites(favoritesId: string[]): Promise<OfferEntityDocument[]>;
 }

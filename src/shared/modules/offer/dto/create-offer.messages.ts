@@ -54,5 +54,4 @@ export const CreateOfferValidationMessage = {
     invalidId: 'userId field must be a valid id',
   },
   isPremium: { invalidFormat: 'Field isPremium must be boolean' },
-  isFavorite: { invalidFormat: 'Field isFavorite must be boolean' },
 } as const;
