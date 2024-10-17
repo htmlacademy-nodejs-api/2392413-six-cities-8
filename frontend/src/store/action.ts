@@ -1,14 +1,22 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosError, AxiosInstance } from 'axios';
 import type { History } from 'history';
+import {
+  adaptCommentsToClient,
+  adaptOfferDetailToClient,
+  adaptOffersToClient,
+} from '../adapters/adapters-to-client';
 import { ApiRoute, AppRoute, HttpCode } from '../const';
+import { OfferListRdo } from '../dto/offer/offer-list-rdo';
+import { OfferRdo } from '../dto/offer/offer-rdo';
+import { ReviewRdo } from '../dto/review/review-rdo';
+import { UserRdo } from '../dto/user/user-rdo';
 import type {
   Comment,
   CommentAuth,
   FavoriteAuth,
   NewOffer,
   Offer,
-  User,
   UserAuth,
   UserRegister,
 } from '../types/types';
@@ -43,9 +51,9 @@ export const fetchOffers = createAsyncThunk<
   { extra: Extra }
 >(Action.FETCH_OFFERS, async (_, { extra }) => {
   const { api } = extra;
-  const { data } = await api.get<Offer[]>(ApiRoute.Offers);
+  const { data } = await api.get<OfferListRdo[]>(ApiRoute.Offers);
 
-  return data;
+  return adaptOffersToClient(data);
 });
 
 export const fetchFavoriteOffers = createAsyncThunk<
@@ -54,9 +62,9 @@ export const fetchFavoriteOffers = createAsyncThunk<
   { extra: Extra }
 >(Action.FETCH_FAVORITE_OFFERS, async (_, { extra }) => {
   const { api } = extra;
-  const { data } = await api.get<Offer[]>(ApiRoute.Favorite);
+  const { data } = await api.get<OfferListRdo[]>(ApiRoute.Favorite);
 
-  return data;
+  return adaptOffersToClient(data);
 });
 
 export const fetchOffer = createAsyncThunk<
@@ -67,9 +75,9 @@ export const fetchOffer = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.get<Offer>(`${ApiRoute.Offers}/${id}`);
+    const { data } = await api.get<OfferRdo>(`${ApiRoute.Offers}/${id}`);
 
-    return data;
+    return adaptOfferDetailToClient(data);
   } catch (error) {
     const axiosError = error as AxiosError;
 
@@ -85,10 +93,10 @@ export const postOffer = createAsyncThunk<Offer, NewOffer, { extra: Extra }>(
   Action.POST_OFFER,
   async (newOffer, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.post<Offer>(ApiRoute.Offers, newOffer);
+    const { data } = await api.post<OfferRdo>(ApiRoute.Offers, newOffer);
     history.push(`${AppRoute.Property}/${data.id}`);
 
-    return data;
+    return adaptOfferDetailToClient(data);
   }
 );
 
@@ -96,13 +104,13 @@ export const editOffer = createAsyncThunk<Offer, Offer, { extra: Extra }>(
   Action.EDIT_OFFER,
   async (offer, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.patch<Offer>(
+    const { data } = await api.patch<OfferRdo>(
       `${ApiRoute.Offers}/${offer.id}`,
       offer
     );
     history.push(`${AppRoute.Property}/${data.id}`);
 
-    return data;
+    return adaptOfferDetailToClient(data);
   }
 );
 
@@ -121,11 +129,11 @@ export const fetchPremiumOffers = createAsyncThunk<
   { extra: Extra }
 >(Action.FETCH_PREMIUM_OFFERS, async (cityName, { extra }) => {
   const { api } = extra;
-  const { data } = await api.get<Offer[]>(
-    `${ApiRoute.Premium}?city=${cityName}`
+  const { data } = await api.get<OfferListRdo[]>(
+    `${ApiRoute.Premium}/${cityName}`
   );
 
-  return data;
+  return adaptOffersToClient(data);
 });
 
 export const fetchComments = createAsyncThunk<
@@ -134,11 +142,11 @@ export const fetchComments = createAsyncThunk<
   { extra: Extra }
 >(Action.FETCH_COMMENTS, async (id, { extra }) => {
   const { api } = extra;
-  const { data } = await api.get<Comment[]>(
+  const { data } = await api.get<ReviewRdo[]>(
     `${ApiRoute.Offers}/${id}${ApiRoute.Comments}`
   );
 
-  return data;
+  return adaptCommentsToClient(data);
 });
 
 export const fetchUserStatus = createAsyncThunk<
@@ -149,7 +157,7 @@ export const fetchUserStatus = createAsyncThunk<
   const { api } = extra;
 
   try {
-    const { data } = await api.get<User>(ApiRoute.Login);
+    const { data } = await api.get<UserRdo>(ApiRoute.Login);
 
     return data.email;
   } catch (error) {
@@ -169,7 +177,7 @@ export const loginUser = createAsyncThunk<
   { extra: Extra }
 >(Action.LOGIN_USER, async ({ email, password }, { extra }) => {
   const { api, history } = extra;
-  const { data } = await api.post<User & { token: string }>(ApiRoute.Login, {
+  const { data } = await api.post<UserRdo & { token: string }>(ApiRoute.Login, {
     email,
     password,
   });

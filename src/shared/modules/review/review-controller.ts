@@ -31,7 +31,7 @@ export class ReviewController extends BaseController {
     this.logger.info('Register routes for ReviewController...');
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/:offerId/comments',
       method: HttpMethod.Get,
       handler: this.getReviews,
       middlewares: [
@@ -41,7 +41,7 @@ export class ReviewController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/:offerId/comments',
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [

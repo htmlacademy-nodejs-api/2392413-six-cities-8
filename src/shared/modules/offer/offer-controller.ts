@@ -90,7 +90,7 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/offers/premium/:cityName',
+      path: '/premium/:cityName',
       method: HttpMethod.Get,
       handler: this.getPremiumByCity,
     });

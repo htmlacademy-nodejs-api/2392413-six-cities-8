@@ -268,7 +268,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
 
-  /reviews/{offerId}:
+  /offers/{offerId}/comments:
     parameters:
       - in: path
         name: offerId
