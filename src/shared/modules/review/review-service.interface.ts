@@ -5,7 +5,7 @@ import { ReviewEntity } from './review-entity.js';
 export type ReviewEntityDocument = DocumentType<ReviewEntity>;
 
 export interface ReviewService {
-  create(offerId: string, dto: CreateReviewDto): Promise<ReviewEntityDocument>;
+  create(dto: CreateReviewDto): Promise<ReviewEntityDocument>;
   findByOfferId(offerId: string): Promise<ReviewEntityDocument[] | null>;
   deleteByOfferId(offerId: string): Promise<void>;
 }

@@ -29,14 +29,11 @@ export class DefaultReviewService implements ReviewService {
     return +review.averageRating.toFixed(1);
   }
 
-  async create(
-    offerId: string,
-    dto: CreateReviewDto
-  ): Promise<ReviewEntityDocument> {
-    const result = await this.reviewModel.create({ ...dto, offerId });
-    const averageRating = await this.calculateAverageRating(offerId);
+  async create(dto: CreateReviewDto): Promise<ReviewEntityDocument> {
+    const result = await this.reviewModel.create(dto);
+    const averageRating = await this.calculateAverageRating(dto.offerId);
 
-    this.offerService.updateRating(offerId, averageRating);
+    this.offerService.updateRating(dto.offerId, averageRating);
     this.logger.info('New review created');
     return result.populate('userId');
   }

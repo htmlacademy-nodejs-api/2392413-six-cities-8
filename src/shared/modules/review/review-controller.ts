@@ -59,10 +59,13 @@ export class ReviewController extends BaseController {
   ): Promise<void> {
     const { body, tokenPayload } = req;
     const { params } = req;
-    const review = await this.reviewService.create(params.offerId, {
+    const data = {
       ...body,
       userId: tokenPayload.id,
-    });
+      offerId: params.offerId,
+    };
+
+    const review = await this.reviewService.create(data);
     this.created(res, fillDTO(ReviewRdo, review));
   }
 
