@@ -7,10 +7,8 @@ import {
   ArrayMinSize,
   IsArray,
   IsBoolean,
-  IsDateString,
   IsEnum,
   IsInt,
-  IsNumber,
   IsObject,
   IsString,
   IsUrl,
@@ -37,10 +35,6 @@ export class CreateOfferDto {
   })
   public description: string;
 
-  @IsDateString(
-    {},
-    { message: CreateOfferValidationMessage.createdDate.invalidFormat }
-  )
   public createdDate: Date;
 
   @ValidateNested()
@@ -64,12 +58,6 @@ export class CreateOfferDto {
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium: boolean;
 
-  @IsNumber(
-    { maxDecimalPlaces: 1 },
-    { message: CreateOfferValidationMessage.rating.invalidFormat }
-  )
-  @Min(1, { message: CreateOfferValidationMessage.rating.minValue })
-  @Max(5, { message: CreateOfferValidationMessage.rating.maxValue })
   public rating: number;
 
   @IsEnum(OfferType, { message: CreateOfferValidationMessage.type.invalid })
