@@ -48,7 +48,7 @@ export class UserController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:userId/avatar',
+      path: '/users/:userId/avatar',
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
