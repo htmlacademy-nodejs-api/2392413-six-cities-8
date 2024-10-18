@@ -8,6 +8,7 @@ import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
+import mongoose from 'mongoose';
 import { UserEntityDocument } from '../user/user-service.interface.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
@@ -65,7 +66,7 @@ export class DefaultOfferService implements OfferService {
 
   async findById(offerId: string): Promise<OfferEntityDocument | null> {
     const [reviews] = await this.reviewModel.aggregate([
-      { $match: { offerId } },
+      { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
       { $count: 'reviewsCount' },
     ]);
 
