@@ -105,20 +105,23 @@ export class UserController extends BaseController {
   }
 
   public async getAuthorizeState(req: Request, res: Response): Promise<void> {
-    const {
-      tokenPayload: { email },
-    } = req;
-    const foundedUser = await this.userService.findByEmail(email);
-
-    if (!foundedUser) {
-      throw new HttpError(
-        StatusCodes.UNAUTHORIZED,
-        'Unauthorized',
-        'UserController'
+    const { tokenPayload } = req;
+    if (tokenPayload) {
+      const foundedUser = await this.userService.findByEmail(
+        tokenPayload.email
       );
+
+      if (foundedUser) {
+        this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
+        return;
+      }
     }
 
-    this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
+    throw new HttpError(
+      StatusCodes.UNAUTHORIZED,
+      'Unauthorized',
+      'UserController'
+    );
   }
 
   public async logout(req: Request, res: Response): Promise<void> {
