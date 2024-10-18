@@ -1,3 +1,4 @@
+import { ReviewService } from '#modules/review/review-service.interface.js';
 import { UserService } from '#modules/user/user-service.interface.js';
 import { fillDTO } from '#src/shared/helpers/common.js';
 import { Config } from '#src/shared/libs/config/config.interface.js';
@@ -14,7 +15,6 @@ import { CityName } from '#src/shared/types/city-name.enum.js';
 import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
-import { ReviewService } from '../review/review-service.interface.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferService } from './offer-service.interface.js';
