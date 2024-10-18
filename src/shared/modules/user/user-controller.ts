@@ -5,6 +5,7 @@ import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
 import { Logger } from '#src/shared/libs/logger/logger.interface.js';
 import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
 import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
+import { DocumentExistsMiddleware } from '#src/shared/libs/rest/middleware/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
 import { UploadFileMiddleware } from '#src/shared/libs/rest/middleware/upload-file.middleware.js';
 import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
@@ -53,6 +54,7 @@ export class UserController extends BaseController {
       handler: this.uploadAvatar,
       middlewares: [
         new ValidateObjectIdMiddleware('userId'),
+        new DocumentExistsMiddleware(this.userService, 'User', 'userId'),
         new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
       ],
     });

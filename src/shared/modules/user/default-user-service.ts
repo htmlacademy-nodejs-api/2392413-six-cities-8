@@ -17,6 +17,9 @@ export class DefaultUserService implements UserService {
     @inject(Component.UserModel)
     private readonly userModel: types.ModelType<UserEntity>
   ) {}
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.userModel.exists({ _id: documentId })) !== null;
+  }
 
   public async create(
     dto: CreateUserDto,
