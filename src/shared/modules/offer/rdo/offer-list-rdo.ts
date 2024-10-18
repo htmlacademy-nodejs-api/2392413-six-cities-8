@@ -18,24 +18,34 @@ type OfferIncludeType =
 export class OfferListRdo implements Pick<OfferRdo, OfferIncludeType> {
   @Expose()
   public id: string;
+
   @Expose()
   public title: string;
+
   @Expose()
   public type: OfferType;
+
   @Expose()
   public price: number;
+
   @Expose()
   public isFavorite: boolean;
+
   @Expose()
   public isPremium: boolean;
+
   @Expose()
   public city: City;
+
   @Expose()
   public previewImage: string;
+
   @Expose()
   public rating: number;
+
   @Expose()
   public reviewsCount: number;
+
   @Expose()
   public createdDate: string;
 }
