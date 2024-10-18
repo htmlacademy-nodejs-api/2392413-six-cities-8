@@ -7,7 +7,10 @@ import {
   adaptOfferDetailToClient,
   adaptOffersToClient,
 } from '../adapters/adapters-to-client';
-import { adaptSignupToServer } from '../adapters/adapters-to-server';
+import {
+  adaptNewOfferToServer,
+  adaptSignupToServer,
+} from '../adapters/adapters-to-server';
 import { ApiRoute, AppRoute, HttpCode } from '../const';
 import { OfferListRdo } from '../dto/offer/offer-list-rdo';
 import { OfferRdo } from '../dto/offer/offer-rdo';
@@ -96,7 +99,10 @@ export const postOffer = createAsyncThunk<Offer, NewOffer, { extra: Extra }>(
   Action.POST_OFFER,
   async (newOffer, { extra }) => {
     const { api, history } = extra;
-    const { data } = await api.post<OfferRdo>(ApiRoute.Offers, newOffer);
+    const { data } = await api.post<OfferRdo>(
+      ApiRoute.Offers,
+      adaptNewOfferToServer(newOffer)
+    );
     history.push(`${AppRoute.Property}/${data.id}`);
 
     return adaptOfferDetailToClient(data);

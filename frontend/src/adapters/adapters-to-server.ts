@@ -1,8 +1,8 @@
 import { UserType } from '../const';
-import { OfferRdo } from '../dto/offer/offer-rdo';
+import CreateOfferDto from '../dto/offer/create-offer-dto';
 import CreateUserDto from '../dto/user/create-user-dto';
 import { UserRdo } from '../dto/user/user-rdo';
-import { Offer, User, UserRegister } from '../types/types';
+import { NewOffer, User, UserRegister } from '../types/types';
 
 const adaptUserTypeToServer = (userType: UserType): boolean => {
   switch (userType) {
@@ -29,6 +29,24 @@ export const adaptUserToServer = (user: User): UserRdo => ({
   avatarUrl: user.avatarUrl,
 });
 
+export const adaptNewOfferToServer = (offer: NewOffer): CreateOfferDto => ({
+  price: offer.price,
+  title: offer.title,
+  isPremium: offer.isPremium,
+  previewImage: offer.previewImage,
+  bedrooms: offer.bedrooms as number,
+  description: offer.description as string,
+  goods: offer.goods as string[],
+  images: offer.images as string[],
+  maxAdults: offer.maxAdults as number,
+  type: offer.type,
+  location: offer.location,
+  city: offer.city,
+  createdDate: new Date(),
+  rating: 0,
+  userId: '',
+});
+/*
 export const adaptOfferDetailToServer = (offer: Offer): OfferRdo => ({
   id: offer.id,
   price: offer.price,
@@ -49,3 +67,4 @@ export const adaptOfferDetailToServer = (offer: Offer): OfferRdo => ({
   createdDate: '',
   reviewsCount: 0,
 });
+*/
