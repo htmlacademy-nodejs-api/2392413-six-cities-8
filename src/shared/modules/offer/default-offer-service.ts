@@ -122,7 +122,7 @@ export class DefaultOfferService implements OfferService {
   ): Promise<OfferEntityDocument[] | null> {
     return this.offerModel
       .find({
-        city: cityName,
+        'city.name': cityName,
         isPremium: true,
       })
       .sort({ createdAt: SortType.Down })
