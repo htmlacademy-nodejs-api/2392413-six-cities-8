@@ -1,16 +1,14 @@
-import { CityName } from '#src/shared/types/city-name.enum.js';
 import { GoodType } from '#types/good-type.type.js';
 import { Location } from '#types/location.type.js';
 import { OfferType } from '#types/offer-type.enum.js';
+import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
   IsBoolean,
-  IsDateString,
   IsEnum,
   IsInt,
-  IsNumber,
   IsObject,
   IsString,
   IsUrl,
@@ -18,7 +16,9 @@ import {
   MaxLength,
   Min,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { CityDto } from './city-dto.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
 export class CreateOfferDto {
@@ -35,14 +35,11 @@ export class CreateOfferDto {
   })
   public description: string;
 
-  @IsDateString(
-    {},
-    { message: CreateOfferValidationMessage.createdDate.invalidFormat }
-  )
   public createdDate: Date;
 
-  @IsEnum(CityName, { message: CreateOfferValidationMessage.city.invalid })
-  public city: CityName;
+  @ValidateNested()
+  @Type(() => CityDto)
+  public city: CityDto;
 
   @IsString({
     message: CreateOfferValidationMessage.previewImage.invalidFormat,
@@ -61,12 +58,6 @@ export class CreateOfferDto {
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium: boolean;
 
-  @IsNumber(
-    { maxDecimalPlaces: 1 },
-    { message: CreateOfferValidationMessage.rating.invalidFormat }
-  )
-  @Min(1, { message: CreateOfferValidationMessage.rating.minValue })
-  @Max(5, { message: CreateOfferValidationMessage.rating.maxValue })
   public rating: number;
 
   @IsEnum(OfferType, { message: CreateOfferValidationMessage.type.invalid })

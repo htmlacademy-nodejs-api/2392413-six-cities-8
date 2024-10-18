@@ -22,9 +22,6 @@ export class ReviewEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, ref: OfferEntity })
   public offerId: Ref<OfferEntity>;
 
-  @prop({ required: true })
-  public date: Date;
-
   @prop({
     ref: UserEntity,
     required: true,

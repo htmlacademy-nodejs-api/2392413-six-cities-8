@@ -8,11 +8,8 @@ export const CreateOfferValidationMessage = {
     minLength: 'Minimum description length must be 20',
     maxLength: 'Maximum description length must be 1024',
   },
-  createdDate: {
-    invalidFormat: 'createdDate must be a valid ISO date',
-  },
   city: {
-    invalid: 'Invalid city name',
+    invalid: 'Invalid city object',
   },
   type: {
     invalid: 'type must be apartment, house, room or hotel',
@@ -31,11 +28,6 @@ export const CreateOfferValidationMessage = {
     invalidFormat: 'Bedrooms must be an integer',
     minValue: 'Minimum bedrooms is 1',
     maxValue: 'Maximum bedrooms is 8',
-  },
-  rating: {
-    invalidFormat: 'Rating must be an number',
-    minValue: 'Minimum rating is 1',
-    maxValue: 'Maximum rating is 5',
   },
   images: {
     invalidFormat: 'Field images must be an array',

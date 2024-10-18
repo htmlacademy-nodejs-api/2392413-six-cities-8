@@ -1,6 +1,7 @@
 import { Logger } from '#libs/logger/logger.interface.js';
 import { ReviewEntity } from '#modules/review/review-entity.js';
 import { UserEntity } from '#modules/user/user-entity.js';
+import { UserEntityDocument } from '#modules/user/user-service.interface.js';
 import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
 import { CityName } from '#src/shared/types/city-name.enum.js';
 import { SortType } from '#src/shared/types/sort-type.enum.js';
@@ -8,6 +9,7 @@ import { Component } from '#types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
+import mongoose from 'mongoose';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';
@@ -64,7 +66,7 @@ export class DefaultOfferService implements OfferService {
 
   async findById(offerId: string): Promise<OfferEntityDocument | null> {
     const [reviews] = await this.reviewModel.aggregate([
-      { $match: { offerId } },
+      { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
       { $count: 'reviewsCount' },
     ]);
 
@@ -105,7 +107,7 @@ export class DefaultOfferService implements OfferService {
           $addFields: {
             reviewsCount: { $size: '$reviewsCount' },
             isFavorite: false,
-            id: '$_id',
+            id: { $toString: '$_id' },
           },
         },
         { $unwind: '$userId' },
@@ -145,48 +147,76 @@ export class DefaultOfferService implements OfferService {
     return offers;
   }
 
+  private async postFavorite(
+    user: UserEntityDocument,
+    offerId: string
+  ): Promise<void> {
+    if (user.favoriteOffers.includes(offerId)) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        `User with id "${user.id}" already has an offer with id "${offerId}" in favorites`,
+        'DefaultOfferService'
+      );
+    }
+    user.favoriteOffers.push(offerId);
+  }
+
+  private async deleteFavorite(
+    user: UserEntityDocument,
+    offerId: string
+  ): Promise<void> {
+    if (!user.favoriteOffers.includes(offerId)) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        `User with id "${user.id}" has not an offer with id "${offerId}" in favorites`,
+        'DefaultOfferService'
+      );
+    }
+
+    user.favoriteOffers = user.favoriteOffers.filter((id) => id !== offerId);
+  }
+
   async updateFavorite(
     userId: string,
     offerId: string,
-    status: number
+    action: string
   ): Promise<OfferEntityDocument | null> {
     const user = await this.userModel.findById(userId);
-    if (user) {
-      if (status === 1) {
-        if (user.favoriteOffers.includes(offerId)) {
-          throw new HttpError(
-            StatusCodes.CONFLICT,
-            `User with id "${userId}" already has an offer with id "${offerId}" in favorites`,
-            'DefaultOfferService'
-          );
-        }
-        user.favoriteOffers.push(offerId);
-      } else if (status === 0) {
-        if (!user.favoriteOffers.includes(offerId)) {
-          throw new HttpError(
-            StatusCodes.CONFLICT,
-            `User with id "${userId}" has not an offer with id "${offerId}" in favorites`,
-            'DefaultOfferService'
-          );
-        }
-
-        user.favoriteOffers = user.favoriteOffers.filter(
-          (id) => id !== offerId
-        );
-      } else {
-        throw new HttpError(
-          StatusCodes.BAD_REQUEST,
-          'Status must be 1 or 0',
-          'DefaultOfferService'
-        );
-      }
-
-      await this.userModel
-        .findByIdAndUpdate(userId, { favoriteOffers: user.favoriteOffers })
-        .exec();
+    if (!user) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `User with id "${userId}" not found`,
+        'DefaultOfferService'
+      );
+    }
+    const offer = await this.findById(offerId);
+    if (!offer) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id "${offerId}" not found`,
+        'DefaultOfferService'
+      );
     }
 
-    return await this.findById(offerId);
+    if (action === 'POST') {
+      await this.postFavorite(user, offerId);
+      offer.isFavorite = true;
+    } else if (action === 'DELETE') {
+      await this.deleteFavorite(user, offerId);
+      offer.isFavorite = false;
+    } else {
+      throw new HttpError(
+        StatusCodes.BAD_REQUEST,
+        'action must be POST or DELETE',
+        'DefaultOfferService'
+      );
+    }
+
+    await this.userModel
+      .findByIdAndUpdate(userId, { favoriteOffers: user.favoriteOffers })
+      .exec();
+
+    return offer;
   }
 
   async updateRating(

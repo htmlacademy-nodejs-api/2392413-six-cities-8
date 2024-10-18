@@ -1,4 +1,4 @@
-POST http://localhost:4000/users/register HTTP/1.1
+POST http://localhost:4000/register HTTP/1.1
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:4000/users/login HTTP/1.1
+POST http://localhost:4000/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -21,17 +21,17 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:4000/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InZvdmFAeWEucnUiLCJuYW1lIjoiVm92YSIsImlkIjoiNjcwZDE2NDQ3ZWI1YTNmYTU3MDRmY2E1IiwiaWF0IjoxNzI4OTExMTE1LCJleHAiOjE3MjkwODM5MTV9.skSEJw8nMWo4PRgJOdmMqa4opNr9q8TVgd-on9dOG5c
+GET http://localhost:4000/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InZvdmFAeWEucnUiLCJuYW1lIjoiVm92YSIsImlkIjoiNjcwZDE2NDQ3ZWI1YTNmYTU3MDRmY2E1IiwiaWF0IjoxNzI5MTQ3MjE0LCJleHAiOjE3MjkzMjAwMTR9.Yv7hSEZHZ3lcne_GqmI-35KWMLReO0IHaNK1BYHf_y8
 
 
 ###
-DELETE http://localhost:4000/users/logout HTTP/1.1
+DELETE http://localhost:4000/logout HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InZvdmFAeWEucnUiLCJuYW1lIjoiVm92YSIsImlkIjoiNjcwZDE2NDQ3ZWI1YTNmYTU3MDRmY2E1IiwiaWF0IjoxNzI4OTExMTE1LCJleHAiOjE3MjkwODM5MTV9.skSEJw8nMWo4PRgJOdmMqa4opNr9q8TVgd-on9dOG5c
 
 
 ### Отправить изображение
-POST http://localhost:4000/users/62823cb2c5a64ce9f1b50eb6/avatar HTTP/1.1
+POST http://localhost:4000/users/670d16447eb5a3fa5704fca5/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW

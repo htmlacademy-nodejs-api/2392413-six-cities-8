@@ -25,58 +25,53 @@ export interface OfferEntity extends defaultClasses.Base {}
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
-  @prop({ trim: true, required: true })
+  @prop({ trim: true })
   public title: string;
 
-  @prop({ trim: true, required: true })
+  @prop({ trim: true })
   public description: string;
 
-  @prop({ required: true })
+  @prop()
   public createdDate: Date;
 
-  @prop({ required: true })
+  @prop()
   public city: City;
 
-  @prop({ required: true })
+  @prop()
   public previewImage: string;
 
-  @prop({ required: true })
+  @prop()
   public images: string[];
 
-  @prop({ required: true })
+  @prop()
   public isPremium: boolean;
 
-  @prop({ required: true, default: false })
   public isFavorite: boolean;
 
-  @prop({ required: true })
+  @prop()
   public rating: number;
 
-  @prop({ required: true, type: () => String, enum: OfferType })
+  @prop({ type: () => String, enum: OfferType })
   public type: OfferType;
 
-  @prop({ required: true })
+  @prop()
   public bedrooms: number;
 
-  @prop({ required: true })
+  @prop()
   public maxAdults: number;
 
-  @prop({ required: true })
+  @prop()
   public price: number;
 
-  @prop({ required: true })
+  @prop()
   public goods: GoodType[];
 
-  @prop({
-    ref: UserEntity,
-    required: true,
-  })
+  @prop({ ref: UserEntity })
   public userId: Ref<UserEntity>;
 
-  @prop({ required: true })
+  @prop()
   public location: Location;
 
-  @prop({ required: false, default: 0 })
   public reviewsCount: number;
 }
 
