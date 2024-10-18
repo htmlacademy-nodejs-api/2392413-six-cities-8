@@ -1,19 +1,10 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { CreateUserDto } from './create-user-dto.js';
 
-export class LoginUserDto implements CreateUserDto {
-  @Exclude()
-  public name: string;
-
+export class LoginUserDto implements Omit<CreateUserDto, 'name' | 'isPro'> {
   @Expose()
   public email: string;
 
-  @Exclude()
-  public avatarUrl: string;
-
   @Expose()
   public password: string;
-
-  @Exclude()
-  public isPro: boolean;
 }

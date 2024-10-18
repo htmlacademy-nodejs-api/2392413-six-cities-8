@@ -13,7 +13,7 @@ import { Component } from '#src/shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { CreateReviewDto } from './dto/create-review-dto.js';
-import { ReviewRdo } from './rdo/create-review-rdo.js';
+import { ReviewRdo } from './rdo/review-rdo.js';
 import { ReviewService } from './review-service.interface.js';
 
 @injectable()
@@ -31,7 +31,7 @@ export class ReviewController extends BaseController {
     this.logger.info('Register routes for ReviewController...');
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/:offerId/comments',
       method: HttpMethod.Get,
       handler: this.getReviews,
       middlewares: [
@@ -41,7 +41,7 @@ export class ReviewController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/:offerId/comments',
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -59,10 +59,13 @@ export class ReviewController extends BaseController {
   ): Promise<void> {
     const { body, tokenPayload } = req;
     const { params } = req;
-    const review = await this.reviewService.create(params.offerId, {
+    const data = {
       ...body,
       userId: tokenPayload.id,
-    });
+      offerId: params.offerId,
+    };
+
+    const review = await this.reviewService.create(data);
     this.created(res, fillDTO(ReviewRdo, review));
   }
 

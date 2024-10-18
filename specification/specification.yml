@@ -16,7 +16,7 @@ tags:
     description: Действия с пользователем.
 
 paths:
-  /users/register:
+  /register:
     post:
       tags:
         - users
@@ -42,7 +42,7 @@ paths:
         '409':
           description: Пользователь с таким email уже существует.
 
-  /users/login:
+  /login:
     post:
       tags:
         - users
@@ -92,7 +92,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorInfo'
 
-  /users/logout:
+  /logout:
     delete:
       tags:
         - users
@@ -225,7 +225,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
 
-  /favorite:
+  /favorites:
     get:
       tags:
         - offers
@@ -239,7 +239,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
 
-  /favorite/{offerId}/{status}:
+  /favorites/{offerId}:
     parameters:
       - in: path
         name: offerId
@@ -248,18 +248,23 @@ paths:
         schema:
           type: string
         required: true
-      - in: path
-        name: status
-        example: 1
-        description: 1 добавляет предложение в избранное, а 0 удаляет
-        schema:
-          type: number
-        required: true
     post:
       tags:
         - offers
-      summary: Добавить/удалить предложение в/из избранное
-      description: Добавление/удаление предложения в/из избранное
+      summary: Добавить предложение в избранное
+      description: Добавление предложения в избранное
+      responses:
+        '201':
+          description: Флаг избранного изменен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение из избранного
+      description: Удаление предложения из избранного
       responses:
         '201':
           description: Флаг избранного изменен
@@ -268,7 +273,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
 
-  /reviews/{offerId}:
+  /offers/{offerId}/comments:
     parameters:
       - in: path
         name: offerId
