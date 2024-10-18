@@ -73,7 +73,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop()
   public location: Location;
 
-  @prop({ required: false, default: 0 })
   public reviewsCount: number;
 }
 
