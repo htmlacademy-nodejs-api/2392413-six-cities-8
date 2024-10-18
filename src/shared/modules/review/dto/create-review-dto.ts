@@ -9,10 +9,8 @@ import {
 import { CreateReviewValidationMessage } from './create-review-messages.js';
 
 export class CreateReviewDto {
-  //@IsMongoId({ message: CreateReviewValidationMessage.offerId.invalidId })
   public offerId: string;
 
-  //@IsMongoId({ message: CreateReviewValidationMessage.userId.invalidId })
   public userId: string;
 
   @MinLength(10, { message: CreateReviewValidationMessage.comment.minLength })
