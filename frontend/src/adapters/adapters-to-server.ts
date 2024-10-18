@@ -46,25 +46,3 @@ export const adaptNewOfferToServer = (offer: NewOffer): CreateOfferDto => ({
   rating: 0,
   userId: '',
 });
-/*
-export const adaptOfferDetailToServer = (offer: Offer): OfferRdo => ({
-  id: offer.id,
-  price: offer.price,
-  rating: offer.rating,
-  title: offer.title,
-  isPremium: offer.isPremium,
-  isFavorite: offer.isFavorite,
-  previewImage: offer.previewImage,
-  bedrooms: offer.bedrooms as number,
-  description: offer.description as string,
-  goods: offer.goods as string[],
-  images: offer.images as string[],
-  maxAdults: offer.maxAdults as number,
-  type: offer.type,
-  location: offer.location,
-  city: offer.city,
-  user: adaptUserToServer(offer.host as User),
-  createdDate: '',
-  reviewsCount: 0,
-});
-*/
