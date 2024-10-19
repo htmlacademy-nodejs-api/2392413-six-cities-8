@@ -692,12 +692,6 @@ components:
       type: object
 
       properties:
-        date:
-          type: string
-          example: '2024-05-08T14:13:56.569Z'
-        userId:
-          type: string
-          example: cq3wbo78c8325cb26378
         comment:
           type: string
           example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
@@ -709,6 +703,9 @@ components:
       type: object
 
       properties:
+        id:
+          type: string
+          example: 'dq3wbo78c8325cb76378'
         date:
           type: string
           example: '2024-05-08T14:13:56.569Z'
