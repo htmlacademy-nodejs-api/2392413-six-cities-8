@@ -15,6 +15,9 @@ tags:
   - name: users
     description: Действия с пользователем.
 
+servers:
+  - url: http://localhost:4000
+
 paths:
   /register:
     post:
@@ -147,7 +150,7 @@ paths:
       description: Получение списка предложений по аренде
 
       responses:
-        '201':
+        '200':
           description: Список предложений получен
           content:
             application/json:
@@ -158,19 +161,19 @@ paths:
     parameters:
       - in: path
         name: offerId
-        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
+        example: 6711fc933f03106173244ca9
         description: id предложения
         schema:
           type: string
         required: true
 
-    put:
+    Patch:
       tags:
         - offers
       summary: Редактировать предложение
       description: Редактирование предложения
       responses:
-        '201':
+        '200':
           description: Предложение отредактировано
           content:
             application/json:
@@ -183,7 +186,7 @@ paths:
       summary: Удалить предложение
       description: Удаление предложения
       responses:
-        '201':
+        '204':
           description: Предложение удалено
           content:
             application/json:
@@ -196,7 +199,7 @@ paths:
       summary: Получить детальную информацию о предложении
       description: Получение детальной информации о предложении по аренде
       responses:
-        '201':
+        '200':
           description: Получена детальная информация о предложении
           content:
             application/json:
@@ -243,7 +246,7 @@ paths:
     parameters:
       - in: path
         name: offerId
-        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
+        example: 6711fc933f03106173244ca9
         description: id предложения
         schema:
           type: string
@@ -277,7 +280,7 @@ paths:
     parameters:
       - in: path
         name: offerId
-        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
+        example: 6711fc933f03106173244ca9
         description: id предложения
         schema:
           type: string
