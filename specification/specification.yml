@@ -69,7 +69,7 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 
         '401':
-          description: Пользователь авторизован. Объект пользователя.
+          description: Пользователь не авторизован.
           content:
             application/json:
               schema:
@@ -112,7 +112,7 @@ paths:
           required: true
 
       responses:
-        '401':
+        '204':
           description: Статус авторизации пользователя.
           content:
             application/json:
