@@ -119,6 +119,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorInfo'
 
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Upload a user's avatar
+      parameters:
+        - in: path
+          name: userId
+          example: 6711fc933f03106173244ca9
+          description: id пользователя
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description: Avatar uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUserAvatarRdo'
   /offers/:
     post:
       tags:
@@ -291,7 +321,7 @@ paths:
       summary: Получить список комментариев предложения
       description: Получение списка комментариев предложения по аренде
       responses:
-        '201':
+        '200':
           description: Флаг избранного изменен
           content:
             application/json:
@@ -691,3 +721,10 @@ components:
         rating:
           type: number
           example: 3
+
+    UploadUserAvatarRdo:
+      type: object
+      properties:
+        filepath:
+          type: string
+          example: 'avatar.jpg'
