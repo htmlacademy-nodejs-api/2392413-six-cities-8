@@ -221,7 +221,7 @@ paths:
       summary: Получить премиальные предложения города
       description: Получение премиальных предложений по аренде города
       responses:
-        '201':
+        '200':
           description: Получены премиальные предложения города
           content:
             application/json:
@@ -235,7 +235,7 @@ paths:
       summary: Получить список избранных предложений
       description: Получение списка избранных предложений по аренде
       responses:
-        '201':
+        '200':
           description: Получены избранные предложения города
           content:
             application/json:
@@ -257,7 +257,7 @@ paths:
       summary: Добавить предложение в избранное
       description: Добавление предложения в избранное
       responses:
-        '201':
+        '200':
           description: Флаг избранного изменен
           content:
             application/json:
@@ -269,7 +269,7 @@ paths:
       summary: Удалить предложение из избранного
       description: Удаление предложения из избранного
       responses:
-        '201':
+        '200':
           description: Флаг избранного изменен
           content:
             application/json:
