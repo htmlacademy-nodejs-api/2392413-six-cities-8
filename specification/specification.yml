@@ -195,7 +195,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OfferEntity'
+                $ref: '#/components/schemas/OfferListRdo'
 
   /offers/{offerId}:
     parameters:
@@ -270,7 +270,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OfferEntity'
+                $ref: '#/components/schemas/OfferListRdo'
 
   /favorites:
     get:
@@ -286,7 +286,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OfferEntity'
+                $ref: '#/components/schemas/OfferListRdo'
 
   /favorites/{offerId}:
     parameters:
@@ -306,7 +306,7 @@ paths:
         - ApiKeyAuth: []
       responses:
         '200':
-          description: Флаг избранного изменен
+          description: Предложение добавлено в избранное
           content:
             application/json:
               schema:
@@ -320,7 +320,7 @@ paths:
         - ApiKeyAuth: []
       responses:
         '200':
-          description: Флаг избранного изменен
+          description: Предложение удалено из избранного
           content:
             application/json:
               schema:
@@ -346,7 +346,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReviewEntity'
+                $ref: '#/components/schemas/ReviewList'
 
     post:
       tags:
@@ -393,10 +393,6 @@ components:
       type: object
 
       properties:
-        id:
-          type: string
-          example: 6329c3d6a04ab1061c6425ea
-
         name:
           type: string
           example: Vladimir
@@ -637,6 +633,10 @@ components:
       type: object
 
       properties:
+        id:
+          type: string
+          example: 'dq3wbo78c8325cb76378'
+
         title:
           type: string
           example: 'The Pondhouse - A Magical Place'
@@ -710,6 +710,59 @@ components:
           type: object
           $ref: '#/components/schemas/Location'
 
+        reviewsCount:
+          type: number
+          example: 2
+
+    OfferListRdo:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            example: 'dq3wbo78c8325cb76378'
+
+          title:
+            type: string
+            example: 'The Pondhouse - A Magical Place'
+
+          createdDate:
+            type: string
+            example: '2024-05-08T14:13:56.569Z'
+
+          city:
+            type: object
+            $ref: '#/components/schemas/City'
+
+          previewImage:
+            type: string
+            example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
+
+          isPremium:
+            type: boolean
+            example: true
+
+          isFavorite:
+            type: boolean
+            example: true
+
+          rating:
+            type: number
+            example: 3.2
+
+          type:
+            type: string
+            example: 'hotel'
+
+          price:
+            type: number
+            example: 600
+
+          reviewsCount:
+            type: number
+            example: 2
+
     CreateReviewDto:
       type: object
 
@@ -740,6 +793,11 @@ components:
         rating:
           type: number
           example: 3
+
+    ReviewList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReviewEntity'
 
     UploadUserAvatarRdo:
       type: object
