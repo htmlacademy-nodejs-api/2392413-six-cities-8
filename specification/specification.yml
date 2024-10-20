@@ -80,6 +80,8 @@ paths:
         - users
       summary: Проверка состояния пользователя
       description: Возвращает информацию по авторизованному пользователю
+      security:
+        - ApiKeyAuth: []
 
       responses:
         '200':
@@ -95,35 +97,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorInfo'
 
-  /logout:
-    delete:
-      tags:
-        - users
-      summary: Завершить сеанс пользователя
-      description: Завершает сеанс пользователя
-
-      parameters:
-        - in: header
-          name: X-Token
-          example: T482kjhsdkKJHJsjhgfeyue73
-          description: Токен пользователя
-          schema:
-            type: string
-          required: true
-
-      responses:
-        '204':
-          description: Статус авторизации пользователя.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorInfo'
-
   /users/{userId}/avatar:
     post:
       tags:
         - users
       summary: Upload a user's avatar
+      description: Загружает изображение аватара пользователя. Изображение аватара должно быть в формате `png` или `jpg`.
+      security:
+        - ApiKeyAuth: []
       parameters:
         - in: path
           name: userId
@@ -149,12 +130,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UploadUserAvatarRdo'
+
+  /logout:
+    delete:
+      tags:
+        - users
+      summary: Завершить сеанс пользователя
+      description: Завершает сеанс пользователя
+      security:
+        - ApiKeyAuth: []
+
+      parameters:
+        - in: header
+          name: X-Token
+          example: T482kjhsdkKJHJsjhgfeyue73
+          description: Токен пользователя
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '204':
+          description: Статус авторизации пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInfo'
+
   /offers/:
     post:
       tags:
         - offers
       summary: Создать новое предложение
       description: Создание нового предложения
+      security:
+        - ApiKeyAuth: []
 
       requestBody:
         description: Информация для создания нового предложения.
@@ -197,11 +207,13 @@ paths:
           type: string
         required: true
 
-    Patch:
+    patch:
       tags:
         - offers
       summary: Редактировать предложение
       description: Редактирование предложения
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           description: Предложение отредактировано
@@ -215,6 +227,8 @@ paths:
         - offers
       summary: Удалить предложение
       description: Удаление предложения
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: Предложение удалено
@@ -264,6 +278,8 @@ paths:
         - offers
       summary: Получить список избранных предложений
       description: Получение списка избранных предложений по аренде
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           description: Получены избранные предложения города
@@ -286,6 +302,8 @@ paths:
         - offers
       summary: Добавить предложение в избранное
       description: Добавление предложения в избранное
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           description: Флаг избранного изменен
@@ -298,6 +316,8 @@ paths:
         - offers
       summary: Удалить предложение из избранного
       description: Удаление предложения из избранного
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           description: Флаг избранного изменен
@@ -725,3 +745,9 @@ components:
         filepath:
           type: string
           example: 'avatar.jpg'
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Token
