@@ -353,6 +353,8 @@ paths:
         - reviews
       summary: Добавить комментарий к предложению
       description: Добавление комментария к предложению по аренде
+      security:
+        - ApiKeyAuth: []
       responses:
         '201':
           description: Флаг избранного изменен
