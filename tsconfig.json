@@ -20,7 +20,8 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./src",
+    "baseUrl": "./",
     "emitDecoratorMetadata": true,
     "types": ["node"],
     "lib": ["ESNext"]

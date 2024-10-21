@@ -8,12 +8,29 @@
     "node.js"
   ],
   "imports": {
-    "#src/*": "./src/*",
-    "#types/*": "./src/shared/types/*",
-    "#libs/*": "./src/shared/libs/*",
-    "#modules/*": "./src/shared/modules/*",
-    "#helpers/*": "./src/shared/helpers/*",
-    "#mocks/*": "./mocks/*"
+    "#src/*": [
+      "./dist/*",
+      "./src/*"
+    ],
+    "#types/*": [
+      "./dist/shared/types/*",
+      "./src/shared/types/*"
+    ],
+    "#libs/*": [
+      "./dist/shared/libs/*",
+      "./src/shared/libs/*"
+    ],
+    "#modules/*": [
+      "./dist/shared/modules/*",
+      "./src/shared/modules/*"
+    ],
+    "#helpers/*": [
+      "./dist/shared/helpers/*",
+      "./src/shared/helpers/*"
+    ],
+    "#mocks/*": [
+      "./mocks/*"
+    ]
   },
   "main": "main.js",
   "scripts": {
