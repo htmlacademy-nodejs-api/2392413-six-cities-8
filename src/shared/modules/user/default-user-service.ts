@@ -1,6 +1,6 @@
-import { Logger } from '#libs/logger/logger.interface.js';
-import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
-import { Component } from '#types/component.enum.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { HttpError } from '#shared/libs/rest/errors/http-error.js';
+import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
@@ -17,6 +17,10 @@ export class DefaultUserService implements UserService {
     @inject(Component.UserModel)
     private readonly userModel: types.ModelType<UserEntity>
   ) {}
+
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.userModel.exists({ _id: documentId })) !== null;
+  }
 
   public async create(
     dto: CreateUserDto,

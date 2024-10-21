@@ -1,4 +1,4 @@
-import { Middleware } from '#libs/rest/middleware/middleware.interface.js';
+import { Middleware } from '#shared/libs/rest/middleware/middleware.interface.js';
 import { NextFunction, Request, Response } from 'express';
 import { HttpMethod } from './http-method.enum.js';
 

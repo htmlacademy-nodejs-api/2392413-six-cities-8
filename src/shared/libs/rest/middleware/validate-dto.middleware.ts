@@ -1,5 +1,5 @@
-import { reduceValidationErrors } from '#src/shared/helpers/common.js';
-import { ValidationError } from '#src/shared/libs/rest/errors/validation.error.js';
+import { reduceValidationErrors } from '#shared/helpers/common.js';
+import { ValidationError } from '#shared/libs/rest/errors/validation.error.js';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';

@@ -1,24 +1,23 @@
-import { OfferService } from '#modules/offer/offer-service.interface.js';
-import { ParamOfferId } from '#modules/offer/types/param-offerId.type.js';
-import { fillDTO } from '#src/shared/helpers/common.js';
-import { Logger } from '#src/shared/libs/logger/logger.interface.js';
-import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
-import { DocumentExistsMiddleware } from '#src/shared/libs/rest/middleware/document-exists.middleware.js';
-import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
-import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
-import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
-import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
-import { RequestBody } from '#src/shared/libs/rest/types/request-body.type.js';
-import { Component } from '#src/shared/types/component.enum.js';
+import { fillDTO } from '#shared/helpers/common.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { BaseController } from '#shared/libs/rest/controller/base-controller.abstract.js';
+import { DocumentExistsMiddleware } from '#shared/libs/rest/middleware/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '#shared/libs/rest/middleware/private-route.middleware.js';
+import { ValidateDtoMiddleware } from '#shared/libs/rest/middleware/validate-dto.middleware.js';
+import { ValidateObjectIdMiddleware } from '#shared/libs/rest/middleware/validate-objectid.middleware.js';
+import { HttpMethod } from '#shared/libs/rest/types/http-method.enum.js';
+import { RequestBody } from '#shared/libs/rest/types/request-body.type.js';
+import { OfferService } from '#shared/modules/offer/offer-service.interface.js';
+import { ParamOfferId } from '#shared/modules/offer/types/param-offerId.type.js';
+import { Component } from '#shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { CreateReviewDto } from './dto/create-review-dto.js';
-import { ReviewRdo } from './rdo/create-review-rdo.js';
+import { ReviewRdo } from './rdo/review-rdo.js';
 import { ReviewService } from './review-service.interface.js';
 
 @injectable()
 export class ReviewController extends BaseController {
-  salt: string;
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.ReviewService)
@@ -31,7 +30,7 @@ export class ReviewController extends BaseController {
     this.logger.info('Register routes for ReviewController...');
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/:offerId/comments',
       method: HttpMethod.Get,
       handler: this.getReviews,
       middlewares: [
@@ -41,7 +40,7 @@ export class ReviewController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:offerId',
+      path: '/:offerId/comments',
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -59,10 +58,13 @@ export class ReviewController extends BaseController {
   ): Promise<void> {
     const { body, tokenPayload } = req;
     const { params } = req;
-    const review = await this.reviewService.create(params.offerId, {
+    const data = {
       ...body,
       userId: tokenPayload.id,
-    });
+      offerId: params.offerId,
+    };
+
+    const review = await this.reviewService.create(data);
     this.created(res, fillDTO(ReviewRdo, review));
   }
 

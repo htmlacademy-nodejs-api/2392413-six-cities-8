@@ -1,13 +1,13 @@
-import { getMongoURI } from '#helpers/database.js';
-import { Config } from '#libs/config/config.interface.js';
-import { RestSchema } from '#libs/config/rest-schema.js';
-import { DatabaseClient } from '#libs/database-client/database-client.interface.js';
-import { Logger } from '#libs/logger/logger.interface.js';
-import { getFullServerPath } from '#src/shared/helpers/common.js';
-import { Controller } from '#src/shared/libs/rest/controller/controller.interface.js';
-import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
-import { ParseTokenMiddleware } from '#src/shared/libs/rest/middleware/parse-token.middleware.js';
-import { Component } from '#types/component.enum.js';
+import { getFullServerPath } from '#shared/helpers/common.js';
+import { getMongoURI } from '#shared/helpers/database.js';
+import { Config } from '#shared/libs/config/config.interface.js';
+import { RestSchema } from '#shared/libs/config/rest-schema.js';
+import { DatabaseClient } from '#shared/libs/database-client/database-client.interface.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { Controller } from '#shared/libs/rest/controller/controller.interface.js';
+import { ExceptionFilter } from '#shared/libs/rest/exception-filter/exception-filter.interface.js';
+import { ParseTokenMiddleware } from '#shared/libs/rest/middleware/parse-token.middleware.js';
+import { Component } from '#shared/types/component.enum.js';
 import cors from 'cors';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
@@ -76,9 +76,9 @@ export class RestApplication {
   }
 
   private async _initControllers() {
-    this.server.use('/users', this.userController.router);
+    this.server.use('/', this.userController.router);
     this.server.use('/', this.offerController.router);
-    this.server.use('/reviews', this.reviewController.router);
+    this.server.use('/offers', this.reviewController.router);
   }
 
   private async _initExceptionFilter() {

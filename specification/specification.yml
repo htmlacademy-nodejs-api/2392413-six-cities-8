@@ -15,8 +15,11 @@ tags:
   - name: users
     description: Действия с пользователем.
 
+servers:
+  - url: http://localhost:4000
+
 paths:
-  /users/register:
+  /register:
     post:
       tags:
         - users
@@ -42,7 +45,7 @@ paths:
         '409':
           description: Пользователь с таким email уже существует.
 
-  /users/login:
+  /login:
     post:
       tags:
         - users
@@ -66,7 +69,7 @@ paths:
                 $ref: '#/components/schemas/UserInfo'
 
         '401':
-          description: Пользователь авторизован. Объект пользователя.
+          description: Пользователь не авторизован.
           content:
             application/json:
               schema:
@@ -77,6 +80,8 @@ paths:
         - users
       summary: Проверка состояния пользователя
       description: Возвращает информацию по авторизованному пользователю
+      security:
+        - ApiKeyAuth: []
 
       responses:
         '200':
@@ -92,12 +97,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorInfo'
 
-  /users/logout:
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Upload a user's avatar
+      description: Загружает изображение аватара пользователя. Изображение аватара должно быть в формате `png` или `jpg`.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: userId
+          example: 6711fc933f03106173244ca9
+          description: id пользователя
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description: Avatar uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUserAvatarRdo'
+
+  /logout:
     delete:
       tags:
         - users
       summary: Завершить сеанс пользователя
       description: Завершает сеанс пользователя
+      security:
+        - ApiKeyAuth: []
 
       parameters:
         - in: header
@@ -109,7 +150,7 @@ paths:
           required: true
 
       responses:
-        '401':
+        '204':
           description: Статус авторизации пользователя.
           content:
             application/json:
@@ -122,6 +163,8 @@ paths:
         - offers
       summary: Создать новое предложение
       description: Создание нового предложения
+      security:
+        - ApiKeyAuth: []
 
       requestBody:
         description: Информация для создания нового предложения.
@@ -147,30 +190,32 @@ paths:
       description: Получение списка предложений по аренде
 
       responses:
-        '201':
+        '200':
           description: Список предложений получен
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OfferEntity'
+                $ref: '#/components/schemas/OfferListRdo'
 
   /offers/{offerId}:
     parameters:
       - in: path
         name: offerId
-        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
+        example: 6711fc933f03106173244ca9
         description: id предложения
         schema:
           type: string
         required: true
 
-    put:
+    patch:
       tags:
         - offers
       summary: Редактировать предложение
       description: Редактирование предложения
+      security:
+        - ApiKeyAuth: []
       responses:
-        '201':
+        '200':
           description: Предложение отредактировано
           content:
             application/json:
@@ -182,8 +227,10 @@ paths:
         - offers
       summary: Удалить предложение
       description: Удаление предложения
+      security:
+        - ApiKeyAuth: []
       responses:
-        '201':
+        '204':
           description: Предложение удалено
           content:
             application/json:
@@ -196,7 +243,7 @@ paths:
       summary: Получить детальную информацию о предложении
       description: Получение детальной информации о предложении по аренде
       responses:
-        '201':
+        '200':
           description: Получена детальная информация о предложении
           content:
             application/json:
@@ -218,61 +265,72 @@ paths:
       summary: Получить премиальные предложения города
       description: Получение премиальных предложений по аренде города
       responses:
-        '201':
+        '200':
           description: Получены премиальные предложения города
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OfferEntity'
+                $ref: '#/components/schemas/OfferListRdo'
 
-  /favorite:
+  /favorites:
     get:
       tags:
         - offers
       summary: Получить список избранных предложений
       description: Получение списка избранных предложений по аренде
+      security:
+        - ApiKeyAuth: []
       responses:
-        '201':
+        '200':
           description: Получены избранные предложения города
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OfferEntity'
+                $ref: '#/components/schemas/OfferListRdo'
 
-  /favorite/{offerId}/{status}:
+  /favorites/{offerId}:
     parameters:
       - in: path
         name: offerId
-        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
+        example: 6711fc933f03106173244ca9
         description: id предложения
         schema:
           type: string
         required: true
-      - in: path
-        name: status
-        example: 1
-        description: 1 добавляет предложение в избранное, а 0 удаляет
-        schema:
-          type: number
-        required: true
     post:
       tags:
         - offers
-      summary: Добавить/удалить предложение в/из избранное
-      description: Добавление/удаление предложения в/из избранное
+      summary: Добавить предложение в избранное
+      description: Добавление предложения в избранное
+      security:
+        - ApiKeyAuth: []
       responses:
-        '201':
-          description: Флаг избранного изменен
+        '200':
+          description: Предложение добавлено в избранное
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferEntity'
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение из избранного
+      description: Удаление предложения из избранного
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Предложение удалено из избранного
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OfferEntity'
 
-  /reviews/{offerId}:
+  /offers/{offerId}/comments:
     parameters:
       - in: path
         name: offerId
-        example: 6af6f711-c28d-4121-82cd-e0b462a27f00
+        example: 6711fc933f03106173244ca9
         description: id предложения
         schema:
           type: string
@@ -283,18 +341,20 @@ paths:
       summary: Получить список комментариев предложения
       description: Получение списка комментариев предложения по аренде
       responses:
-        '201':
+        '200':
           description: Флаг избранного изменен
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReviewEntity'
+                $ref: '#/components/schemas/ReviewList'
 
     post:
       tags:
         - reviews
       summary: Добавить комментарий к предложению
       description: Добавление комментария к предложению по аренде
+      security:
+        - ApiKeyAuth: []
       responses:
         '201':
           description: Флаг избранного изменен
@@ -333,10 +393,6 @@ components:
       type: object
 
       properties:
-        id:
-          type: string
-          example: 6329c3d6a04ab1061c6425ea
-
         name:
           type: string
           example: Vladimir
@@ -577,6 +633,10 @@ components:
       type: object
 
       properties:
+        id:
+          type: string
+          example: 'dq3wbo78c8325cb76378'
+
         title:
           type: string
           example: 'The Pondhouse - A Magical Place'
@@ -650,16 +710,63 @@ components:
           type: object
           $ref: '#/components/schemas/Location'
 
+        reviewsCount:
+          type: number
+          example: 2
+
+    OfferListRdo:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            example: 'dq3wbo78c8325cb76378'
+
+          title:
+            type: string
+            example: 'The Pondhouse - A Magical Place'
+
+          createdDate:
+            type: string
+            example: '2024-05-08T14:13:56.569Z'
+
+          city:
+            type: object
+            $ref: '#/components/schemas/City'
+
+          previewImage:
+            type: string
+            example: 'https://16.design.htmlacademy.pro/static/hotel/1.jpg'
+
+          isPremium:
+            type: boolean
+            example: true
+
+          isFavorite:
+            type: boolean
+            example: true
+
+          rating:
+            type: number
+            example: 3.2
+
+          type:
+            type: string
+            example: 'hotel'
+
+          price:
+            type: number
+            example: 600
+
+          reviewsCount:
+            type: number
+            example: 2
+
     CreateReviewDto:
       type: object
 
       properties:
-        date:
-          type: string
-          example: '2024-05-08T14:13:56.569Z'
-        userId:
-          type: string
-          example: cq3wbo78c8325cb26378
         comment:
           type: string
           example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
@@ -671,6 +778,9 @@ components:
       type: object
 
       properties:
+        id:
+          type: string
+          example: 'dq3wbo78c8325cb76378'
         date:
           type: string
           example: '2024-05-08T14:13:56.569Z'
@@ -683,3 +793,21 @@ components:
         rating:
           type: number
           example: 3
+
+    ReviewList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReviewEntity'
+
+    UploadUserAvatarRdo:
+      type: object
+      properties:
+        filepath:
+          type: string
+          example: 'avatar.jpg'
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Token

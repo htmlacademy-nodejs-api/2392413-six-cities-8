@@ -1,16 +1,17 @@
-import { AuthService } from '#modules/auth/auth-service.interface.js';
-import { fillDTO } from '#src/shared/helpers/common.js';
-import { Config } from '#src/shared/libs/config/config.interface.js';
-import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
-import { Logger } from '#src/shared/libs/logger/logger.interface.js';
-import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
-import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
-import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
-import { UploadFileMiddleware } from '#src/shared/libs/rest/middleware/upload-file.middleware.js';
-import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
-import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
-import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
-import { Component } from '#src/shared/types/component.enum.js';
+import { fillDTO } from '#shared/helpers/common.js';
+import { Config } from '#shared/libs/config/config.interface.js';
+import { RestSchema } from '#shared/libs/config/rest-schema.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { BaseController } from '#shared/libs/rest/controller/base-controller.abstract.js';
+import { HttpError } from '#shared/libs/rest/errors/http-error.js';
+import { DocumentExistsMiddleware } from '#shared/libs/rest/middleware/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '#shared/libs/rest/middleware/private-route.middleware.js';
+import { UploadFileMiddleware } from '#shared/libs/rest/middleware/upload-file.middleware.js';
+import { ValidateDtoMiddleware } from '#shared/libs/rest/middleware/validate-dto.middleware.js';
+import { ValidateObjectIdMiddleware } from '#shared/libs/rest/middleware/validate-objectid.middleware.js';
+import { HttpMethod } from '#shared/libs/rest/types/http-method.enum.js';
+import { AuthService } from '#shared/modules/auth/auth-service.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
@@ -19,8 +20,8 @@ import { CreateUserDto } from './dto/create-user-dto.js';
 import { LoginUserDto } from './dto/login-user-dto.js';
 import { LoginUserRequest } from './login-user-request.type.js';
 import { LoggedUserRdo } from './rdo/logged-user-rdo.js';
+import { RegisteredUserRdo } from './rdo/registered-user-rdo.js';
 import { UploadUserAvatarRdo } from './rdo/upload-user-avatar.rdo.js';
-import { UserRdo } from './rdo/user-rdo.js';
 import { UserService } from './user-service.interface.js';
 
 @injectable()
@@ -48,12 +49,12 @@ export class UserController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:userId/avatar',
+      path: '/users/:userId/avatar',
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
-        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('userId'),
+        new DocumentExistsMiddleware(this.userService, 'User', 'userId'),
         new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
       ],
     });
@@ -82,7 +83,7 @@ export class UserController extends BaseController {
   public async create(req: CreateUserRequest, res: Response): Promise<void> {
     const dto: CreateUserDto = req.body;
     const user = await this.userService.create(dto, this.salt);
-    this.created(res, fillDTO(UserRdo, user));
+    this.created(res, fillDTO(RegisteredUserRdo, user));
   }
 
   public async uploadAvatar({ params, file }: Request, res: Response) {
@@ -104,20 +105,23 @@ export class UserController extends BaseController {
   }
 
   public async getAuthorizeState(req: Request, res: Response): Promise<void> {
-    const {
-      tokenPayload: { email },
-    } = req;
-    const foundedUser = await this.userService.findByEmail(email);
-
-    if (!foundedUser) {
-      throw new HttpError(
-        StatusCodes.UNAUTHORIZED,
-        'Unauthorized',
-        'UserController'
+    const { tokenPayload } = req;
+    if (tokenPayload) {
+      const foundedUser = await this.userService.findByEmail(
+        tokenPayload.email
       );
+
+      if (foundedUser) {
+        this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
+        return;
+      }
     }
 
-    this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
+    throw new HttpError(
+      StatusCodes.UNAUTHORIZED,
+      'Unauthorized',
+      'UserController'
+    );
   }
 
   public async logout(req: Request, res: Response): Promise<void> {

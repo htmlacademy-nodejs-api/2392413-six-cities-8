@@ -1,7 +1,7 @@
-import { Logger } from '#libs/logger/logger.interface.js';
-import { PathTransformer } from '#libs/rest/transform/path-transformer.js';
-import { Route } from '#libs/rest/types/route.interface.js';
-import { Component } from '#src/shared/types/component.enum.js';
+import { Logger } from '#shared/libs/logger/logger.interface';
+import { PathTransformer } from '#shared/libs/rest/transform/path-transformer.js';
+import { Route } from '#shared/libs/rest/types/route.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { Response, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
@@ -21,7 +21,7 @@ export abstract class BaseController implements Controller {
     return this._router;
   }
 
-  public addRoute(route: Route) {
+  public addRoute(route: Route): void {
     const wrapperAsyncHandler = asyncHandler(route.handler.bind(this));
     const middlewareHandlers = route.middlewares?.map((item) =>
       asyncHandler(item.execute.bind(item))
@@ -30,7 +30,7 @@ export abstract class BaseController implements Controller {
       ? [...middlewareHandlers, wrapperAsyncHandler]
       : wrapperAsyncHandler;
 
-    this._router[route.method](route.path, allHandlers);
+    this.router[route.method](route.path, allHandlers);
     this.logger.info(
       `Route registered: ${route.method.toUpperCase()} ${route.path}`
     );

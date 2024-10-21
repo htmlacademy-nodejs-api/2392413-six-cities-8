@@ -1,5 +1,5 @@
-import { Logger } from '#libs/logger/logger.interface.js';
-import { Component } from '#types/component.enum.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { inject, injectable } from 'inversify';
 import * as Mongoose from 'mongoose';
 import { setTimeout } from 'node:timers/promises';

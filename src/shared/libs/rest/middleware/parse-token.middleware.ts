@@ -1,5 +1,5 @@
-import { HttpError } from '#libs/rest/errors/http-error.js';
-import { TokenPayload } from '#src/shared/modules/auth/types/token-payload.js';
+import { HttpError } from '#shared/libs/rest/errors/http-error.js';
+import { TokenPayload } from '#shared/modules/auth/types/token-payload.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { jwtVerify } from 'jose';

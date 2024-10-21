@@ -1,17 +1,15 @@
-import { ReviewEntity } from '#modules/review/review-entity.js';
-import { UserRdo } from '#modules/user/rdo/user-rdo.js';
+import { ReviewEntity } from '#shared/modules/review/review-entity.js';
+import { UserRdo } from '#shared/modules/user/rdo/user-rdo.js';
 import { Expose, Type } from 'class-transformer';
 
-type reviewExcludeType =
-  | 'id'
-  | '_id'
-  | 'offerId'
-  | 'userId'
-  | 'createdAt'
-  | 'updatedAt';
+type reviewExcludeType = '_id' | 'offerId' | 'userId' | 'updatedAt';
+
 export class ReviewRdo implements Omit<ReviewEntity, reviewExcludeType> {
   @Expose()
-  public date: Date;
+  public id: string;
+
+  @Expose({ name: 'createdAt' })
+  public date: string;
 
   @Expose({ name: 'userId' })
   @Type(() => UserRdo)

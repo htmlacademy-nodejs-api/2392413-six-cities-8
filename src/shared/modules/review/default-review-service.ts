@@ -1,6 +1,6 @@
-import { Logger } from '#libs/logger/logger.interface.js';
-import { OfferService } from '#modules/offer/offer-service.interface.js';
-import { Component } from '#types/component.enum.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { OfferService } from '#shared/modules/offer/offer-service.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
@@ -29,14 +29,11 @@ export class DefaultReviewService implements ReviewService {
     return +review.averageRating.toFixed(1);
   }
 
-  async create(
-    offerId: string,
-    dto: CreateReviewDto
-  ): Promise<ReviewEntityDocument> {
-    const result = await this.reviewModel.create({ ...dto, offerId });
-    const averageRating = await this.calculateAverageRating(offerId);
+  async create(dto: CreateReviewDto): Promise<ReviewEntityDocument> {
+    const result = await this.reviewModel.create(dto);
+    const averageRating = await this.calculateAverageRating(dto.offerId);
 
-    this.offerService.updateRating(offerId, averageRating);
+    this.offerService.updateRating(dto.offerId, averageRating);
     this.logger.info('New review created');
     return result.populate('userId');
   }
@@ -48,5 +45,9 @@ export class DefaultReviewService implements ReviewService {
       .exec();
 
     return result;
+  }
+
+  public async deleteByOfferId(offerId: string): Promise<void> {
+    await this.reviewModel.deleteMany({ offerId }).exec();
   }
 }

@@ -1,22 +1,24 @@
-import { UserService } from '#modules/user/user-service.interface.js';
-import { fillDTO } from '#src/shared/helpers/common.js';
-import { Config } from '#src/shared/libs/config/config.interface.js';
-import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
-import { Logger } from '#src/shared/libs/logger/logger.interface.js';
-import { BaseController } from '#src/shared/libs/rest/controller/base-controller.abstract.js';
-import { DocumentExistsMiddleware } from '#src/shared/libs/rest/middleware/document-exists.middleware.js';
-import { PrivateRouteMiddleware } from '#src/shared/libs/rest/middleware/private-route.middleware.js';
-import { UploadFileMiddleware } from '#src/shared/libs/rest/middleware/upload-file.middleware.js';
-import { ValidateDtoMiddleware } from '#src/shared/libs/rest/middleware/validate-dto.middleware.js';
-import { ValidateObjectIdMiddleware } from '#src/shared/libs/rest/middleware/validate-objectid.middleware.js';
-import { HttpMethod } from '#src/shared/libs/rest/types/http-method.enum.js';
-import { CityName } from '#src/shared/types/city-name.enum.js';
-import { Component } from '#src/shared/types/component.enum.js';
+import { fillDTO } from '#shared/helpers/common.js';
+import { Config } from '#shared/libs/config/config.interface.js';
+import { RestSchema } from '#shared/libs/config/rest-schema.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { BaseController } from '#shared/libs/rest/controller/base-controller.abstract.js';
+import { DocumentExistsMiddleware } from '#shared/libs/rest/middleware/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '#shared/libs/rest/middleware/private-route.middleware.js';
+import { UploadFileMiddleware } from '#shared/libs/rest/middleware/upload-file.middleware.js';
+import { ValidateDtoMiddleware } from '#shared/libs/rest/middleware/validate-dto.middleware.js';
+import { ValidateObjectIdMiddleware } from '#shared/libs/rest/middleware/validate-objectid.middleware.js';
+import { HttpMethod } from '#shared/libs/rest/types/http-method.enum.js';
+import { ReviewService } from '#shared/modules/review/review-service.interface.js';
+import { UserService } from '#shared/modules/user/user-service.interface.js';
+import { CityName } from '#shared/types/city-name.enum.js';
+import { Component } from '#shared/types/component.enum.js';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferService } from './offer-service.interface.js';
+import { OfferListRdo } from './rdo/offer-list-rdo.js';
 import { OfferRdo } from './rdo/offer-rdo.js';
 import { UploadImageRdo } from './rdo/upload-image.rdo.js';
 import { CreateOfferRequest } from './types/create-offer-request.type.js';
@@ -33,7 +35,10 @@ export class OfferController extends BaseController {
     protected readonly offerService: OfferService,
     @inject(Component.UserService)
     protected readonly userService: UserService,
-    @inject(Component.Config) private readonly configService: Config<RestSchema>
+    @inject(Component.Config)
+    private readonly configService: Config<RestSchema>,
+    @inject(Component.ReviewService)
+    protected readonly reviewService: ReviewService
   ) {
     super(logger);
 
@@ -57,7 +62,7 @@ export class OfferController extends BaseController {
 
     this.addRoute({
       path: '/offers/:offerId',
-      method: HttpMethod.Put,
+      method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
         new PrivateRouteMiddleware(),
@@ -89,21 +94,32 @@ export class OfferController extends BaseController {
     });
 
     this.addRoute({
-      path: '/offers/premium/:cityName',
+      path: '/premium/:cityName',
       method: HttpMethod.Get,
       handler: this.getPremiumByCity,
     });
 
     this.addRoute({
-      path: '/favorite',
+      path: '/favorites',
       method: HttpMethod.Get,
       handler: this.getFavoriteOffers,
       middlewares: [new PrivateRouteMiddleware()],
     });
 
     this.addRoute({
-      path: '/favorite/:offerId/:status',
+      path: '/favorites/:offerId',
       method: HttpMethod.Post,
+      handler: this.updateFavorite,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: HttpMethod.Delete,
       handler: this.updateFavorite,
       middlewares: [
         new PrivateRouteMiddleware(),
@@ -149,7 +165,8 @@ export class OfferController extends BaseController {
   public async delete(req: UpdateOfferRequest, res: Response) {
     const { params } = req;
     const offer = await this.offerService.deleteById(params.offerId);
-    this.ok(res, fillDTO(OfferRdo, offer));
+    await this.reviewService.deleteByOfferId(params.offerId);
+    this.noContent(res, fillDTO(OfferRdo, offer));
   }
 
   public async getOffers(req: Request, res: Response): Promise<void> {
@@ -165,7 +182,7 @@ export class OfferController extends BaseController {
       }
     }
 
-    this.ok(res, fillDTO(OfferRdo, offers));
+    this.ok(res, fillDTO(OfferListRdo, offers));
   }
 
   public async getOfferDetail(
@@ -202,12 +219,12 @@ export class OfferController extends BaseController {
     req: Request<ParamUpdateFavorite>,
     res: Response
   ): Promise<void> {
-    const { tokenPayload } = req;
-    const { offerId, status } = req.params;
+    const { tokenPayload, method } = req;
+    const { offerId } = req.params;
     const offers = await this.offerService.updateFavorite(
       tokenPayload.id,
       offerId,
-      +status
+      method
     );
     this.ok(res, fillDTO(OfferRdo, offers));
   }
