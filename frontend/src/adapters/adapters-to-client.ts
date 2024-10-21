@@ -1,3 +1,4 @@
+import { AVATAR_URL } from '../api';
 import { UserType } from '../const';
 import { OfferListRdo } from '../dto/offer/offer-list-rdo';
 import { OfferRdo } from '../dto/offer/offer-rdo';
@@ -27,7 +28,7 @@ export const adaptUserToClient = (user: UserRdo): User => ({
   name: user.name,
   type: adaptUserTypeToClient(user.isPro),
   email: user.email,
-  avatarUrl: user.avatarUrl,
+  avatarUrl: `${AVATAR_URL}/${user.avatarUrl}`,
 });
 
 export const adaptOfferDetailToClient = (offer: OfferRdo): Offer => ({
