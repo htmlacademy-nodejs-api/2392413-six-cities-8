@@ -1,5 +1,5 @@
-import { ReviewEntity } from '#modules/review/review-entity.js';
-import { UserRdo } from '#modules/user/rdo/user-rdo.js';
+import { ReviewEntity } from '#shared/modules/review/review-entity.js';
+import { UserRdo } from '#shared/modules/user/rdo/user-rdo.js';
 import { Expose, Type } from 'class-transformer';
 
 type reviewExcludeType = '_id' | 'offerId' | 'userId' | 'updatedAt';

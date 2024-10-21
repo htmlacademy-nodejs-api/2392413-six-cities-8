@@ -1,6 +1,6 @@
-import { Logger } from '#src/shared/libs/logger/logger.interface.js';
-import { ExceptionFilter } from '#src/shared/libs/rest/exception-filter/exception-filter.interface.js';
-import { Component } from '#src/shared/types/component.enum.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { ExceptionFilter } from '#shared/libs/rest/exception-filter/exception-filter.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { BaseUserException } from './errors/base-user.exception.js';

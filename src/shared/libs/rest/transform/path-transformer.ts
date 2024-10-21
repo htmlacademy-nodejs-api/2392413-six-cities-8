@@ -1,12 +1,12 @@
-import { Config } from '#libs/config/config.interface.js';
-import { RestSchema } from '#libs/config/rest-schema.js';
-import { Logger } from '#libs/logger/logger.interface.js';
 import {
   STATIC_FILES_ROUTE,
   STATIC_UPLOAD_ROUTE,
-} from '#src/rest/rest.constant.js';
-import { getFullServerPath } from '#src/shared/helpers/common.js';
-import { Component } from '#src/shared/types/component.enum.js';
+} from '#rest/rest.constant.js';
+import { getFullServerPath } from '#shared/helpers/common.js';
+import { Config } from '#shared/libs/config/config.interface.js';
+import { RestSchema } from '#shared/libs/config/rest-schema.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { inject, injectable } from 'inversify';
 import {
   DEFAULT_STATIC_IMAGES,

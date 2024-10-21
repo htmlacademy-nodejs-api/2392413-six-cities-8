@@ -1,5 +1,5 @@
-import { createSHA256 } from '#helpers/hash.js';
-import { User } from '#types/user.type.js';
+import { createSHA256 } from '#shared/helpers/hash.js';
+import { User } from '#shared/types/user.type.js';
 import {
   defaultClasses,
   getModelForClass,

@@ -1,8 +1,8 @@
-import { Logger } from '#libs/logger/logger.interface.js';
-import { ValidationError } from '#libs/rest/errors/validation.error.js';
-import { createErrorObject } from '#src/shared/helpers/common.js';
-import { ApplicationError } from '#src/shared/libs/rest/types/application-error.enum.js';
-import { Component } from '#src/shared/types/component.enum.js';
+import { createErrorObject } from '#shared/helpers/common.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { ValidationError } from '#shared/libs/rest/errors/validation.error.js';
+import { ApplicationError } from '#shared/libs/rest/types/application-error.enum.js';
+import { Component } from '#shared/types/component.enum.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';

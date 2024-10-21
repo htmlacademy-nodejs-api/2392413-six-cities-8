@@ -1,10 +1,10 @@
-import { LoginUserDto } from '#modules/user/dto/login-user-dto.js';
-import { UserEntity } from '#modules/user/user-entity.js';
-import { UserService } from '#modules/user/user-service.interface.js';
-import { Config } from '#src/shared/libs/config/config.interface.js';
-import { RestSchema } from '#src/shared/libs/config/rest-schema.js';
-import { Logger } from '#src/shared/libs/logger/logger.interface.js';
-import { Component } from '#src/shared/types/component.enum.js';
+import { Config } from '#shared/libs/config/config.interface.js';
+import { RestSchema } from '#shared/libs/config/rest-schema.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { LoginUserDto } from '#shared/modules/user/dto/login-user-dto.js';
+import { UserEntity } from '#shared/modules/user/user-entity.js';
+import { UserService } from '#shared/modules/user/user-service.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { inject, injectable } from 'inversify';
 import { SignJWT } from 'jose';
 import * as crypto from 'node:crypto';

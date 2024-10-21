@@ -1,8 +1,8 @@
-import { UserEntity } from '#modules/user/user-entity.js';
-import { City } from '#types/city.type.js';
-import { GoodType } from '#types/good-type.type.js';
-import { Location } from '#types/location.type.js';
-import { OfferType } from '#types/offer-type.enum.js';
+import { UserEntity } from '#shared/modules/user/user-entity.js';
+import { City } from '#shared/types/city.type.js';
+import { GoodType } from '#shared/types/good-type.type.js';
+import { Location } from '#shared/types/location.type.js';
+import { OfferType } from '#shared/types/offer-type.enum.js';
 import {
   defaultClasses,
   getModelForClass,

@@ -1,6 +1,6 @@
-import { Logger } from '#libs/logger/logger.interface.js';
-import { OfferService } from '#modules/offer/offer-service.interface.js';
-import { Component } from '#types/component.enum.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { OfferService } from '#shared/modules/offer/offer-service.interface.js';
+import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';

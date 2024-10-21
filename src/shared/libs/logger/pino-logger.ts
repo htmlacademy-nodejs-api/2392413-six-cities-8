@@ -1,4 +1,4 @@
-import { getCurrentModuleDirectoryPath } from '#helpers/file-system.js';
+import { getCurrentModuleDirectoryPath } from '#shared/helpers/file-system.js';
 import { injectable } from 'inversify';
 import { resolve } from 'node:path';
 import { Logger as PinoInstance, pino, transport } from 'pino';
@@ -17,13 +17,13 @@ export class PinoLogger implements Logger {
       targets: [
         {
           target: 'pino/file',
-          options: { destination },
+          options: { destination, mkdir: true },
           level: 'debug',
         },
         {
           target: 'pino/file',
           level: 'info',
-          options: {},
+          options: { mkdir: true },
         },
       ],
     });

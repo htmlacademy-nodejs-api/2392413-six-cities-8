@@ -1,6 +1,6 @@
-import { GoodType } from '#types/good-type.type.js';
-import { Location } from '#types/location.type.js';
-import { OfferType } from '#types/offer-type.enum.js';
+import { GoodType } from '#shared/types/good-type.type.js';
+import { Location } from '#shared/types/location.type.js';
+import { OfferType } from '#shared/types/offer-type.enum.js';
 import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,

@@ -1,5 +1,5 @@
-import { OfferEntity } from '#modules/offer/offer-entity.js';
-import { UserEntity } from '#modules/user/user-entity.js';
+import { OfferEntity } from '#shared/modules/offer/offer-entity.js';
+import { UserEntity } from '#shared/modules/user/user-entity.js';
 import {
   defaultClasses,
   getModelForClass,

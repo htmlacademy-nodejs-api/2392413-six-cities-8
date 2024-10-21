@@ -1,6 +1,6 @@
-import { Logger } from '#libs/logger/logger.interface.js';
-import { HttpError } from '#src/shared/libs/rest/errors/http-error.js';
-import { Component } from '#types/component.enum.js';
+import { Logger } from '#shared/libs/logger/logger.interface.js';
+import { HttpError } from '#shared/libs/rest/errors/http-error.js';
+import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
