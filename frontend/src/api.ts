@@ -5,7 +5,6 @@ import { Token } from './utils';
 
 const BACKEND_URL = 'http://localhost:4000';
 const REQUEST_TIMEOUT = 5000;
-export const AVATAR_URL = `${BACKEND_URL}/upload`;
 
 export const createAPI = (): AxiosInstance => {
   const api = axios.create({
