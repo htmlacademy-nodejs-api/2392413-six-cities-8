@@ -18,7 +18,6 @@ import { ReviewService } from './review-service.interface.js';
 
 @injectable()
 export class ReviewController extends BaseController {
-  salt: string;
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.ReviewService)
