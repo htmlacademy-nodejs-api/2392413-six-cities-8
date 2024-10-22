@@ -1,5 +1,5 @@
 ###
-GET http://localhost:4000/offers/670530d901266b562fbdc0ef/comments HTTP/1.1
+GET http://localhost:4000/offers/6715fa6bb881ca3aa1c1e5af/comments HTTP/1.1
 
 ###
 POST http://localhost:4000/offers/670530d901266b562fbdc0ef/comments HTTP/1.1

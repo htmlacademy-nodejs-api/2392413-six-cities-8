@@ -1,10 +1,10 @@
-import { OfferEntity } from '#shared/modules/offer/offer-entity.js';
-import { UserRdo } from '#shared/modules/user/rdo/user-rdo.js';
-import { City } from '#shared/types/city.type.js';
-import { GoodType } from '#shared/types/good-type.type.js';
-import { Location } from '#shared/types/location.type.js';
-import { OfferType } from '#shared/types/offer-type.enum.js';
 import { Expose, Type } from 'class-transformer';
+import { OfferEntity } from '../../../../../src/shared/modules/offer/offer-entity.js';
+import { UserRdo } from '../../../../../src/shared/modules/user/rdo/user-rdo.js';
+import { City } from '../../../../../src/shared/types/city.type.js';
+import { GoodType } from '../../../../../src/shared/types/good-type.type.js';
+import { Location } from '../../../../../src/shared/types/location.type.js';
+import { OfferType } from '../../../../../src/shared/types/offer-type.enum.js';
 
 type OfferExcludeType =
   | '_id'

@@ -1,13 +1,13 @@
-import { usersMock } from '#mock/users.js';
-import { Cities } from '#shared/const.js';
-import { City } from '#shared/types/city.type.js';
-import { GoodType } from '#shared/types/good-type.type.js';
-import { Location } from '#shared/types/location.type.js';
-import { OfferType } from '#shared/types/offer-type.enum.js';
-import { Offer } from '#shared/types/offer.type.js';
-import { User } from '#shared/types/user.type.js';
 import EventEmitter from 'node:events';
 import { createReadStream } from 'node:fs';
+import { usersMock } from '../../../../mocks/users.js';
+import { Cities } from '../../../../src/shared/const.js';
+import { City } from '../../../../src/shared/types/city.type.js';
+import { GoodType } from '../../../../src/shared/types/good-type.type.js';
+import { Location } from '../../../../src/shared/types/location.type.js';
+import { OfferType } from '../../../../src/shared/types/offer-type.enum.js';
+import { Offer } from '../../../../src/shared/types/offer.type.js';
+import { User } from '../../../../src/shared/types/user.type.js';
 import { FileReader } from './file-reader.interface.js';
 
 export class TSVFileReader extends EventEmitter implements FileReader {

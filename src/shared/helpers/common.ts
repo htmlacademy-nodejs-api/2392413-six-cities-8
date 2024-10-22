@@ -1,7 +1,7 @@
-import { ApplicationError } from '#shared/libs/rest/types/application-error.enum.js';
-import { ValidationErrorField } from '#shared/libs/rest/types/validation-error-field.type.js';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { ValidationError } from 'class-validator';
+import { ApplicationError } from '../../../src/shared/libs/rest/types/application-error.enum.js';
+import { ValidationErrorField } from '../../../src/shared/libs/rest/types/validation-error-field.type.js';
 
 export function generateRandomValue(
   min: number,

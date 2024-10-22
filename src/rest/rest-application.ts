@@ -1,16 +1,16 @@
-import { getFullServerPath } from '#shared/helpers/common.js';
-import { getMongoURI } from '#shared/helpers/database.js';
-import { Config } from '#shared/libs/config/config.interface.js';
-import { RestSchema } from '#shared/libs/config/rest-schema.js';
-import { DatabaseClient } from '#shared/libs/database-client/database-client.interface.js';
-import { Logger } from '#shared/libs/logger/logger.interface.js';
-import { Controller } from '#shared/libs/rest/controller/controller.interface.js';
-import { ExceptionFilter } from '#shared/libs/rest/exception-filter/exception-filter.interface.js';
-import { ParseTokenMiddleware } from '#shared/libs/rest/middleware/parse-token.middleware.js';
-import { Component } from '#shared/types/component.enum.js';
 import cors from 'cors';
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
+import { getFullServerPath } from '../../src/shared/helpers/common.js';
+import { getMongoURI } from '../../src/shared/helpers/database.js';
+import { Config } from '../../src/shared/libs/config/config.interface.js';
+import { RestSchema } from '../../src/shared/libs/config/rest-schema.js';
+import { DatabaseClient } from '../../src/shared/libs/database-client/database-client.interface.js';
+import { Logger } from '../../src/shared/libs/logger/logger.interface.js';
+import { Controller } from '../../src/shared/libs/rest/controller/controller.interface.js';
+import { ExceptionFilter } from '../../src/shared/libs/rest/exception-filter/exception-filter.interface.js';
+import { ParseTokenMiddleware } from '../../src/shared/libs/rest/middleware/parse-token.middleware.js';
+import { Component } from '../../src/shared/types/component.enum.js';
 import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from './rest.constant.js';
 
 @injectable()

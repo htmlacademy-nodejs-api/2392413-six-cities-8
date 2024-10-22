@@ -1,9 +1,9 @@
-import { Logger } from '#shared/libs/logger/logger.interface.js';
-import { HttpError } from '#shared/libs/rest/errors/http-error.js';
-import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
+import { Logger } from '../../../../src/shared/libs/logger/logger.interface.js';
+import { HttpError } from '../../../../src/shared/libs/rest/errors/http-error.js';
+import { Component } from '../../../../src/shared/types/component.enum.js';
 import { CreateUserDto } from './dto/create-user-dto.js';
 import { UpdateUserDto } from './dto/update-user-dto.js';
 import { UserEntity } from './user-entity.js';

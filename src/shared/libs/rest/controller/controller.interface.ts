@@ -1,5 +1,5 @@
-import { Route } from '#shared/libs/rest/types/route.interface.js';
 import { Response, Router } from 'express';
+import { Route } from '../../../../../src/shared/libs/rest/types/route.interface.js';
 
 export interface Controller {
   readonly router: Router;

@@ -1,5 +1,5 @@
-import { ValidationErrorField } from '#shared/libs/rest/types/validation-error-field.type.js';
 import { StatusCodes } from 'http-status-codes';
+import { ValidationErrorField } from '../../../../../src/shared/libs/rest/types/validation-error-field.type.js';
 import { HttpError } from './http-error.js';
 
 export class ValidationError extends HttpError {

@@ -1,8 +1,8 @@
-import { Config } from '#shared/libs/config/config.interface.js';
-import { Logger } from '#shared/libs/logger/logger.interface.js';
-import { Component } from '#shared/types/component.enum.js';
 import { config } from 'dotenv';
 import { inject, injectable } from 'inversify';
+import { Config } from '../../../../src/shared/libs/config/config.interface.js';
+import { Logger } from '../../../../src/shared/libs/logger/logger.interface.js';
+import { Component } from '../../../../src/shared/types/component.enum.js';
 import { configRestSchema, RestSchema } from './rest-schema.js';
 
 @injectable()

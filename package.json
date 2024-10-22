@@ -7,16 +7,6 @@
     "api",
     "node.js"
   ],
-  "imports": {
-    "#*": [
-      "./dist/src/*",
-      "./src/*.ts",
-      "./src/*.js"
-    ],
-    "#mock*": [
-      "./mocks/*"
-    ]
-  },
   "main": "main.js",
   "scripts": {
     "start": "npm run build && node ./dist/src/main.rest.js",

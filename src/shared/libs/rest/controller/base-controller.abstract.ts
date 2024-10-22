@@ -1,11 +1,11 @@
-import { Logger } from '#shared/libs/logger/logger.interface';
-import { PathTransformer } from '#shared/libs/rest/transform/path-transformer.js';
-import { Route } from '#shared/libs/rest/types/route.interface.js';
-import { Component } from '#shared/types/component.enum.js';
 import { Response, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
+import { Component } from '../../../types/component.enum.js';
+import { Logger } from '../../logger/logger.interface.js';
+import { PathTransformer } from '../transform/path-transformer.js';
+import { Route } from '../types/route.interface.js';
 import { Controller } from './controller.interface.js';
 @injectable()
 export abstract class BaseController implements Controller {

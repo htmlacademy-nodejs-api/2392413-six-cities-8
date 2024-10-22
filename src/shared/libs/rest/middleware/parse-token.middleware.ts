@@ -1,9 +1,9 @@
-import { HttpError } from '#shared/libs/rest/errors/http-error.js';
-import { TokenPayload } from '#shared/modules/auth/types/token-payload.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { jwtVerify } from 'jose';
 import { createSecretKey } from 'node:crypto';
+import { HttpError } from '../../../../../src/shared/libs/rest/errors/http-error.js';
+import { TokenPayload } from '../../../../../src/shared/modules/auth/types/token-payload.js';
 import { Middleware } from './middleware.interface.js';
 
 function isTokenPayload(payload: unknown): payload is TokenPayload {
