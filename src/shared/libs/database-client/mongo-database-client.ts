@@ -1,8 +1,8 @@
-import { Logger } from '#shared/libs/logger/logger.interface.js';
-import { Component } from '#shared/types/component.enum.js';
 import { inject, injectable } from 'inversify';
 import * as Mongoose from 'mongoose';
 import { setTimeout } from 'node:timers/promises';
+import { Logger } from '../../../../src/shared/libs/logger/logger.interface.js';
+import { Component } from '../../../../src/shared/types/component.enum.js';
 import { DatabaseClient } from './database-client.interface.js';
 
 const RETRY_COUNT = 5;

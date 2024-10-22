@@ -1,6 +1,6 @@
-import { CityName } from '#shared/types/city-name.enum.js';
-import { DocumentExists } from '#shared/types/document-exists.interface.js';
 import { DocumentType } from '@typegoose/typegoose';
+import { CityName } from '../../../../src/shared/types/city-name.enum.js';
+import { DocumentExists } from '../../../../src/shared/types/document-exists.interface.js';
 import { CreateOfferDto } from './dto/create-offer-dto.js';
 import { UpdateOfferDto } from './dto/update-offer-dto.js';
 import { OfferEntity } from './offer-entity.js';

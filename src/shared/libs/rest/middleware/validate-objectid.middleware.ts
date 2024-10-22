@@ -1,7 +1,7 @@
-import { HttpError } from '#shared/libs/rest/errors/http-error.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { Types } from 'mongoose';
+import { HttpError } from '../../../../../src/shared/libs/rest/errors/http-error.js';
 import { Middleware } from './middleware.interface.js';
 
 export class ValidateObjectIdMiddleware implements Middleware {

@@ -1,9 +1,9 @@
-import { Logger } from '#shared/libs/logger/logger.interface.js';
-import { OfferService } from '#shared/modules/offer/offer-service.interface.js';
-import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
+import { Logger } from '../../../../src/shared/libs/logger/logger.interface.js';
+import { OfferService } from '../../../../src/shared/modules/offer/offer-service.interface.js';
+import { Component } from '../../../../src/shared/types/component.enum.js';
 import { CreateReviewDto } from './dto/create-review-dto.js';
 import { ReviewEntity } from './review-entity.js';
 import {

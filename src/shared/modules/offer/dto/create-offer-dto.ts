@@ -1,6 +1,3 @@
-import { GoodType } from '#shared/types/good-type.type.js';
-import { Location } from '#shared/types/location.type.js';
-import { OfferType } from '#shared/types/offer-type.enum.js';
 import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -18,6 +15,9 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
+import { GoodType } from '../../../../../src/shared/types/good-type.type.js';
+import { Location } from '../../../../../src/shared/types/location.type.js';
+import { OfferType } from '../../../../../src/shared/types/offer-type.enum.js';
 import { CityDto } from './city-dto.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 

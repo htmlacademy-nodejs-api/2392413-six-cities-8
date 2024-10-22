@@ -1,13 +1,13 @@
+import { inject, injectable } from 'inversify';
 import {
   STATIC_FILES_ROUTE,
   STATIC_UPLOAD_ROUTE,
-} from '#rest/rest.constant.js';
-import { getFullServerPath } from '#shared/helpers/common.js';
-import { Config } from '#shared/libs/config/config.interface.js';
-import { RestSchema } from '#shared/libs/config/rest-schema.js';
-import { Logger } from '#shared/libs/logger/logger.interface.js';
-import { Component } from '#shared/types/component.enum.js';
-import { inject, injectable } from 'inversify';
+} from '../../../../../src/rest/rest.constant.js';
+import { getFullServerPath } from '../../../../../src/shared/helpers/common.js';
+import { Config } from '../../../../../src/shared/libs/config/config.interface.js';
+import { RestSchema } from '../../../../../src/shared/libs/config/rest-schema.js';
+import { Logger } from '../../../../../src/shared/libs/logger/logger.interface.js';
+import { Component } from '../../../../../src/shared/types/component.enum.js';
 import {
   DEFAULT_STATIC_IMAGES,
   STATIC_RESOURCE_FIELDS,

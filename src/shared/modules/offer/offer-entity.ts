@@ -1,8 +1,3 @@
-import { UserEntity } from '#shared/modules/user/user-entity.js';
-import { City } from '#shared/types/city.type.js';
-import { GoodType } from '#shared/types/good-type.type.js';
-import { Location } from '#shared/types/location.type.js';
-import { OfferType } from '#shared/types/offer-type.enum.js';
 import {
   defaultClasses,
   getModelForClass,
@@ -11,6 +6,11 @@ import {
   Ref,
   Severity,
 } from '@typegoose/typegoose';
+import { UserEntity } from '../../../../src/shared/modules/user/user-entity.js';
+import { City } from '../../../../src/shared/types/city.type.js';
+import { GoodType } from '../../../../src/shared/types/good-type.type.js';
+import { Location } from '../../../../src/shared/types/location.type.js';
+import { OfferType } from '../../../../src/shared/types/offer-type.enum.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}

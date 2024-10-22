@@ -1,5 +1,3 @@
-import { OfferEntity } from '#shared/modules/offer/offer-entity.js';
-import { UserEntity } from '#shared/modules/user/user-entity.js';
 import {
   defaultClasses,
   getModelForClass,
@@ -7,6 +5,8 @@ import {
   prop,
   Ref,
 } from '@typegoose/typegoose';
+import { OfferEntity } from '../../../../src/shared/modules/offer/offer-entity.js';
+import { UserEntity } from '../../../../src/shared/modules/user/user-entity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface ReviewEntity extends defaultClasses.Base {}

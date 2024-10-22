@@ -1,6 +1,6 @@
-import { City } from '#shared/types/city.type.js';
-import { OfferType } from '#shared/types/offer-type.enum.js';
 import { Expose } from 'class-transformer';
+import { City } from '../../../../../src/shared/types/city.type.js';
+import { OfferType } from '../../../../../src/shared/types/offer-type.enum.js';
 import { OfferRdo } from './offer-rdo.js';
 
 type OfferIncludeType =

@@ -1,7 +1,7 @@
-import { Controller } from '#shared/libs/rest/controller/controller.interface.js';
-import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { Container } from 'inversify';
+import { Controller } from '../../../../src/shared/libs/rest/controller/controller.interface.js';
+import { Component } from '../../../../src/shared/types/component.enum.js';
 import { DefaultOfferService } from './default-offer-service.js';
 import { OfferController } from './offer-controller.js';
 import { OfferEntity, OfferModel } from './offer-entity.js';

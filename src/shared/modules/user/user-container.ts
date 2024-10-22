@@ -1,7 +1,7 @@
-import { Controller } from '#shared/libs/rest/controller/controller.interface.js';
-import { Component } from '#shared/types/component.enum.js';
 import { types } from '@typegoose/typegoose';
 import { Container } from 'inversify';
+import { Controller } from '../../../../src/shared/libs/rest/controller/controller.interface.js';
+import { Component } from '../../../../src/shared/types/component.enum.js';
 import { DefaultUserService } from './default-user-service.js';
 import { UserController } from './user-controller.js';
 import { UserEntity, UserModel } from './user-entity.js';
