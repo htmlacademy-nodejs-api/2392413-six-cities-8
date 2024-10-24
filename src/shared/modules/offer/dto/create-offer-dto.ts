@@ -18,19 +18,36 @@ import {
 import { GoodType } from '../../../../../src/shared/types/good-type.type.js';
 import { Location } from '../../../../../src/shared/types/location.type.js';
 import { OfferType } from '../../../../../src/shared/types/offer-type.enum.js';
+import {
+  IMAGES_COUNT,
+  MAX_ADULTS_COUNT,
+  MAX_BEDROOMS_COUNT,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_PRICE,
+  MAX_TITLE_LENGTH,
+  MIN_ADULTS_COUNT,
+  MIN_BEDROOMS_COUNT,
+  MIN_DESCRIPTION_LENGTH,
+  MIN_PRICE,
+  MIN_TITLE_LENGTH,
+} from '../offer.constant.js';
 import { CityDto } from './city-dto.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
 export class CreateOfferDto {
-  @MinLength(10, { message: CreateOfferValidationMessage.title.minLength })
-  @MaxLength(100, { message: CreateOfferValidationMessage.title.maxLength })
+  @MinLength(MIN_TITLE_LENGTH, {
+    message: CreateOfferValidationMessage.title.minLength,
+  })
+  @MaxLength(MAX_TITLE_LENGTH, {
+    message: CreateOfferValidationMessage.title.maxLength,
+  })
   @IsString({ message: CreateOfferValidationMessage.title.invalidFormat })
   public title: string;
 
-  @MinLength(20, {
+  @MinLength(MIN_DESCRIPTION_LENGTH, {
     message: CreateOfferValidationMessage.description.minLength,
   })
-  @MaxLength(1024, {
+  @MaxLength(MAX_DESCRIPTION_LENGTH, {
     message: CreateOfferValidationMessage.description.maxLength,
   })
   public description: string;
@@ -51,8 +68,12 @@ export class CreateOfferDto {
   public previewImage: string;
 
   @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
-  @ArrayMinSize(6, { message: CreateOfferValidationMessage.images.length })
-  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.images.length })
+  @ArrayMinSize(IMAGES_COUNT, {
+    message: CreateOfferValidationMessage.images.length,
+  })
+  @ArrayMaxSize(IMAGES_COUNT, {
+    message: CreateOfferValidationMessage.images.length,
+  })
   public images: string[];
 
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
@@ -64,18 +85,26 @@ export class CreateOfferDto {
   public type: OfferType;
 
   @IsInt({ message: CreateOfferValidationMessage.bedrooms.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.bedrooms.minValue })
-  @Max(8, { message: CreateOfferValidationMessage.bedrooms.maxValue })
+  @Min(MIN_BEDROOMS_COUNT, {
+    message: CreateOfferValidationMessage.bedrooms.minValue,
+  })
+  @Max(MAX_BEDROOMS_COUNT, {
+    message: CreateOfferValidationMessage.bedrooms.maxValue,
+  })
   public bedrooms: number;
 
   @IsInt({ message: CreateOfferValidationMessage.maxAdults.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.maxAdults.minValue })
-  @Max(10, { message: CreateOfferValidationMessage.maxAdults.maxValue })
+  @Min(MIN_ADULTS_COUNT, {
+    message: CreateOfferValidationMessage.maxAdults.minValue,
+  })
+  @Max(MAX_ADULTS_COUNT, {
+    message: CreateOfferValidationMessage.maxAdults.maxValue,
+  })
   public maxAdults: number;
 
   @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
-  @Min(100, { message: CreateOfferValidationMessage.price.minValue })
-  @Max(100000, { message: CreateOfferValidationMessage.price.maxValue })
+  @Min(MIN_PRICE, { message: CreateOfferValidationMessage.price.minValue })
+  @Max(MAX_PRICE, { message: CreateOfferValidationMessage.price.maxValue })
   public price: number;
 
   @IsArray({ message: CreateOfferValidationMessage.goods.invalidFormat })

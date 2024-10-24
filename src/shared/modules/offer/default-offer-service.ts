@@ -17,9 +17,11 @@ import {
   OfferEntityDocument,
   OfferService,
 } from './offer-service.interface.js';
+import {
+  DEFAULT_OFFERS_LIMIT,
+  PREMIUM_OFFERS_LIMIT,
+} from './offer.constant.js';
 
-const DEFAULT_OFFERS_LIMIT = 60;
-const PREMIUM_OFFERS_LIMIT = 3;
 @injectable()
 export class DefaultOfferService implements OfferService {
   constructor(
